@@ -15,8 +15,9 @@ namespace DTcms.Model
         { }
         #region Model
         private int _id;
-        private string _cabinetno;
+        private string _fk_cabinetno;
         private string _boxno;
+        private string _boxaddr;
         private decimal? _long;
         private decimal? _wide;
         private decimal? _high;
@@ -34,10 +35,10 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public string CabinetNo
+        public string FK_CabinetNo
         {
-            set { _cabinetno = value; }
-            get { return _cabinetno; }
+            set { _fk_cabinetno = value; }
+            get { return _fk_cabinetno; }
         }
         /// <summary>
         /// 
@@ -46,6 +47,14 @@ namespace DTcms.Model
         {
             set { _boxno = value; }
             get { return _boxno; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string BoxAddr
+        {
+            set { _boxaddr = value; }
+            get { return _boxaddr; }
         }
         /// <summary>
         /// 

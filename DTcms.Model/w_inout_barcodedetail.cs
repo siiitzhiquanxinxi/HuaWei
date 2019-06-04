@@ -6,9 +6,9 @@ using System.Text;
 namespace DTcms.Model
 {
     /// <summary>
-    /// w_inout_barcodedetail:实体类(属性说明自动提取数据库字段的描述信息)
-    /// </summary>
-    [Serializable]
+	/// w_inout_barcodedetail:实体类(属性说明自动提取数据库字段的描述信息)
+	/// </summary>
+	[Serializable]
     public partial class w_inout_barcodedetail
     {
         public w_inout_barcodedetail()
@@ -28,9 +28,7 @@ namespace DTcms.Model
         private string _unit;
         private decimal? _num;
         private int? _ioflag;
-        private int? _shelfid;
-        private string _cabinetno;
-        private string _boxno;
+        private int? _fk_shelfid;
         private int? _x;
         private int? _y;
         private int? _worktime;
@@ -149,26 +147,10 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public int? ShelfID
+        public int? FK_ShelfID
         {
-            set { _shelfid = value; }
-            get { return _shelfid; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string CabinetNo
-        {
-            set { _cabinetno = value; }
-            get { return _cabinetno; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string BoxNo
-        {
-            set { _boxno = value; }
-            get { return _boxno; }
+            set { _fk_shelfid = value; }
+            get { return _fk_shelfid; }
         }
         /// <summary>
         /// 

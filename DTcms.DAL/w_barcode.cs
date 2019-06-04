@@ -39,9 +39,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into w_barcode(");
-            strSql.Append("BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,ShelfID,CabinetNo,BoxNo,X,Y,RemainTime,ToolLevel,State)");
+            strSql.Append("BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,FK_ShelfID,X,Y,RemainTime,ToolLevel,State)");
             strSql.Append(" values (");
-            strSql.Append("?BarCode,?BatchNumber,?MaterialID,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Unit,?Num,?ShelfID,?CabinetNo,?BoxNo,?X,?Y,?RemainTime,?ToolLevel,?State)");
+            strSql.Append("?BarCode,?BatchNumber,?MaterialID,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Unit,?Num,?FK_ShelfID,?X,?Y,?RemainTime,?ToolLevel,?State)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BarCode", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BatchNumber", MySqlDbType.VarChar,50),
@@ -54,9 +54,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?Spec", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Unit", MySqlDbType.VarChar,50),
                     new MySqlParameter("?Num", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ShelfID", MySqlDbType.Int32,50),
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
                     new MySqlParameter("?RemainTime", MySqlDbType.Int32,10),
@@ -73,14 +71,12 @@ namespace DTcms.DAL
             parameters[8].Value = model.Spec;
             parameters[9].Value = model.Unit;
             parameters[10].Value = model.Num;
-            parameters[11].Value = model.ShelfID;
-            parameters[12].Value = model.CabinetNo;
-            parameters[13].Value = model.BoxNo;
-            parameters[14].Value = model.X;
-            parameters[15].Value = model.Y;
-            parameters[16].Value = model.RemainTime;
-            parameters[17].Value = model.ToolLevel;
-            parameters[18].Value = model.State;
+            parameters[11].Value = model.FK_ShelfID;
+            parameters[12].Value = model.X;
+            parameters[13].Value = model.Y;
+            parameters[14].Value = model.RemainTime;
+            parameters[15].Value = model.ToolLevel;
+            parameters[16].Value = model.State;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -109,9 +105,7 @@ namespace DTcms.DAL
             strSql.Append("Spec=?Spec,");
             strSql.Append("Unit=?Unit,");
             strSql.Append("Num=?Num,");
-            strSql.Append("ShelfID=?ShelfID,");
-            strSql.Append("CabinetNo=?CabinetNo,");
-            strSql.Append("BoxNo=?BoxNo,");
+            strSql.Append("FK_ShelfID=?FK_ShelfID,");
             strSql.Append("X=?X,");
             strSql.Append("Y=?Y,");
             strSql.Append("RemainTime=?RemainTime,");
@@ -129,9 +123,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?Spec", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Unit", MySqlDbType.VarChar,50),
                     new MySqlParameter("?Num", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ShelfID", MySqlDbType.Int32,50),
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
                     new MySqlParameter("?RemainTime", MySqlDbType.Int32,10),
@@ -148,15 +140,13 @@ namespace DTcms.DAL
             parameters[7].Value = model.Spec;
             parameters[8].Value = model.Unit;
             parameters[9].Value = model.Num;
-            parameters[10].Value = model.ShelfID;
-            parameters[11].Value = model.CabinetNo;
-            parameters[12].Value = model.BoxNo;
-            parameters[13].Value = model.X;
-            parameters[14].Value = model.Y;
-            parameters[15].Value = model.RemainTime;
-            parameters[16].Value = model.ToolLevel;
-            parameters[17].Value = model.State;
-            parameters[18].Value = model.BarCode;
+            parameters[10].Value = model.FK_ShelfID;
+            parameters[11].Value = model.X;
+            parameters[12].Value = model.Y;
+            parameters[13].Value = model.RemainTime;
+            parameters[14].Value = model.ToolLevel;
+            parameters[15].Value = model.State;
+            parameters[16].Value = model.BarCode;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -219,7 +209,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,ShelfID,CabinetNo,BoxNo,X,Y,RemainTime,ToolLevel,State from w_barcode ");
+            strSql.Append("select BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,FK_ShelfID,X,Y,RemainTime,ToolLevel,State from w_barcode ");
             strSql.Append(" where BarCode=?BarCode ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BarCode", MySqlDbType.VarChar,255)         };
@@ -290,17 +280,9 @@ namespace DTcms.DAL
                 {
                     model.Num = int.Parse(row["Num"].ToString());
                 }
-                if (row["ShelfID"] != null && row["ShelfID"].ToString() != "")
+                if (row["FK_ShelfID"] != null && row["FK_ShelfID"].ToString() != "")
                 {
-                    model.ShelfID = int.Parse(row["ShelfID"].ToString());
-                }
-                if (row["CabinetNo"] != null)
-                {
-                    model.CabinetNo = row["CabinetNo"].ToString();
-                }
-                if (row["BoxNo"] != null)
-                {
-                    model.BoxNo = row["BoxNo"].ToString();
+                    model.FK_ShelfID = int.Parse(row["FK_ShelfID"].ToString());
                 }
                 if (row["X"] != null && row["X"].ToString() != "")
                 {
@@ -332,7 +314,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,ShelfID,CabinetNo,BoxNo,X,Y,RemainTime,ToolLevel,State ");
+            strSql.Append("select BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,FK_ShelfID,X,Y,RemainTime,ToolLevel,State ");
             strSql.Append(" FROM w_barcode ");
             if (strWhere.Trim() != "")
             {

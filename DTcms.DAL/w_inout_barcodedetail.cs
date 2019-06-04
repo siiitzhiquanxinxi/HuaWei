@@ -8,9 +8,9 @@ using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
-	/// 数据访问类:w_inout_barcodedetail
-	/// </summary>
-	public partial class w_inout_barcodedetail
+    /// 数据访问类:w_inout_barcodedetail
+    /// </summary>
+    public partial class w_inout_barcodedetail
     {
         public w_inout_barcodedetail()
         { }
@@ -39,9 +39,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into w_inout_barcodedetail(");
-            strSql.Append("BillID,BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,IOFlag,ShelfID,CabinetNo,BoxNo,X,Y,WorkTime)");
+            strSql.Append("BillID,BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,IOFlag,FK_ShelfID,X,Y,WorkTime)");
             strSql.Append(" values (");
-            strSql.Append("?BillID,?BarCode,?BatchNumber,?MaterialID,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Unit,?Num,?IOFlag,?ShelfID,?CabinetNo,?BoxNo,?X,?Y,?WorkTime)");
+            strSql.Append("?BillID,?BarCode,?BatchNumber,?MaterialID,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Unit,?Num,?IOFlag,?FK_ShelfID,?X,?Y,?WorkTime)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BillID", MySqlDbType.VarChar,50),
                     new MySqlParameter("?BarCode", MySqlDbType.VarChar,255),
@@ -56,9 +56,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?Unit", MySqlDbType.VarChar,50),
                     new MySqlParameter("?Num", MySqlDbType.Decimal,18),
                     new MySqlParameter("?IOFlag", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ShelfID", MySqlDbType.Int32,50),
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
                     new MySqlParameter("?WorkTime", MySqlDbType.Int32,10)};
@@ -75,12 +73,10 @@ namespace DTcms.DAL
             parameters[10].Value = model.Unit;
             parameters[11].Value = model.Num;
             parameters[12].Value = model.IOFlag;
-            parameters[13].Value = model.ShelfID;
-            parameters[14].Value = model.CabinetNo;
-            parameters[15].Value = model.BoxNo;
-            parameters[16].Value = model.X;
-            parameters[17].Value = model.Y;
-            parameters[18].Value = model.WorkTime;
+            parameters[13].Value = model.FK_ShelfID;
+            parameters[14].Value = model.X;
+            parameters[15].Value = model.Y;
+            parameters[16].Value = model.WorkTime;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -112,9 +108,7 @@ namespace DTcms.DAL
             strSql.Append("Unit=?Unit,");
             strSql.Append("Num=?Num,");
             strSql.Append("IOFlag=?IOFlag,");
-            strSql.Append("ShelfID=?ShelfID,");
-            strSql.Append("CabinetNo=?CabinetNo,");
-            strSql.Append("BoxNo=?BoxNo,");
+            strSql.Append("FK_ShelfID=?FK_ShelfID,");
             strSql.Append("X=?X,");
             strSql.Append("Y=?Y,");
             strSql.Append("WorkTime=?WorkTime");
@@ -133,9 +127,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?Unit", MySqlDbType.VarChar,50),
                     new MySqlParameter("?Num", MySqlDbType.Decimal,18),
                     new MySqlParameter("?IOFlag", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ShelfID", MySqlDbType.Int32,50),
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
                     new MySqlParameter("?WorkTime", MySqlDbType.Int32,10),
@@ -153,13 +145,11 @@ namespace DTcms.DAL
             parameters[10].Value = model.Unit;
             parameters[11].Value = model.Num;
             parameters[12].Value = model.IOFlag;
-            parameters[13].Value = model.ShelfID;
-            parameters[14].Value = model.CabinetNo;
-            parameters[15].Value = model.BoxNo;
-            parameters[16].Value = model.X;
-            parameters[17].Value = model.Y;
-            parameters[18].Value = model.WorkTime;
-            parameters[19].Value = model.ID;
+            parameters[13].Value = model.FK_ShelfID;
+            parameters[14].Value = model.X;
+            parameters[15].Value = model.Y;
+            parameters[16].Value = model.WorkTime;
+            parameters[17].Value = model.ID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -223,7 +213,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,BillID,BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,IOFlag,ShelfID,CabinetNo,BoxNo,X,Y,WorkTime from w_inout_barcodedetail ");
+            strSql.Append("select ID,BillID,BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,IOFlag,FK_ShelfID,X,Y,WorkTime from w_inout_barcodedetail ");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
@@ -307,17 +297,9 @@ namespace DTcms.DAL
                 {
                     model.IOFlag = int.Parse(row["IOFlag"].ToString());
                 }
-                if (row["ShelfID"] != null && row["ShelfID"].ToString() != "")
+                if (row["FK_ShelfID"] != null && row["FK_ShelfID"].ToString() != "")
                 {
-                    model.ShelfID = int.Parse(row["ShelfID"].ToString());
-                }
-                if (row["CabinetNo"] != null)
-                {
-                    model.CabinetNo = row["CabinetNo"].ToString();
-                }
-                if (row["BoxNo"] != null)
-                {
-                    model.BoxNo = row["BoxNo"].ToString();
+                    model.FK_ShelfID = int.Parse(row["FK_ShelfID"].ToString());
                 }
                 if (row["X"] != null && row["X"].ToString() != "")
                 {
@@ -341,7 +323,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,BillID,BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,IOFlag,ShelfID,CabinetNo,BoxNo,X,Y,WorkTime ");
+            strSql.Append("select ID,BillID,BarCode,BatchNumber,MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Unit,Num,IOFlag,FK_ShelfID,X,Y,WorkTime ");
             strSql.Append(" FROM w_inout_barcodedetail ");
             if (strWhere.Trim() != "")
             {

@@ -25,9 +25,7 @@ namespace DTcms.Model
         private string _spec;
         private string _unit;
         private int? _num;
-        private int? _shelfid;
-        private string _cabinetno;
-        private string _boxno;
+        private int? _fk_shelfid;
         private int? _x;
         private int? _y;
         private int? _remaintime;
@@ -124,26 +122,10 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public int? ShelfID
+        public int? FK_ShelfID
         {
-            set { _shelfid = value; }
-            get { return _shelfid; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string CabinetNo
-        {
-            set { _cabinetno = value; }
-            get { return _cabinetno; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string BoxNo
-        {
-            set { _boxno = value; }
-            get { return _boxno; }
+            set { _fk_shelfid = value; }
+            get { return _fk_shelfid; }
         }
         /// <summary>
         /// 

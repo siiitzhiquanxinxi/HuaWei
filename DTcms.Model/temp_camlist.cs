@@ -20,6 +20,7 @@ namespace DTcms.Model
         private int? _worktime;
         private string _toollevel;
         private int? _toolreadystate;
+        private string _toolbarcode;
         /// <summary>
         /// auto_increment
         /// </summary>
@@ -67,6 +68,14 @@ namespace DTcms.Model
         {
             set { _toolreadystate = value; }
             get { return _toolreadystate; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ToolBarCode
+        {
+            set { _toolbarcode = value; }
+            get { return _toolbarcode; }
         }
         #endregion Model
 

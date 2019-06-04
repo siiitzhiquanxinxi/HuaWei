@@ -39,26 +39,28 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sy_shelf(");
-            strSql.Append("CabinetNo,BoxNo,Long,Wide,High,X,Y,Type)");
+            strSql.Append("FK_CabinetNo,BoxNo,BoxAddr,Long,Wide,High,X,Y,Type)");
             strSql.Append(" values (");
-            strSql.Append("?CabinetNo,?BoxNo,?Long,?Wide,?High,?X,?Y,?Type)");
+            strSql.Append("?FK_CabinetNo,?BoxNo,?BoxAddr,?Long,?Wide,?High,?X,?Y,?Type)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?FK_CabinetNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?BoxAddr", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Long", MySqlDbType.Decimal,10),
                     new MySqlParameter("?Wide", MySqlDbType.Decimal,10),
                     new MySqlParameter("?High", MySqlDbType.Decimal,10),
                     new MySqlParameter("?X", MySqlDbType.Int32,11),
                     new MySqlParameter("?Y", MySqlDbType.Int32,11),
                     new MySqlParameter("?Type", MySqlDbType.Int32,11)};
-            parameters[0].Value = model.CabinetNo;
+            parameters[0].Value = model.FK_CabinetNo;
             parameters[1].Value = model.BoxNo;
-            parameters[2].Value = model.Long;
-            parameters[3].Value = model.Wide;
-            parameters[4].Value = model.High;
-            parameters[5].Value = model.X;
-            parameters[6].Value = model.Y;
-            parameters[7].Value = model.Type;
+            parameters[2].Value = model.BoxAddr;
+            parameters[3].Value = model.Long;
+            parameters[4].Value = model.Wide;
+            parameters[5].Value = model.High;
+            parameters[6].Value = model.X;
+            parameters[7].Value = model.Y;
+            parameters[8].Value = model.Type;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -77,8 +79,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update sy_shelf set ");
-            strSql.Append("CabinetNo=?CabinetNo,");
+            strSql.Append("FK_CabinetNo=?FK_CabinetNo,");
             strSql.Append("BoxNo=?BoxNo,");
+            strSql.Append("BoxAddr=?BoxAddr,");
             strSql.Append("Long=?Long,");
             strSql.Append("Wide=?Wide,");
             strSql.Append("High=?High,");
@@ -87,8 +90,9 @@ namespace DTcms.DAL
             strSql.Append("Type=?Type");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?FK_CabinetNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?BoxAddr", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Long", MySqlDbType.Decimal,10),
                     new MySqlParameter("?Wide", MySqlDbType.Decimal,10),
                     new MySqlParameter("?High", MySqlDbType.Decimal,10),
@@ -96,15 +100,16 @@ namespace DTcms.DAL
                     new MySqlParameter("?Y", MySqlDbType.Int32,11),
                     new MySqlParameter("?Type", MySqlDbType.Int32,11),
                     new MySqlParameter("?ID", MySqlDbType.Int32,11)};
-            parameters[0].Value = model.CabinetNo;
+            parameters[0].Value = model.FK_CabinetNo;
             parameters[1].Value = model.BoxNo;
-            parameters[2].Value = model.Long;
-            parameters[3].Value = model.Wide;
-            parameters[4].Value = model.High;
-            parameters[5].Value = model.X;
-            parameters[6].Value = model.Y;
-            parameters[7].Value = model.Type;
-            parameters[8].Value = model.ID;
+            parameters[2].Value = model.BoxAddr;
+            parameters[3].Value = model.Long;
+            parameters[4].Value = model.Wide;
+            parameters[5].Value = model.High;
+            parameters[6].Value = model.X;
+            parameters[7].Value = model.Y;
+            parameters[8].Value = model.Type;
+            parameters[9].Value = model.ID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -168,7 +173,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,CabinetNo,BoxNo,Long,Wide,High,X,Y,Type from sy_shelf ");
+            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Long,Wide,High,X,Y,Type from sy_shelf ");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
@@ -200,13 +205,17 @@ namespace DTcms.DAL
                 {
                     model.ID = int.Parse(row["ID"].ToString());
                 }
-                if (row["CabinetNo"] != null)
+                if (row["FK_CabinetNo"] != null)
                 {
-                    model.CabinetNo = row["CabinetNo"].ToString();
+                    model.FK_CabinetNo = row["FK_CabinetNo"].ToString();
                 }
                 if (row["BoxNo"] != null)
                 {
                     model.BoxNo = row["BoxNo"].ToString();
+                }
+                if (row["BoxAddr"] != null)
+                {
+                    model.BoxAddr = row["BoxAddr"].ToString();
                 }
                 if (row["Long"] != null && row["Long"].ToString() != "")
                 {
@@ -242,7 +251,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,CabinetNo,BoxNo,Long,Wide,High,X,Y,Type ");
+            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Long,Wide,High,X,Y,Type ");
             strSql.Append(" FROM sy_shelf ");
             if (strWhere.Trim() != "")
             {
