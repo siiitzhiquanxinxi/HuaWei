@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SmartShelfTCPIPTool
+namespace SmartShelfUI.ChildForm
 {
-    public partial class Form1 : Form
+    public partial class Repair : Form
     {
-        public Form1()
+        public Repair()
         {
             InitializeComponent();
         }

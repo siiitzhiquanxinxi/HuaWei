@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTcms.Web.UI", "DTcms.Web.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfaceHardware", "InterfaceHardware\InterfaceHardware.csproj", "{ED1228A8-6679-40F4-9474-4B8B7178D7A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartShelfUI", "SmartShelfUI\SmartShelfUI.csproj", "{35787AA2-5E50-47FC-894A-C3A4C4BE887E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{ED1228A8-6679-40F4-9474-4B8B7178D7A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED1228A8-6679-40F4-9474-4B8B7178D7A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED1228A8-6679-40F4-9474-4B8B7178D7A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35787AA2-5E50-47FC-894A-C3A4C4BE887E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35787AA2-5E50-47FC-894A-C3A4C4BE887E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35787AA2-5E50-47FC-894A-C3A4C4BE887E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35787AA2-5E50-47FC-894A-C3A4C4BE887E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
