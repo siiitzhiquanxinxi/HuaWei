@@ -43,6 +43,10 @@ namespace SmartShelfUI.ChildForm
             {
                 nextForm();
             }
+            else
+            {
+                MessageBox.Show("用户名或密码错误！");
+            }
         }
 
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -51,10 +55,20 @@ namespace SmartShelfUI.ChildForm
             int rLength = serialPort1.Read(result, 0, result.Length);
             if (rLength >= 1)
             {
-                this.BeginInvoke((MethodInvoker)delegate
+                if (true)
                 {
-                    nextForm();
-                });
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        nextForm();
+                    });
+                }
+                else
+                {
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        MessageBox.Show("登录失败！");
+                    });
+                }
             }
         }
     }
