@@ -11,7 +11,7 @@ a:active, a:hover{ color:#0065D9; text-decoration:underline; }
 
 /* =========================登录页样式.开始======================= */
 .login-wrap{ position:absolute; top:45%; left:45%; margin:-150px auto auto -140px; width:450px; text-align:center; }
-	.login-logo{ margin:0 auto 10px; text-indent:-9999em; width:102px; height:32px; background:url(logo.png) no-repeat;background-size:100% 100%; }
+	.login-logo{ margin:0 auto 10px; color:#ffffff; font-size:20px; width:280px; height:32px; background-size:100% 100%; text-align:left }
 	.login-form .col{ position:relative; padding:10px 0; }
 	.login-form .col .icon{ position:absolute; display:block; top:24px; left:10px; width:14px; height:14px; background:url(skin_icons.png) no-repeat; cursor:pointer; }
 	.login-form .col .icon.user{ background-position:0 -140px; }

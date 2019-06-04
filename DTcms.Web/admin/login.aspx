@@ -23,7 +23,10 @@
 <form id="form1" runat="server">
 <div style="width:100%; height:100%; min-width:300px; min-height:260px;"></div>
 <div class="login-wrap">
-  <div class="login-logo">华为刀具智能柜管理系统</div>
+    <div style="background:url(logo.png)">
+      </div>
+  <div class="login-logo">
+      华为刀具智能柜管理系统</div>
   <div class="login-form">
     <div class="col">
       <asp:TextBox ID="txtUserName" runat="server" CssClass="login-input" placeholder="管理员账号" title="管理员账号" Width="90%"></asp:TextBox>
