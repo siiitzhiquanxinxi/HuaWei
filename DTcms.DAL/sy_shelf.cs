@@ -173,7 +173,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * from sy_shelf ");
+            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Deep,Wide,High,X,Y,Type from sy_shelf ");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
@@ -251,7 +251,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * ");
+            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Deep,Wide,High,X,Y,Type ");
             strSql.Append(" FROM sy_shelf ");
             if (strWhere.Trim() != "")
             {

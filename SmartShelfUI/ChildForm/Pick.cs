@@ -19,6 +19,7 @@ namespace SmartShelfUI.ChildForm
 
         public delegate void FormHandle();
         public event FormHandle nextForm_menu;
+        public event FormHandle nextForm_exit;
         private void btnMenu_Click(object sender, EventArgs e)
         {
             nextForm_menu();
@@ -42,13 +43,13 @@ namespace SmartShelfUI.ChildForm
                 {
                     Button btnOrder = new Button();
                     btnOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.按钮1;
-                    btnOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                    btnOrder.BackgroundImageLayout = ImageLayout.Stretch;
                     btnOrder.FlatAppearance.BorderSize = 0;
-                    btnOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                    btnOrder.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-                    btnOrder.ForeColor = System.Drawing.Color.White;
-                    btnOrder.Location = new System.Drawing.Point(3, 3 + 55 * i);
-                    btnOrder.Size = new System.Drawing.Size(540, 55);
+                    btnOrder.FlatStyle = FlatStyle.Flat;
+                    btnOrder.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(134)));
+                    btnOrder.ForeColor = Color.White;
+                    btnOrder.Location = new Point(3, 3 + 55 * i);
+                    btnOrder.Size = new Size(540, 55);
                     btnOrder.Text = dt.Rows[i]["PartNum"].ToString() + "    "
                         + dt.Rows[i]["PartName"].ToString() + "    "
                         + dt.Rows[i]["MaterialTexture"].ToString() + "    "
@@ -71,51 +72,67 @@ namespace SmartShelfUI.ChildForm
         /// <param name="e"></param>
         private void btnOrder_Click(object sender, EventArgs e)
         {
-            panel_CAM.Controls.Clear();
             Button btn = sender as Button;
             string PartNum = btn.Tag.ToString();
-            string sql = "select * from temp_camlist where PartNum = '" + PartNum + "'";
+            string sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
+            sql += " order by s.FK_CabinetNo,s.BoxNo";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {
                 dgvCamList.DataSource = dt;
 
-                //for (int i = 0; i < dt.Rows.Count; i++)
-                //{
-                //    Button btnOrder = new Button();
-                //    btnOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.按钮1;
-                //    btnOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-                //    btnOrder.FlatAppearance.BorderSize = 0;
-                //    btnOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                //    btnOrder.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-                //    btnOrder.ForeColor = System.Drawing.Color.White;
-                //    btnOrder.Location = new System.Drawing.Point(3, 3 + 55 * i);
-                //    btnOrder.Size = new System.Drawing.Size(550, 55);
-                //    btnOrder.Text = dt.Rows[i]["PartNum"].ToString() + "    "
-                //        + dt.Rows[i]["ToolName"].ToString() + "    "
-                //        //+ dt.Rows[i]["ToolBasicNum"].ToString() + "    "
-                //        + dt.Rows[i]["WorkTime"].ToString() + "    "
-                //        + dt.Rows[i]["ToolLevel"].ToString();
-                //    btnOrder.Tag = dt.Rows[i]["Id"].ToString();
-                //    btnOrder.UseVisualStyleBackColor = true;
-                //    btnOrder.Click += btnOpenDoor_Click;
-                //    panel_CAM.Controls.Add(btnOrder);
-                //}
+                sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
+                DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
+                if (dtShelf != null && dtShelf.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtShelf.Rows.Count; i++)
+                    {
+                        Button btnShelf = new Button();
+                        btnShelf.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+                        btnShelf.BackgroundImageLayout = ImageLayout.Stretch;
+                        btnShelf.FlatAppearance.BorderSize = 0;
+                        btnShelf.FlatStyle = FlatStyle.Flat;
+                        btnShelf.Font = new Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                        btnShelf.ForeColor = Color.White;
+                        btnShelf.Location = new Point(8, 70 * i + 8);
+                        btnShelf.Size = new Size(190, 70);
+                        btnShelf.Text = "打开" + dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "号柜" + dtShelf.Rows[i]["BoxNo"].ToString() + "号抽屉";
+                        btnShelf.Tag = dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "|" + dtShelf.Rows[i]["BoxNo"].ToString() + "|" + dtShelf.Rows[i]["shelfid"].ToString() + "|" + PartNum;
+                        btnShelf.UseVisualStyleBackColor = true;
+                        btnShelf.Click += btnOpenDoor_Click;
+                        panel_shelf.Controls.Add(btnShelf);
+                    }
+                }
             }
         }
 
         private void btnOpenDoor_Click(object sender, EventArgs e)
         {
             Button btnOpenDoor = sender as Button;
-            string camId = btnOpenDoor.Tag.ToString();
-            string sql = "select * from temp_camlist where Id = " + camId;
+            string cabinetNo = btnOpenDoor.Tag.ToString().Split('|')[0];
+            string shelfNo = btnOpenDoor.Tag.ToString().Split('|')[1];
+            string shelfId = btnOpenDoor.Tag.ToString().Split('|')[2];
+            string PartNo = btnOpenDoor.Tag.ToString().Split('|')[3];
+
+            string sql = "select w.X,w.Y from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "' and s.ID = " + shelfId;
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+            ChildForm.CellsLocation frmCellsLocation = new CellsLocation();
+            frmCellsLocation.ShelfID = int.Parse(shelfId);
+            frmCellsLocation.PartNum = PartNo;
             if (dt != null && dt.Rows.Count > 0)
             {
-                sql = "select * from toollist where ToolName = '" + dt.Rows[0]["ToolName"].ToString() + "'";
-                dt = DbHelperMySql.Query(sql).Tables[0];
-
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    frmCellsLocation.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString());
+                }
             }
+            frmCellsLocation.ShowDialog();
+
+        }
+
+        private void btnDone_Click(object sender, EventArgs e)
+        {
+            nextForm_exit();
         }
     }
 }

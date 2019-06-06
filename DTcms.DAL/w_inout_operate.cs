@@ -8,9 +8,9 @@ using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
-	/// 数据访问类:w_inout_operate
-	/// </summary>
-	public partial class w_inout_operate
+    /// 数据访问类:w_inout_operate
+    /// </summary>
+    public partial class w_inout_operate
     {
         public w_inout_operate()
         { }
@@ -77,7 +77,7 @@ namespace DTcms.DAL
             strSql.Append("Remark=?Remark");
             strSql.Append(" where BillID=?BillID ");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?BillDate", MySqlDbType.Datetime),
+                new MySqlParameter("?BillDate", MySqlDbType.Datetime),
                     new MySqlParameter("?FK_Operator", MySqlDbType.Int32,11),
                     new MySqlParameter("?OperatorName", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Remark", MySqlDbType.VarChar,255),
@@ -87,7 +87,7 @@ namespace DTcms.DAL
             parameters[2].Value = model.OperatorName;
             parameters[3].Value = model.Remark;
             parameters[4].Value = model.BillID;
-
+            
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {

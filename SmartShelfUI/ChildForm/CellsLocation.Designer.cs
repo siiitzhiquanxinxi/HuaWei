@@ -28,150 +28,102 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel_Cells = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.panel9 = new System.Windows.Forms.Panel();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.panel11 = new System.Windows.Forms.Panel();
-            this.panel12 = new System.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.spCom = new System.IO.Ports.SerialPort(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblToolName = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblToolBarcode = new System.Windows.Forms.Label();
             this.panel_Cells.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_Cells
             // 
-            this.panel_Cells.Controls.Add(this.panel11);
-            this.panel_Cells.Controls.Add(this.panel12);
-            this.panel_Cells.Controls.Add(this.panel9);
-            this.panel_Cells.Controls.Add(this.panel5);
-            this.panel_Cells.Controls.Add(this.panel10);
-            this.panel_Cells.Controls.Add(this.panel4);
-            this.panel_Cells.Controls.Add(this.panel6);
-            this.panel_Cells.Controls.Add(this.panel3);
-            this.panel_Cells.Controls.Add(this.panel7);
-            this.panel_Cells.Controls.Add(this.panel2);
-            this.panel_Cells.Controls.Add(this.panel8);
-            this.panel_Cells.Controls.Add(this.panel1);
+            this.panel_Cells.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_Cells.Controls.Add(this.lblToolBarcode);
+            this.panel_Cells.Controls.Add(this.label3);
+            this.panel_Cells.Controls.Add(this.lblToolName);
+            this.panel_Cells.Controls.Add(this.label1);
+            this.panel_Cells.Controls.Add(this.btnCancel);
             this.panel_Cells.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_Cells.Location = new System.Drawing.Point(0, 0);
             this.panel_Cells.Name = "panel_Cells";
-            this.panel_Cells.Size = new System.Drawing.Size(800, 810);
+            this.panel_Cells.Size = new System.Drawing.Size(1000, 810);
             this.panel_Cells.TabIndex = 0;
-            this.panel_Cells.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_Cells_Paint);
             // 
-            // panel1
+            // btnCancel
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(60, 60);
-            this.panel1.TabIndex = 0;
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.BackgroundImage = global::SmartShelfUI.Properties.Resources.返回;
+            this.btnCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Location = new System.Drawing.Point(912, 682);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 115);
+            this.btnCancel.TabIndex = 0;
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // panel2
+            // spCom
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel2.Location = new System.Drawing.Point(12, 78);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(60, 60);
-            this.panel2.TabIndex = 1;
+            this.spCom.BaudRate = 115200;
+            this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
-            // panel3
+            // label1
             // 
-            this.panel3.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel3.Location = new System.Drawing.Point(12, 144);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(60, 60);
-            this.panel3.TabIndex = 1;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(804, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 27);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "刀具名称：";
             // 
-            // panel4
+            // lblToolName
             // 
-            this.panel4.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel4.Location = new System.Drawing.Point(12, 210);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(60, 60);
-            this.panel4.TabIndex = 1;
+            this.lblToolName.AutoSize = true;
+            this.lblToolName.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblToolName.Location = new System.Drawing.Point(804, 45);
+            this.lblToolName.Name = "lblToolName";
+            this.lblToolName.Size = new System.Drawing.Size(0, 27);
+            this.lblToolName.TabIndex = 1;
             // 
-            // panel5
+            // label3
             // 
-            this.panel5.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel5.Location = new System.Drawing.Point(12, 474);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(60, 60);
-            this.panel5.TabIndex = 3;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(804, 99);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(112, 27);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "刀具编码：";
             // 
-            // panel6
+            // lblToolBarcode
             // 
-            this.panel6.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel6.Location = new System.Drawing.Point(12, 408);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(60, 60);
-            this.panel6.TabIndex = 4;
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel7.Location = new System.Drawing.Point(12, 342);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(60, 60);
-            this.panel7.TabIndex = 5;
-            // 
-            // panel8
-            // 
-            this.panel8.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel8.Location = new System.Drawing.Point(12, 276);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(60, 60);
-            this.panel8.TabIndex = 2;
-            // 
-            // panel9
-            // 
-            this.panel9.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel9.Location = new System.Drawing.Point(12, 606);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(60, 60);
-            this.panel9.TabIndex = 5;
-            // 
-            // panel10
-            // 
-            this.panel10.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel10.Location = new System.Drawing.Point(12, 540);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(60, 60);
-            this.panel10.TabIndex = 6;
-            // 
-            // panel11
-            // 
-            this.panel11.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel11.Location = new System.Drawing.Point(12, 738);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(60, 60);
-            this.panel11.TabIndex = 7;
-            // 
-            // panel12
-            // 
-            this.panel12.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel12.Location = new System.Drawing.Point(12, 672);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(60, 60);
-            this.panel12.TabIndex = 8;
+            this.lblToolBarcode.AutoSize = true;
+            this.lblToolBarcode.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblToolBarcode.Location = new System.Drawing.Point(804, 126);
+            this.lblToolBarcode.Name = "lblToolBarcode";
+            this.lblToolBarcode.Size = new System.Drawing.Size(0, 27);
+            this.lblToolBarcode.TabIndex = 1;
             // 
             // CellsLocation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 810);
+            this.ClientSize = new System.Drawing.Size(1000, 810);
             this.Controls.Add(this.panel_Cells);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CellsLocation";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CellsLocation";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CellsLocation_FormClosing);
+            this.Load += new System.EventHandler(this.CellsLocation_Load);
             this.panel_Cells.ResumeLayout(false);
+            this.panel_Cells.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -179,17 +131,11 @@
         #endregion
 
         private System.Windows.Forms.Panel panel_Cells;
-        private System.Windows.Forms.Panel panel11;
-        private System.Windows.Forms.Panel panel12;
-        private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel10;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnCancel;
+        private System.IO.Ports.SerialPort spCom;
+        private System.Windows.Forms.Label lblToolBarcode;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblToolName;
+        private System.Windows.Forms.Label label1;
     }
 }

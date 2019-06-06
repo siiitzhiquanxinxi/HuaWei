@@ -57,6 +57,12 @@
     <Compile Include="ChildForm\CellsLocation.Designer.cs">
       <DependentUpon>CellsLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChildForm\CellsLocationForWarehousing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChildForm\CellsLocationForWarehousing.Designer.cs">
+      <DependentUpon>CellsLocationForWarehousing.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChildForm\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +112,13 @@
       <DependentUpon>Warehousing.cs</DependentUpon>
     </Compile>
     <Compile Include="DbHelperMySql.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="globalField.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +131,9 @@
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="ChildForm\CellsLocation.resx">
       <DependentUpon>CellsLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildForm\CellsLocationForWarehousing.resx">
+      <DependentUpon>CellsLocationForWarehousing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildForm\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -142,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildForm\Warehousing.resx">
       <DependentUpon>Warehousing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -213,6 +232,10 @@
       <Project>{0484f2ed-8ef3-4c40-8b3a-fe52b5e71ac2}</Project>
       <Name>DTcms.BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DTcms.Common\DTcms.Common.csproj">
+      <Project>{6468cbf1-9d41-4231-8814-14491922fecc}</Project>
+      <Name>DTcms.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DTcms.DAL\DTcms.DAL.csproj">
       <Project>{ce7d2820-3864-405c-bc07-73696661a311}</Project>
       <Name>DTcms.DAL</Name>
@@ -230,6 +253,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\圆角矩形 732 拷贝 5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_face.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

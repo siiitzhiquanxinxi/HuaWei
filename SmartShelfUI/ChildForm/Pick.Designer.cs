@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pick));
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel_shelf = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.btnMenu = new System.Windows.Forms.Button();
             this.btnDone = new System.Windows.Forms.Button();
@@ -39,6 +38,7 @@
             this.btnDisPick1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel_CAM = new System.Windows.Forms.Panel();
+            this.dgvCamList = new System.Windows.Forms.DataGridView();
             this.label12 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -53,7 +53,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.dgvCamList = new System.Windows.Forms.DataGridView();
             this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,11 +60,10 @@
             this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3.SuspendLayout();
-            this.panel_shelf.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCamList)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel3
@@ -82,26 +80,10 @@
             // panel_shelf
             // 
             this.panel_shelf.AutoScroll = true;
-            this.panel_shelf.Controls.Add(this.button1);
             this.panel_shelf.Location = new System.Drawing.Point(18, 85);
             this.panel_shelf.Name = "panel_shelf";
             this.panel_shelf.Size = new System.Drawing.Size(213, 581);
             this.panel_shelf.TabIndex = 1;
-            // 
-            // button1
-            // 
-            this.button1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(8, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(191, 70);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "打开1号柜20号抽屉";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // label13
             // 
@@ -145,6 +127,7 @@
             this.btnDone.TabIndex = 2;
             this.btnDone.Text = "领用完成，退出";
             this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
             // btnDisPick2
             // 
@@ -200,6 +183,26 @@
             this.panel_CAM.Name = "panel_CAM";
             this.panel_CAM.Size = new System.Drawing.Size(570, 581);
             this.panel_CAM.TabIndex = 2;
+            // 
+            // dgvCamList
+            // 
+            this.dgvCamList.AllowUserToAddRows = false;
+            this.dgvCamList.AllowUserToDeleteRows = false;
+            this.dgvCamList.ColumnHeadersHeight = 40;
+            this.dgvCamList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.PartNum,
+            this.ToolName,
+            this.WorkTime,
+            this.ToolLevel,
+            this.CabinetNo,
+            this.BoxNo});
+            this.dgvCamList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvCamList.Location = new System.Drawing.Point(0, 0);
+            this.dgvCamList.Name = "dgvCamList";
+            this.dgvCamList.ReadOnly = true;
+            this.dgvCamList.RowTemplate.Height = 40;
+            this.dgvCamList.Size = new System.Drawing.Size(570, 581);
+            this.dgvCamList.TabIndex = 0;
             // 
             // label12
             // 
@@ -369,40 +372,23 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "零件号";
             // 
-            // dgvCamList
-            // 
-            this.dgvCamList.AllowUserToAddRows = false;
-            this.dgvCamList.AllowUserToDeleteRows = false;
-            this.dgvCamList.ColumnHeadersHeight = 40;
-            this.dgvCamList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.PartNum,
-            this.ToolName,
-            this.WorkTime,
-            this.ToolLevel,
-            this.CabinetNo,
-            this.BoxNo});
-            this.dgvCamList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvCamList.Location = new System.Drawing.Point(0, 0);
-            this.dgvCamList.Name = "dgvCamList";
-            this.dgvCamList.ReadOnly = true;
-            this.dgvCamList.RowTemplate.Height = 40;
-            this.dgvCamList.Size = new System.Drawing.Size(570, 581);
-            this.dgvCamList.TabIndex = 0;
-            // 
             // PartNum
             // 
+            this.PartNum.DataPropertyName = "PartNum";
             this.PartNum.HeaderText = "零件号";
             this.PartNum.Name = "PartNum";
             this.PartNum.ReadOnly = true;
             // 
             // ToolName
             // 
+            this.ToolName.DataPropertyName = "ToolName";
             this.ToolName.HeaderText = "道具名称";
             this.ToolName.Name = "ToolName";
             this.ToolName.ReadOnly = true;
             // 
             // WorkTime
             // 
+            this.WorkTime.DataPropertyName = "WorkTime";
             this.WorkTime.HeaderText = "加工时间";
             this.WorkTime.Name = "WorkTime";
             this.WorkTime.ReadOnly = true;
@@ -410,12 +396,14 @@
             // 
             // ToolLevel
             // 
+            this.ToolLevel.DataPropertyName = "ToolLevel";
             this.ToolLevel.HeaderText = "刀具等级";
             this.ToolLevel.Name = "ToolLevel";
             this.ToolLevel.ReadOnly = true;
             // 
             // CabinetNo
             // 
+            this.CabinetNo.DataPropertyName = "FK_CabinetNo";
             this.CabinetNo.HeaderText = "柜号";
             this.CabinetNo.Name = "CabinetNo";
             this.CabinetNo.ReadOnly = true;
@@ -423,6 +411,7 @@
             // 
             // BoxNo
             // 
+            this.BoxNo.DataPropertyName = "BoxNo";
             this.BoxNo.HeaderText = "抽屉号";
             this.BoxNo.Name = "BoxNo";
             this.BoxNo.ReadOnly = true;
@@ -446,13 +435,12 @@
             this.Load += new System.EventHandler(this.Pick_Load);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.panel_shelf.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel_CAM.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCamList)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCamList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -482,7 +470,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel_shelf;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgvCamList;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToolName;

@@ -28,30 +28,30 @@ namespace SmartShelfUI
             }
         }
 
-        SocketWrapper MySocket;
+        //SocketWrapper MySocket;
         private void Main_Load(object sender, EventArgs e)
         {
             lblVersion.Text = "Version:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             //初始化tcpip连接
-            try
-            {
-                MySocket = new SocketWrapper(ConfigurationManager.AppSettings["serverip"], int.Parse(ConfigurationManager.AppSettings["serverport"]));
-                MySocket.CommandArrival += new SocketWrapper.CommandArrivalEventHandler(client_PlaintextReceived);
-                if (MySocket.Socket_Create_Connect())
-                {
-                    MySocket.Run();
-                }
-                else
-                {
-                    thStartSocket = new Thread(StartSocket);
-                    thStartSocket.Start();
-                    MessageBox.Show("连接失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.WriteError("初始化tcpip连接", ex.ToString());
-            }
+            //try
+            //{
+            //    MySocket = new SocketWrapper(ConfigurationManager.AppSettings["serverip"], int.Parse(ConfigurationManager.AppSettings["serverport"]));
+            //    MySocket.CommandArrival += new SocketWrapper.CommandArrivalEventHandler(client_PlaintextReceived);
+            //    if (MySocket.Socket_Create_Connect())
+            //    {
+            //        MySocket.Run();
+            //    }
+            //    else
+            //    {
+            //        thStartSocket = new Thread(StartSocket);
+            //        thStartSocket.Start();
+            //        MessageBox.Show("连接失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Utils.WriteError("初始化tcpip连接", ex.ToString());
+            //}
 
             showFormLogin();
         }
@@ -72,30 +72,43 @@ namespace SmartShelfUI
             }
         }
 
-        Thread thStartSocket;
-        void StartSocket()
-        {
-            while (!MySocket.IsConnect)
-            {
-                try
-                {
-                    MySocket.Socket_Create_Connect();
-                    Thread.Sleep(2000);
-                }
-                catch (Exception)
-                { }
-            }
-            if (MySocket.IsConnect)
-            {
-                MySocket.Run();
-            }
-        }
+        //Thread thStartSocket;
+        //void StartSocket()
+        //{
+        //    while (!MySocket.IsConnect)
+        //    {
+        //        try
+        //        {
+        //            MySocket.Socket_Create_Connect();
+        //            Thread.Sleep(2000);
+        //        }
+        //        catch (Exception)
+        //        { }
+        //    }
+        //    if (MySocket.IsConnect)
+        //    {
+        //        MySocket.Run();
+        //    }
+        //}
 
-        ChildForm.Login frmLogin;
-        ChildForm.Pick frmPick;
-        ChildForm.Menu frmMenu;
+        ChildForm.Login frmLogin = null;
+        ChildForm.Pick frmPick = null;
+        ChildForm.Menu frmMenu = null;
         void showFormLogin()
         {
+            if (frmPick != null)
+            {
+                frmPick.Close();
+                frmPick = null;
+            }
+            if (frmMenu != null)
+            {
+                frmMenu.Close();
+                frmMenu = null;
+            }
+            globalField.Manager = null;
+            lblUserName.Visible = false;
+            pxb_loginface.Visible = false;
             frmLogin = new ChildForm.Login();
             frmLogin.nextForm += new ChildForm.Login.FormHandle(showFormPick);
             frmLogin.TopLevel = false;
@@ -117,9 +130,16 @@ namespace SmartShelfUI
             }
             frmPick = new ChildForm.Pick();
             frmPick.nextForm_menu += new ChildForm.Pick.FormHandle(showFormMenu);
+            frmPick.nextForm_exit += new ChildForm.Pick.FormHandle(showFormLogin);
             frmPick.TopLevel = false;
             panel_content.Controls.Add(frmPick);
             frmPick.Show();
+            if (globalField.Manager != null)
+            {
+                pxb_loginface.Visible = true;
+                lblUserName.Visible = true;
+                lblUserName.Text = "欢迎使用，\r\n" + globalField.Manager.real_name;
+            }
         }
 
         void showFormMenu()
@@ -136,6 +156,7 @@ namespace SmartShelfUI
             frmMenu.nextForm_warehouse += new ChildForm.Menu.FormHandle(showFormWarehouse);
             frmMenu.nextForm_stock += new ChildForm.Menu.FormHandle(showFormStock);
             frmMenu.nextForm_pick += new ChildForm.Menu.FormHandle(showFormPick);
+            frmMenu.nextForm_exit += new ChildForm.Menu.FormHandle(showFormLogin);
             frmMenu.TopLevel = false;
             panel_content.Controls.Add(frmMenu);
             frmMenu.Show();

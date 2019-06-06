@@ -6,20 +6,18 @@ using System.Text;
 namespace DTcms.Model
 {
     /// <summary>
-	/// w_inout:实体类(属性说明自动提取数据库字段的描述信息)
+	/// w_inout_operate:实体类(属性说明自动提取数据库字段的描述信息)
 	/// </summary>
 	[Serializable]
-    public partial class w_inout
+    public partial class w_inout_operate
     {
-        public w_inout()
+        public w_inout_operate()
         { }
         #region Model
         private string _billid;
         private DateTime? _billdate;
-        private string _operater;
-        private string _sendbillnum;
-        private string _inouttype;
-        private int? _ioflag;
+        private int? _fk_operator;
+        private string _operatorname;
         private string _remark;
         /// <summary>
         /// 
@@ -40,34 +38,18 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public string Operater
+        public int? FK_Operator
         {
-            set { _operater = value; }
-            get { return _operater; }
+            set { _fk_operator = value; }
+            get { return _fk_operator; }
         }
         /// <summary>
         /// 
         /// </summary>
-        public string SendBillNum
+        public string OperatorName
         {
-            set { _sendbillnum = value; }
-            get { return _sendbillnum; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string InOutType
-        {
-            set { _inouttype = value; }
-            get { return _inouttype; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int? IOFlag
-        {
-            set { _ioflag = value; }
-            get { return _ioflag; }
+            set { _operatorname = value; }
+            get { return _operatorname; }
         }
         /// <summary>
         /// 

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DTcms.Model;
 using System.Data;
+using System.Collections.Generic;
+using DTcms.Model;
 namespace DTcms.BLL
 {
     /// <summary>
-	/// w_inout_detail
-	/// </summary>
-	public partial class w_inout_detail
+    /// w_inout_detail
+    /// </summary>
+    public partial class w_inout_detail
     {
         private readonly DTcms.DAL.w_inout_detail dal = new DTcms.DAL.w_inout_detail();
         public w_inout_detail()
@@ -63,6 +61,7 @@ namespace DTcms.BLL
 
             return dal.GetModel(ID);
         }
+        
 
         /// <summary>
         /// 获得数据列表
@@ -137,3 +136,4 @@ namespace DTcms.BLL
         #endregion  ExtensionMethod
     }
 }
+
