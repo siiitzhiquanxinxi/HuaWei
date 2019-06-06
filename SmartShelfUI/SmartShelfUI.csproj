@@ -57,6 +57,12 @@
     <Compile Include="ChildForm\CellsLocation.Designer.cs">
       <DependentUpon>CellsLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChildForm\CellsLocationForGeneral.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChildForm\CellsLocationForGeneral.Designer.cs">
+      <DependentUpon>CellsLocationForGeneral.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChildForm\CellsLocationForWarehousing.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="ChildForm\CellsLocation.resx">
       <DependentUpon>CellsLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildForm\CellsLocationForGeneral.resx">
+      <DependentUpon>CellsLocationForGeneral.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildForm\CellsLocationForWarehousing.resx">
       <DependentUpon>CellsLocationForWarehousing.cs</DependentUpon>

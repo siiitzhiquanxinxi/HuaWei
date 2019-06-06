@@ -49,7 +49,13 @@ namespace SmartShelfUI.ChildForm
                 MessageBox.Show("请输入用户名或密码");
                 return;
             }
-
+            string salt = new DTcms.DAL.manager("dt_").GetSalt(userName);
+            if (string.IsNullOrEmpty(salt))
+            {
+                MessageBox.Show("用户名错误");
+                return;
+            }
+            userPwd = DTcms.Common.DESEncrypt.Encrypt(userPwd, salt);
             DTcms.Model.manager model = new DTcms.DAL.manager("dt_").GetModel(userName, userPwd);
             if (model == null)
             {
@@ -57,6 +63,15 @@ namespace SmartShelfUI.ChildForm
                 return;
             }
             globalField.Manager = model;
+            globalField.BillID = DateTime.Now.ToString("yyyyMMddHHmmssfff" + model.id.ToString());
+            DTcms.Model.w_inout_operate operate = new DTcms.Model.w_inout_operate();
+            operate.BillID = globalField.BillID;
+            operate.BillDate = DateTime.Now;
+            operate.FK_Operator = model.id;
+            operate.OperatorName = model.real_name;
+            operate.Remark = "";
+            new DTcms.BLL.w_inout_operate().Add(operate);
+
             this.BeginInvoke((MethodInvoker)delegate
             {
                 nextForm();
@@ -76,6 +91,14 @@ namespace SmartShelfUI.ChildForm
                 {
                     int id = Convert.ToInt16(dt.Rows[0]["id"]);
                     globalField.Manager = new DTcms.DAL.manager("dt_").GetModel(id);
+                    globalField.BillID = DateTime.Now.ToString("yyyyMMddHHmmssfff" + id.ToString());
+                    DTcms.Model.w_inout_operate operate = new DTcms.Model.w_inout_operate();
+                    operate.BillID = globalField.BillID;
+                    operate.BillDate = DateTime.Now;
+                    operate.FK_Operator = id;
+                    operate.OperatorName = globalField.Manager.real_name;
+                    operate.Remark = "";
+                    new DTcms.BLL.w_inout_operate().Add(operate);
                     this.BeginInvoke((MethodInvoker)delegate
                     {
                         nextForm();
@@ -88,7 +111,6 @@ namespace SmartShelfUI.ChildForm
                         MessageBox.Show("登录失败！");
                     });
                 }
-
             }
         }
 

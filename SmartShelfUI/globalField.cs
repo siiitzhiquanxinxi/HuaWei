@@ -12,5 +12,9 @@ namespace SmartShelfUI
         /// 登录用户
         /// </summary>
         public static DTcms.Model.manager Manager = null;
+        /// <summary>
+        /// 本次操作单据号
+        /// </summary>
+        public static string BillID;
     }
 }

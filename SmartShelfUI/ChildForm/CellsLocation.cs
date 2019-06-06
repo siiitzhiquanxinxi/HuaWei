@@ -63,16 +63,6 @@ namespace SmartShelfUI.ChildForm
                         panel_Cells.Controls.Add(b);
                     }
                 }
-
-                //DTcms.Model.w_inout_operate inout = new DTcms.Model.w_inout_operate();
-                //inout.BillID = inoutID;
-                //inout.BillDate = DateTime.Now;
-                //inout.Operater = globalField.Manager.real_name;
-                //inout.SendBillNum = this.PartNum;
-                //inout.InOutType = "计划领用";
-                //inout.IOFlag = -1;
-                //inout.Remark = "";
-                //new DTcms.BLL.w_inout_operate().Add(inout);
             }
         }
 
@@ -95,57 +85,77 @@ namespace SmartShelfUI.ChildForm
                     List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "' and FK_ShelfID = " + ShelfID);
                     if (lstmodel != null && lstmodel.Count > 0)
                     {
-                        if (lstmodel[0].State == 1)
+                        //变颜色
+                        foreach (Control item in panel_Cells.Controls)
+                        {
+                            if (item is Button)
+                            {
+                                Button b = item as Button;
+                                if (b.Text.ToString() == lstmodel[0].X + "-" + lstmodel[0].Y)
+                                {
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        b.BackColor = Color.Green;
+                                        b.ForeColor = Color.White;
+                                        lblToolBarcode.Text = lstmodel[0].BarCode;
+                                        lblToolName.Text = lstmodel[0].MaterialName;
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if (lstmodel[0].State == 1)//判断物料在库状态
                         {
                             lstmodel[0].State = 2;
                             new DTcms.BLL.w_barcode().Update(lstmodel[0]);
-
-                            //DTcms.Model.w_inout_detail detail = new DTcms.Model.w_inout_detail();
-                            //detail.BillID = this.inoutID;
-                            //detail.BarCode = barcode;
-                            //detail.BatchNumber = lstmodel[0].BatchNumber;
-                            //detail.MaterialID = lstmodel[0].MaterialID;
-                            //detail.MaterialName = lstmodel[0].MaterialName;
-                            //detail.MaterialTypeID = lstmodel[0].MaterialTypeID;
-                            //detail.MaterialType = lstmodel[0].MaterialType; ;
-                            //detail.SystemNo = lstmodel[0].SystemNo; ;
-                            //detail.Brand = lstmodel[0].Brand; ;
-                            //detail.Spec = lstmodel[0].Spec; ;
-                            //detail.Unit = lstmodel[0].Unit; ;
-                            //detail.Num = lstmodel[0].Num; ;
-                            //detail.IOFlag = -1;
-                            //detail.FK_ShelfID = ShelfID;
-                            //detail.X = lstmodel[0].X;
-                            //detail.Y = lstmodel[0].Y;
-                            //string sql = "select * from temp_camlist where ToolBarCode = '" + barcode + "' and ToolReadyState = 1";
-                            //DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-                            //if (dt != null && dt.Rows.Count > 0)
-                            //{
-                            //    detail.WorkTime = int.Parse(dt.Rows[0]["WorkTime"].ToString());
-                            //}
-                            //new DTcms.BLL.w_inout_detail().Add(detail);
-
-                            string sql = "update temp_camlist set ToolReadyState = 2 where ToolBarCode = '" + barcode + "' and ToolReadyState = 2";
-                            DbHelperMySql.ExecuteSql(sql);
-
-                            foreach (Control item in panel_Cells.Controls)
+                            DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                            inout.FK_BillID = globalField.BillID;
+                            inout.FK_SendBillNum = PartNum;
+                            inout.FK_ApproveNum = null;
+                            inout.BarCode = barcode;
+                            inout.BatchNumber = lstmodel[0].BatchNumber;
+                            inout.MaterialID = lstmodel[0].MaterialID;
+                            inout.MaterialName = lstmodel[0].MaterialName;
+                            inout.MaterialTypeID = lstmodel[0].MaterialTypeID;
+                            inout.MaterialType = lstmodel[0].MaterialType;
+                            inout.SystemNo = lstmodel[0].SystemNo;
+                            inout.Brand = lstmodel[0].Brand;
+                            inout.Spec = lstmodel[0].Spec;
+                            inout.Unit = lstmodel[0].Unit;
+                            inout.Num = lstmodel[0].Num;
+                            inout.IOFlag = -1;
+                            inout.InOutType = "计划领用";
+                            inout.FK_ShelfID = ShelfID;
+                            inout.X = lstmodel[0].X;
+                            inout.Y = lstmodel[0].Y;
+                            //计算减少寿命
+                            int ReduceWorkTime = 0;
+                            string sql = "select * from temp_camlist where ToolBarCode = '" + barcode + "' and ToolReadyState = 1";
+                            DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                            if (dt != null && dt.Rows.Count > 0)
                             {
-                                if (item is Button)
-                                {
-                                    Button b = item as Button;
-                                    if (b.Text.ToString() == lstmodel[0].X + "-" + lstmodel[0].Y)
-                                    {
-                                        this.BeginInvoke((MethodInvoker)delegate
-                                        {
-                                            b.BackColor = Color.Green;
-                                            b.ForeColor = Color.White;
-                                            lblToolBarcode.Text = lstmodel[0].BarCode;
-                                            lblToolName.Text = lstmodel[0].MaterialName;
-                                        });
-                                        return;
-                                    }
-                                }
+                                ReduceWorkTime = int.Parse(dt.Rows[0]["WorkTime"].ToString());
                             }
+                            inout.WorkTime = ReduceWorkTime;
+
+                            inout.OperatorName = globalField.Manager.real_name;
+                            inout.OperatorTime = DateTime.Now;
+                            inout.InOutRemark = "";
+                            //添加领用记录
+                            new DTcms.BLL.w_inout_detail().Add(inout);
+                            //修改CAM表状态
+                            sql = "update temp_camlist set ToolReadyState = 2 where ToolBarCode = '" + barcode + "' and PartNum = '" + PartNum + "'";
+                            DbHelperMySql.ExecuteSql(sql);
+                            //修改道具在库状态，剩余加工寿命，道具等级
+                            DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(barcode);
+                            int RemainTime = 0;
+                            tool.State = 2;
+                            tool.RemainTime = RemainTime;
+                            if (tool.ToolLevel == "X")
+                            {
+                                tool.ToolLevel = "F";
+                            }
+                            new DTcms.BLL.w_barcode().Update(tool);
                         }
                         else
                         {
@@ -155,7 +165,6 @@ namespace SmartShelfUI.ChildForm
                             });
                             return;
                         }
-
                     }
                     else
                     {
