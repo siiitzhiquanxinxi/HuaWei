@@ -39,14 +39,14 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sy_shelf(");
-            strSql.Append("FK_CabinetNo,BoxNo,BoxAddr,Long,Wide,High,X,Y,Type)");
+            strSql.Append("FK_CabinetNo,BoxNo,BoxAddr,Deep,Wide,High,X,Y,Type)");
             strSql.Append(" values (");
-            strSql.Append("?FK_CabinetNo,?BoxNo,?BoxAddr,?Long,?Wide,?High,?X,?Y,?Type)");
+            strSql.Append("?FK_CabinetNo,?BoxNo,?BoxAddr,?Deep,?Wide,?High,?X,?Y,?Type)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?FK_CabinetNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BoxAddr", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Long", MySqlDbType.Decimal,10),
+                    new MySqlParameter("?Deep", MySqlDbType.Decimal,10),
                     new MySqlParameter("?Wide", MySqlDbType.Decimal,10),
                     new MySqlParameter("?High", MySqlDbType.Decimal,10),
                     new MySqlParameter("?X", MySqlDbType.Int32,11),
@@ -55,7 +55,7 @@ namespace DTcms.DAL
             parameters[0].Value = model.FK_CabinetNo;
             parameters[1].Value = model.BoxNo;
             parameters[2].Value = model.BoxAddr;
-            parameters[3].Value = model.Long;
+            parameters[3].Value = model.Deep;
             parameters[4].Value = model.Wide;
             parameters[5].Value = model.High;
             parameters[6].Value = model.X;
@@ -82,7 +82,7 @@ namespace DTcms.DAL
             strSql.Append("FK_CabinetNo=?FK_CabinetNo,");
             strSql.Append("BoxNo=?BoxNo,");
             strSql.Append("BoxAddr=?BoxAddr,");
-            strSql.Append("Long=?Long,");
+            strSql.Append("Deep=?Deep,");
             strSql.Append("Wide=?Wide,");
             strSql.Append("High=?High,");
             strSql.Append("X=?X,");
@@ -93,7 +93,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?FK_CabinetNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BoxAddr", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Long", MySqlDbType.Decimal,10),
+                    new MySqlParameter("?Deep", MySqlDbType.Decimal,10),
                     new MySqlParameter("?Wide", MySqlDbType.Decimal,10),
                     new MySqlParameter("?High", MySqlDbType.Decimal,10),
                     new MySqlParameter("?X", MySqlDbType.Int32,11),
@@ -103,7 +103,7 @@ namespace DTcms.DAL
             parameters[0].Value = model.FK_CabinetNo;
             parameters[1].Value = model.BoxNo;
             parameters[2].Value = model.BoxAddr;
-            parameters[3].Value = model.Long;
+            parameters[3].Value = model.Deep;
             parameters[4].Value = model.Wide;
             parameters[5].Value = model.High;
             parameters[6].Value = model.X;
@@ -173,7 +173,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Long,Wide,High,X,Y,Type from sy_shelf ");
+            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Deep,Wide,High,X,Y,Type from sy_shelf ");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
@@ -217,9 +217,9 @@ namespace DTcms.DAL
                 {
                     model.BoxAddr = row["BoxAddr"].ToString();
                 }
-                if (row["Long"] != null && row["Long"].ToString() != "")
+                if (row["Deep"] != null && row["Deep"].ToString() != "")
                 {
-                    model.Long = decimal.Parse(row["Long"].ToString());
+                    model.Deep = decimal.Parse(row["Deep"].ToString());
                 }
                 if (row["Wide"] != null && row["Wide"].ToString() != "")
                 {
@@ -251,7 +251,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Long,Wide,High,X,Y,Type ");
+            strSql.Append("select ID,FK_CabinetNo,BoxNo,BoxAddr,Deep,Wide,High,X,Y,Type ");
             strSql.Append(" FROM sy_shelf ");
             if (strWhere.Trim() != "")
             {

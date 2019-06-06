@@ -18,7 +18,7 @@ namespace DTcms.Model
         private string _fk_cabinetno;
         private string _boxno;
         private string _boxaddr;
-        private decimal? _long;
+        private decimal? _deep;
         private decimal? _wide;
         private decimal? _high;
         private int? _x;
@@ -59,10 +59,10 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public decimal? Long
+        public decimal? Deep
         {
-            set { _long = value; }
-            get { return _long; }
+            set { _deep = value; }
+            get { return _deep; }
         }
         /// <summary>
         /// 

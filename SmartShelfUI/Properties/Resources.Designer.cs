@@ -143,6 +143,16 @@ namespace SmartShelfUI.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap login_face {
+            get {
+                object obj = ResourceManager.GetObject("login_face", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap read_card {
             get {
                 object obj = ResourceManager.GetObject("read_card", resourceCulture);

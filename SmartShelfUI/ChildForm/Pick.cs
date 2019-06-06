@@ -19,6 +19,7 @@ namespace SmartShelfUI.ChildForm
 
         public delegate void FormHandle();
         public event FormHandle nextForm_menu;
+        public event FormHandle nextForm_exit;
         private void btnMenu_Click(object sender, EventArgs e)
         {
             nextForm_menu();
@@ -73,13 +74,14 @@ namespace SmartShelfUI.ChildForm
         {
             Button btn = sender as Button;
             string PartNum = btn.Tag.ToString();
-            string sql = "select temp_camlist.PartNum,temp_camlist.ToolName,temp_camlist.WorkTime,temp_camlist.ToolLevel,w_barcode.CabinetNo,w_barcode.BoxNo from temp_camlist left join  w_barcode on w_barcode.BarCode = temp_camlist.ToolBarCode where temp_camlist.PartNum = '" + PartNum + "'";
+            string sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
+            sql += " order by s.FK_CabinetNo,s.BoxNo";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {
                 dgvCamList.DataSource = dt;
 
-                sql = "select distinct ";
+                sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
                 DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
                 if (dtShelf != null && dtShelf.Rows.Count > 0)
                 {
@@ -94,9 +96,10 @@ namespace SmartShelfUI.ChildForm
                         btnShelf.ForeColor = Color.White;
                         btnShelf.Location = new Point(8, 70 * i + 8);
                         btnShelf.Size = new Size(190, 70);
-                        btnShelf.TabIndex = 0;
-                        btnShelf.Text = "打开" + dtShelf.Rows[i][""].ToString() + "号柜" + dtShelf.Rows[i][""].ToString() + "号抽屉";
+                        btnShelf.Text = "打开" + dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "号柜" + dtShelf.Rows[i]["BoxNo"].ToString() + "号抽屉";
+                        btnShelf.Tag = dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "|" + dtShelf.Rows[i]["BoxNo"].ToString() + "|" + dtShelf.Rows[i]["shelfid"].ToString() + "|" + PartNum;
                         btnShelf.UseVisualStyleBackColor = true;
+                        btnShelf.Click += btnOpenDoor_Click;
                         panel_shelf.Controls.Add(btnShelf);
                     }
                 }
@@ -106,18 +109,30 @@ namespace SmartShelfUI.ChildForm
         private void btnOpenDoor_Click(object sender, EventArgs e)
         {
             Button btnOpenDoor = sender as Button;
-            string camId = btnOpenDoor.Tag.ToString();
-            string sql = "select * from temp_camlist where Id = " + camId;
+            string cabinetNo = btnOpenDoor.Tag.ToString().Split('|')[0];
+            string shelfNo = btnOpenDoor.Tag.ToString().Split('|')[1];
+            string shelfId = btnOpenDoor.Tag.ToString().Split('|')[2];
+            string PartNo = btnOpenDoor.Tag.ToString().Split('|')[3];
+
+            string sql = "select w.X,w.Y from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "' and s.ID = " + shelfId;
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+            ChildForm.CellsLocation frmCellsLocation = new CellsLocation();
+            frmCellsLocation.ShelfID = int.Parse(shelfId);
+            frmCellsLocation.PartNum = PartNo;
             if (dt != null && dt.Rows.Count > 0)
             {
-                sql = "select * from toollist where ToolName = '" + dt.Rows[0]["ToolName"].ToString() + "'";
-                dt = DbHelperMySql.Query(sql).Tables[0];
-                ChildForm.CellsLocation frmCellsLocation = new CellsLocation();
-                frmCellsLocation.ShelfID = 0;
-                frmCellsLocation.lstSelected.Add("");
-                frmCellsLocation.ShowDialog();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    frmCellsLocation.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString());
+                }
             }
+            frmCellsLocation.ShowDialog();
+
+        }
+
+        private void btnDone_Click(object sender, EventArgs e)
+        {
+            nextForm_exit();
         }
     }
 }

@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DTcms.Model;
 using System.Data;
+using System.Collections.Generic;
+using DTcms.Model;
 namespace DTcms.BLL
 {
     /// <summary>
-    /// w_inout
+    /// w_inout_operate
     /// </summary>
-    public partial class w_inout
+    public partial class w_inout_operate
     {
-        private readonly DTcms.DAL.w_inout dal = new DTcms.DAL.w_inout();
-        public w_inout()
+        private readonly DTcms.DAL.w_inout_operate dal = new DTcms.DAL.w_inout_operate();
+        public w_inout_operate()
         { }
         #region  BasicMethod
         /// <summary>
@@ -26,7 +24,7 @@ namespace DTcms.BLL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public bool Add(DTcms.Model.w_inout model)
+        public bool Add(DTcms.Model.w_inout_operate model)
         {
             return dal.Add(model);
         }
@@ -34,7 +32,7 @@ namespace DTcms.BLL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(DTcms.Model.w_inout model)
+        public bool Update(DTcms.Model.w_inout_operate model)
         {
             return dal.Update(model);
         }
@@ -58,12 +56,13 @@ namespace DTcms.BLL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.w_inout GetModel(string BillID)
+        public DTcms.Model.w_inout_operate GetModel(string BillID)
         {
 
             return dal.GetModel(BillID);
         }
         
+
         /// <summary>
         /// 获得数据列表
         /// </summary>
@@ -74,7 +73,7 @@ namespace DTcms.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<DTcms.Model.w_inout> GetModelList(string strWhere)
+        public List<DTcms.Model.w_inout_operate> GetModelList(string strWhere)
         {
             DataSet ds = dal.GetList(strWhere);
             return DataTableToList(ds.Tables[0]);
@@ -82,13 +81,13 @@ namespace DTcms.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<DTcms.Model.w_inout> DataTableToList(DataTable dt)
+        public List<DTcms.Model.w_inout_operate> DataTableToList(DataTable dt)
         {
-            List<DTcms.Model.w_inout> modelList = new List<DTcms.Model.w_inout>();
+            List<DTcms.Model.w_inout_operate> modelList = new List<DTcms.Model.w_inout_operate>();
             int rowsCount = dt.Rows.Count;
             if (rowsCount > 0)
             {
-                DTcms.Model.w_inout model;
+                DTcms.Model.w_inout_operate model;
                 for (int n = 0; n < rowsCount; n++)
                 {
                     model = dal.DataRowToModel(dt.Rows[n]);
@@ -137,3 +136,4 @@ namespace DTcms.BLL
         #endregion  ExtensionMethod
     }
 }
+

@@ -28,7 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.spCom = new System.IO.Ports.SerialPort(this.components);
             this.SuspendLayout();
+            // 
+            // spCom
+            // 
+            this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
             // Warehousing
             // 
@@ -38,10 +44,13 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Warehousing";
             this.Text = "Warehousing";
+            this.Load += new System.EventHandler(this.Warehousing_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.IO.Ports.SerialPort spCom;
     }
 }

@@ -8,11 +8,11 @@ using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
-    /// 数据访问类:w_inout
+    /// 数据访问类:w_inout_operate
     /// </summary>
-    public partial class w_inout
+    public partial class w_inout_operate
     {
-        public w_inout()
+        public w_inout_operate()
         { }
         #region  BasicMethod
 
@@ -22,7 +22,7 @@ namespace DTcms.DAL
         public bool Exists(string BillID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) from w_inout");
+            strSql.Append("select count(1) from w_inout_operate");
             strSql.Append(" where BillID=?BillID ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BillID", MySqlDbType.VarChar,50)           };
@@ -35,28 +35,24 @@ namespace DTcms.DAL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public bool Add(DTcms.Model.w_inout model)
+        public bool Add(DTcms.Model.w_inout_operate model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into w_inout(");
-            strSql.Append("BillID,BillDate,Operater,SendBillNum,InOutType,IOFlag,Remark)");
+            strSql.Append("insert into w_inout_operate(");
+            strSql.Append("BillID,BillDate,FK_Operator,OperatorName,Remark)");
             strSql.Append(" values (");
-            strSql.Append("?BillID,?BillDate,?Operater,?SendBillNum,?InOutType,?IOFlag,?Remark)");
+            strSql.Append("?BillID,?BillDate,?FK_Operator,?OperatorName,?Remark)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BillID", MySqlDbType.VarChar,50),
                     new MySqlParameter("?BillDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?Operater", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?SendBillNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?InOutType", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?IOFlag", MySqlDbType.Int32,11),
+                    new MySqlParameter("?FK_Operator", MySqlDbType.Int32,11),
+                    new MySqlParameter("?OperatorName", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Remark", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.BillID;
             parameters[1].Value = model.BillDate;
-            parameters[2].Value = model.Operater;
-            parameters[3].Value = model.SendBillNum;
-            parameters[4].Value = model.InOutType;
-            parameters[5].Value = model.IOFlag;
-            parameters[6].Value = model.Remark;
+            parameters[2].Value = model.FK_Operator;
+            parameters[3].Value = model.OperatorName;
+            parameters[4].Value = model.Remark;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -71,33 +67,27 @@ namespace DTcms.DAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(DTcms.Model.w_inout model)
+        public bool Update(DTcms.Model.w_inout_operate model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("update w_inout set ");
+            strSql.Append("update w_inout_operate set ");
             strSql.Append("BillDate=?BillDate,");
-            strSql.Append("Operater=?Operater,");
-            strSql.Append("SendBillNum=?SendBillNum,");
-            strSql.Append("InOutType=?InOutType,");
-            strSql.Append("IOFlag=?IOFlag,");
+            strSql.Append("FK_Operator=?FK_Operator,");
+            strSql.Append("OperatorName=?OperatorName,");
             strSql.Append("Remark=?Remark");
             strSql.Append(" where BillID=?BillID ");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?BillDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?Operater", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?SendBillNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?InOutType", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?IOFlag", MySqlDbType.Int32,11),
+                new MySqlParameter("?BillDate", MySqlDbType.Datetime),
+                    new MySqlParameter("?FK_Operator", MySqlDbType.Int32,11),
+                    new MySqlParameter("?OperatorName", MySqlDbType.VarChar,255),
                     new MySqlParameter("?Remark", MySqlDbType.VarChar,255),
                     new MySqlParameter("?BillID", MySqlDbType.VarChar,50)};
             parameters[0].Value = model.BillDate;
-            parameters[1].Value = model.Operater;
-            parameters[2].Value = model.SendBillNum;
-            parameters[3].Value = model.InOutType;
-            parameters[4].Value = model.IOFlag;
-            parameters[5].Value = model.Remark;
-            parameters[6].Value = model.BillID;
-
+            parameters[1].Value = model.FK_Operator;
+            parameters[2].Value = model.OperatorName;
+            parameters[3].Value = model.Remark;
+            parameters[4].Value = model.BillID;
+            
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {
@@ -116,7 +106,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from w_inout ");
+            strSql.Append("delete from w_inout_operate ");
             strSql.Append(" where BillID=?BillID ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BillID", MySqlDbType.VarChar,50)           };
@@ -138,7 +128,7 @@ namespace DTcms.DAL
         public bool DeleteList(string BillIDlist)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from w_inout ");
+            strSql.Append("delete from w_inout_operate ");
             strSql.Append(" where BillID in (" + BillIDlist + ")  ");
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString());
             if (rows > 0)
@@ -155,17 +145,17 @@ namespace DTcms.DAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.w_inout GetModel(string BillID)
+        public DTcms.Model.w_inout_operate GetModel(string BillID)
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select BillID,BillDate,Operater,SendBillNum,InOutType,IOFlag,Remark from w_inout ");
+            strSql.Append("select BillID,BillDate,FK_Operator,OperatorName,Remark from w_inout_operate ");
             strSql.Append(" where BillID=?BillID ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?BillID", MySqlDbType.VarChar,50)           };
             parameters[0].Value = BillID;
 
-            DTcms.Model.w_inout model = new DTcms.Model.w_inout();
+            DTcms.Model.w_inout_operate model = new DTcms.Model.w_inout_operate();
             DataSet ds = DbHelperMySql.Query(strSql.ToString(), parameters);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -181,9 +171,9 @@ namespace DTcms.DAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.w_inout DataRowToModel(DataRow row)
+        public DTcms.Model.w_inout_operate DataRowToModel(DataRow row)
         {
-            DTcms.Model.w_inout model = new DTcms.Model.w_inout();
+            DTcms.Model.w_inout_operate model = new DTcms.Model.w_inout_operate();
             if (row != null)
             {
                 if (row["BillID"] != null)
@@ -194,21 +184,13 @@ namespace DTcms.DAL
                 {
                     model.BillDate = DateTime.Parse(row["BillDate"].ToString());
                 }
-                if (row["Operater"] != null)
+                if (row["FK_Operator"] != null && row["FK_Operator"].ToString() != "")
                 {
-                    model.Operater = row["Operater"].ToString();
+                    model.FK_Operator = int.Parse(row["FK_Operator"].ToString());
                 }
-                if (row["SendBillNum"] != null)
+                if (row["OperatorName"] != null)
                 {
-                    model.SendBillNum = row["SendBillNum"].ToString();
-                }
-                if (row["InOutType"] != null)
-                {
-                    model.InOutType = row["InOutType"].ToString();
-                }
-                if (row["IOFlag"] != null && row["IOFlag"].ToString() != "")
-                {
-                    model.IOFlag = int.Parse(row["IOFlag"].ToString());
+                    model.OperatorName = row["OperatorName"].ToString();
                 }
                 if (row["Remark"] != null)
                 {
@@ -224,8 +206,8 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select BillID,BillDate,Operater,SendBillNum,InOutType,IOFlag,Remark ");
-            strSql.Append(" FROM w_inout ");
+            strSql.Append("select BillID,BillDate,FK_Operator,OperatorName,Remark ");
+            strSql.Append(" FROM w_inout_operate ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -239,7 +221,7 @@ namespace DTcms.DAL
         public int GetRecordCount(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) FROM w_inout ");
+            strSql.Append("select count(1) FROM w_inout_operate ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -270,7 +252,7 @@ namespace DTcms.DAL
             {
                 strSql.Append("order by T.BillID desc");
             }
-            strSql.Append(")AS Row, T.*  from w_inout T ");
+            strSql.Append(")AS Row, T.*  from w_inout_operate T ");
             if (!string.IsNullOrEmpty(strWhere.Trim()))
             {
                 strSql.Append(" WHERE " + strWhere);
@@ -295,7 +277,7 @@ namespace DTcms.DAL
 					new MySqlParameter("?OrderType", MySqlDbType.Bit),
 					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
 					};
-			parameters[0].Value = "w_inout";
+			parameters[0].Value = "w_inout_operate";
 			parameters[1].Value = "BillID";
 			parameters[2].Value = PageSize;
 			parameters[3].Value = PageIndex;

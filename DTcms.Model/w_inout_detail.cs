@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace DTcms.Model
 {
     /// <summary>
-	/// w_inout_barcodedetail:实体类(属性说明自动提取数据库字段的描述信息)
-	/// </summary>
-	[Serializable]
-    public partial class w_inout_barcodedetail
+    /// w_inout_detail:实体类(属性说明自动提取数据库字段的描述信息)
+    /// </summary>
+    [Serializable]
+    public partial class w_inout_detail
     {
-        public w_inout_barcodedetail()
+        public w_inout_detail()
         { }
         #region Model
         private int _id;
-        private string _billid;
+        private string _fk_billid;
+        private string _fk_sendbillnum;
+        private string _fk_approvenum;
         private string _barcode;
         private string _batchnumber;
         private string _materialid;
@@ -28,10 +26,14 @@ namespace DTcms.Model
         private string _unit;
         private decimal? _num;
         private int? _ioflag;
+        private string _inouttype;
         private int? _fk_shelfid;
         private int? _x;
         private int? _y;
         private int? _worktime;
+        private string _operatorname;
+        private DateTime? _operatortime;
+        private string _inoutremark;
         /// <summary>
         /// auto_increment
         /// </summary>
@@ -43,10 +45,26 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public string BillID
+        public string FK_BillID
         {
-            set { _billid = value; }
-            get { return _billid; }
+            set { _fk_billid = value; }
+            get { return _fk_billid; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FK_SendBillNum
+        {
+            set { _fk_sendbillnum = value; }
+            get { return _fk_sendbillnum; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FK_ApproveNum
+        {
+            set { _fk_approvenum = value; }
+            get { return _fk_approvenum; }
         }
         /// <summary>
         /// 
@@ -147,6 +165,14 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
+        public string InOutType
+        {
+            set { _inouttype = value; }
+            get { return _inouttype; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public int? FK_ShelfID
         {
             set { _fk_shelfid = value; }
@@ -176,7 +202,32 @@ namespace DTcms.Model
             set { _worktime = value; }
             get { return _worktime; }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OperatorName
+        {
+            set { _operatorname = value; }
+            get { return _operatorname; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime? OperatorTime
+        {
+            set { _operatortime = value; }
+            get { return _operatortime; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string InOutRemark
+        {
+            set { _inoutremark = value; }
+            get { return _inoutremark; }
+        }
         #endregion Model
 
     }
 }
+

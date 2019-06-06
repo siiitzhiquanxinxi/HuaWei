@@ -88,7 +88,7 @@
     <Compile Include="user_recharge.cs" />
     <Compile Include="u_printlog.cs" />
     <Compile Include="w_barcode.cs" />
-    <Compile Include="w_inout.cs" />
+    <Compile Include="w_inout_operate.cs" />
     <Compile Include="w_inout_barcodedetail.cs" />
   </ItemGroup>
   <ItemGroup>

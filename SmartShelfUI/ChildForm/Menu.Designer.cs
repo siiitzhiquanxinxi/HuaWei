@@ -34,12 +34,14 @@
             this.btnRepair = new System.Windows.Forms.PictureBox();
             this.btnPick = new System.Windows.Forms.PictureBox();
             this.btnReturn = new System.Windows.Forms.PictureBox();
+            this.btnBack = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.btnUsers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnWarehouse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRepair)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPick)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnReturn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnBack)).BeginInit();
             this.SuspendLayout();
             // 
             // btnUsers
@@ -102,11 +104,24 @@
             this.btnReturn.TabStop = false;
             this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
+            // btnBack
+            // 
+            this.btnBack.BackColor = System.Drawing.Color.Transparent;
+            this.btnBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBack.Image = global::SmartShelfUI.Properties.Resources.返回;
+            this.btnBack.Location = new System.Drawing.Point(1835, 662);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(73, 106);
+            this.btnBack.TabIndex = 40;
+            this.btnBack.TabStop = false;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1920, 780);
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnUsers);
             this.Controls.Add(this.btnStock);
             this.Controls.Add(this.btnWarehouse);
@@ -122,6 +137,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnRepair)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPick)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnReturn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnBack)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -134,5 +150,6 @@
         private System.Windows.Forms.PictureBox btnStock;
         private System.Windows.Forms.PictureBox btnUsers;
         private System.Windows.Forms.PictureBox btnPick;
+        private System.Windows.Forms.PictureBox btnBack;
     }
 }

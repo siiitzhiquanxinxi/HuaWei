@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pick));
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel_shelf = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.btnMenu = new System.Windows.Forms.Button();
             this.btnDone = new System.Windows.Forms.Button();
@@ -61,7 +60,6 @@
             this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3.SuspendLayout();
-            this.panel_shelf.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCamList)).BeginInit();
@@ -82,26 +80,10 @@
             // panel_shelf
             // 
             this.panel_shelf.AutoScroll = true;
-            this.panel_shelf.Controls.Add(this.button1);
             this.panel_shelf.Location = new System.Drawing.Point(18, 85);
             this.panel_shelf.Name = "panel_shelf";
             this.panel_shelf.Size = new System.Drawing.Size(213, 581);
             this.panel_shelf.TabIndex = 1;
-            // 
-            // button1
-            // 
-            this.button1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(13, 505);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(191, 70);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "打开1号柜20号抽屉";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // label13
             // 
@@ -145,6 +127,7 @@
             this.btnDone.TabIndex = 2;
             this.btnDone.Text = "领用完成，退出";
             this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
             // btnDisPick2
             // 
@@ -420,7 +403,7 @@
             // 
             // CabinetNo
             // 
-            this.CabinetNo.DataPropertyName = "CabinetNo";
+            this.CabinetNo.DataPropertyName = "FK_CabinetNo";
             this.CabinetNo.HeaderText = "柜号";
             this.CabinetNo.Name = "CabinetNo";
             this.CabinetNo.ReadOnly = true;
@@ -452,7 +435,6 @@
             this.Load += new System.EventHandler(this.Pick_Load);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.panel_shelf.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel_CAM.ResumeLayout(false);
@@ -488,7 +470,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel_shelf;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgvCamList;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToolName;
