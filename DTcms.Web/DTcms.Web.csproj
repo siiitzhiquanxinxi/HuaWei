@@ -107,10 +107,13 @@
     <Content Include="admin\manager\manager_list.aspx" />
     <Content Include="admin\manager\manager_log.aspx" />
     <Content Include="admin\manager\manager_pwd.aspx" />
-    <Content Include="admin\manager\papermanager_edit.aspx" />
-    <Content Include="admin\manager\papermanager_list.aspx" />
     <Content Include="admin\manager\role_edit.aspx" />
     <Content Include="admin\manager\role_list.aspx" />
+    <Content Include="admin\Material\materialtexture_edit.aspx" />
+    <Content Include="admin\Material\material_edit.aspx" />
+    <Content Include="admin\Material\material_list.aspx" />
+    <Content Include="admin\Material\texture_edit.aspx" />
+    <Content Include="admin\Material\texture_list.aspx" />
     <Content Include="admin\order\express_edit.aspx" />
     <Content Include="admin\order\express_list.aspx" />
     <Content Include="admin\order\order_config.aspx" />
@@ -140,6 +143,7 @@
     <Content Include="admin\skin\base.css" />
     <Content Include="admin\skin\default\Del.png" />
     <Content Include="admin\skin\default\ie_update.jpg" />
+    <Content Include="admin\skin\default\ie_update.png" />
     <Content Include="admin\skin\default\loadimg.gif" />
     <Content Include="admin\skin\default\nav\home.png" />
     <Content Include="admin\skin\default\nav\order.png" />
@@ -153,6 +157,9 @@
     <Content Include="admin\skin\default\Toright.png" />
     <Content Include="admin\skin\default\valid_icons.png" />
     <Content Include="admin\skin\layout.css" />
+    <Content Include="admin\SystemSetting\cabinet_edit.aspx" />
+    <Content Include="admin\SystemSetting\cabinet_list.aspx" />
+    <Content Include="admin\SystemSetting\shelf_edit.aspx" />
     <Content Include="admin\users\amount_log.aspx" />
     <Content Include="admin\users\group_edit.aspx" />
     <Content Include="admin\users\group_list.aspx" />
@@ -173,6 +180,7 @@
     <Content Include="admin\users\user_edit.aspx" />
     <Content Include="admin\users\user_list.aspx" />
     <Content Include="admin\users\user_sms.aspx" />
+    <Content Include="admin\Warehouse\barcode_list.aspx" />
     <Content Include="api\oauth\feixin\index.aspx" />
     <Content Include="api\oauth\feixin\result_json.aspx" />
     <Content Include="api\oauth\feixin\return_url.aspx" />
@@ -877,20 +885,6 @@
     <Compile Include="admin\manager\manager_pwd.aspx.designer.cs">
       <DependentUpon>manager_pwd.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\manager\papermanager_edit.aspx.cs">
-      <DependentUpon>papermanager_edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\manager\papermanager_edit.aspx.designer.cs">
-      <DependentUpon>papermanager_edit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\manager\papermanager_list.aspx.cs">
-      <DependentUpon>papermanager_list.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\manager\papermanager_list.aspx.designer.cs">
-      <DependentUpon>papermanager_list.aspx</DependentUpon>
-    </Compile>
     <Compile Include="admin\manager\role_edit.aspx.cs">
       <DependentUpon>role_edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -904,6 +898,44 @@
     </Compile>
     <Compile Include="admin\manager\role_list.aspx.designer.cs">
       <DependentUpon>role_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\materialtexture_edit.aspx.cs">
+      <DependentUpon>materialtexture_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\materialtexture_edit.aspx.designer.cs">
+      <DependentUpon>materialtexture_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\material_edit.aspx.cs">
+      <DependentUpon>material_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\material_edit.aspx.designer.cs">
+      <DependentUpon>material_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\material_list.aspx.cs">
+      <DependentUpon>material_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\material_list.aspx.designer.cs">
+      <DependentUpon>material_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\photo.ashx.cs">
+      <DependentUpon>photo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\texture_edit.aspx.cs">
+      <DependentUpon>texture_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\texture_edit.aspx.designer.cs">
+      <DependentUpon>texture_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\texture_list.aspx.cs">
+      <DependentUpon>texture_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\texture_list.aspx.designer.cs">
+      <DependentUpon>texture_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\order\express_edit.aspx.cs">
       <DependentUpon>express_edit.aspx</DependentUpon>
@@ -1090,6 +1122,27 @@
     <Compile Include="admin\settings\url_rewrite_list.aspx.designer.cs">
       <DependentUpon>url_rewrite_list.aspx</DependentUpon>
     </Compile>
+    <Compile Include="admin\SystemSetting\cabinet_edit.aspx.cs">
+      <DependentUpon>cabinet_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SystemSetting\cabinet_edit.aspx.designer.cs">
+      <DependentUpon>cabinet_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\SystemSetting\cabinet_list.aspx.cs">
+      <DependentUpon>cabinet_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SystemSetting\cabinet_list.aspx.designer.cs">
+      <DependentUpon>cabinet_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\SystemSetting\shelf_edit.aspx.cs">
+      <DependentUpon>shelf_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SystemSetting\shelf_edit.aspx.designer.cs">
+      <DependentUpon>shelf_edit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\users\amount_log.aspx.cs">
       <DependentUpon>amount_log.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1229,6 +1282,13 @@
     </Compile>
     <Compile Include="admin\users\user_sms.aspx.designer.cs">
       <DependentUpon>user_sms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\barcode_list.aspx.cs">
+      <DependentUpon>barcode_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\barcode_list.aspx.designer.cs">
+      <DependentUpon>barcode_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="api\oauth\feixin\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -1379,7 +1439,6 @@
     <Content Include="xmlconfig\urls.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="admin\SystemSetting\" />
     <Folder Include="html\" />
     <Folder Include="plugins\" />
     <Folder Include="upload\" />
@@ -1414,6 +1473,7 @@
   <ItemGroup>
     <Content Include="admin\printlog\GetImg.ashx" />
     <Content Include="admin\printlog\营业执照打印明细.xls" />
+    <Content Include="admin\Material\photo.ashx" />
     <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
   </ItemGroup>
   <PropertyGroup>

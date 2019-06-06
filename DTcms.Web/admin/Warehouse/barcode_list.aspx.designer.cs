@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace DTcms.Web.admin.manager {
+namespace DTcms.Web.admin.Warehouse {
     
     
-    public partial class manager_list {
+    public partial class barcode_list {
         
         /// <summary>
         /// form1 控件。

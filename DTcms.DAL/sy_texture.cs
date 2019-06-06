@@ -2,32 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data;
 using MySql.Data.MySqlClient;
 using DTcms.DBUtility;
+using System.Data;
 using DTcms.Common;
 namespace DTcms.DAL
 {
     /// <summary>
-	/// 数据访问类:sy_cabinet
+	/// 数据访问类:sy_texture
 	/// </summary>
-	public partial class sy_cabinet
+	public partial class sy_texture
     {
-        public sy_cabinet()
+        public sy_texture()
         { }
         #region  BasicMethod
-
         /// <summary>
         /// 是否存在该记录
         /// </summary>
-        public bool Exists(string CabinetNo)
+        public bool Exists(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) from sy_cabinet");
-            strSql.Append(" where CabinetNo=?CabinetNo ");
+            strSql.Append("select count(1) from sy_texture");
+            strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255)           };
-            parameters[0].Value = CabinetNo;
+                    new MySqlParameter("?ID", MySqlDbType.Int32)
+            };
+            parameters[0].Value = ID;
 
             return DbHelperMySql.Exists(strSql.ToString(), parameters);
         }
@@ -36,28 +36,16 @@ namespace DTcms.DAL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public bool Add(DTcms.Model.sy_cabinet model)
+        public bool Add(DTcms.Model.sy_texture model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into sy_cabinet(");
-            strSql.Append("CabinetNo,IP,Port,CardAddr,Location,Manager,Phone)");
+            strSql.Append("insert into sy_texture(");
+            strSql.Append("Texture)");
             strSql.Append(" values (");
-            strSql.Append("?CabinetNo,?IP,?Port,?CardAddr,?Location,?Manager,?Phone)");
+            strSql.Append("?Texture)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?IP", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Port", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?CardAddr", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Location", MySqlDbType.VarChar,100),
-                    new MySqlParameter("?Manager", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?Phone", MySqlDbType.VarChar,50)};
-            parameters[0].Value = model.CabinetNo;
-            parameters[1].Value = model.IP;
-            parameters[2].Value = model.Port;
-            parameters[3].Value = model.CardAddr;
-            parameters[4].Value = model.Location;
-            parameters[5].Value = model.Manager;
-            parameters[6].Value = model.Phone;
+                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255)};
+            parameters[0].Value = model.Texture;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -72,32 +60,17 @@ namespace DTcms.DAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(DTcms.Model.sy_cabinet model)
+        public bool Update(DTcms.Model.sy_texture model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("update sy_cabinet set ");
-            strSql.Append("IP=?IP,");
-            strSql.Append("Port=?Port,");
-            strSql.Append("CardAddr=?CardAddr,");
-            strSql.Append("Location=?Location,");
-            strSql.Append("Manager=?Manager,");
-            strSql.Append("Phone=?Phone");
-            strSql.Append(" where CabinetNo=?CabinetNo ");
+            strSql.Append("update sy_texture set ");
+            strSql.Append("Texture=?Texture");
+            strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?IP", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Port", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?CardAddr", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Location", MySqlDbType.VarChar,100),
-                    new MySqlParameter("?Manager", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?Phone", MySqlDbType.VarChar,50),
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255)};
-            parameters[0].Value = model.IP;
-            parameters[1].Value = model.Port;
-            parameters[2].Value = model.CardAddr;
-            parameters[3].Value = model.Location;
-            parameters[4].Value = model.Manager;
-            parameters[5].Value = model.Phone;
-            parameters[6].Value = model.CabinetNo;
+                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ID", MySqlDbType.Int32,11)};
+            parameters[0].Value = model.Texture;
+            parameters[1].Value = model.ID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -113,15 +86,16 @@ namespace DTcms.DAL
         /// <summary>
         /// 删除一条数据
         /// </summary>
-        public bool Delete(string CabinetNo)
+        public bool Delete(int ID)
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from sy_cabinet ");
-            strSql.Append(" where CabinetNo=?CabinetNo ");
+            strSql.Append("delete from sy_texture ");
+            strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255)           };
-            parameters[0].Value = CabinetNo;
+                    new MySqlParameter("?ID", MySqlDbType.Int32)
+            };
+            parameters[0].Value = ID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -136,11 +110,11 @@ namespace DTcms.DAL
         /// <summary>
         /// 批量删除数据
         /// </summary>
-        public bool DeleteList(string CabinetNolist)
+        public bool DeleteList(string IDlist)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from sy_cabinet ");
-            strSql.Append(" where CabinetNo in (" + CabinetNolist + ")  ");
+            strSql.Append("delete from sy_texture ");
+            strSql.Append(" where ID in (" + IDlist + ")  ");
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString());
             if (rows > 0)
             {
@@ -156,17 +130,18 @@ namespace DTcms.DAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.sy_cabinet GetModel(string CabinetNo)
+        public DTcms.Model.sy_texture GetModel(int ID)
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select CabinetNo,IP,Port,CardAddr,Location,Manager,Phone from sy_cabinet ");
-            strSql.Append(" where CabinetNo=?CabinetNo ");
+            strSql.Append("select ID,Texture from sy_texture ");
+            strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CabinetNo", MySqlDbType.VarChar,255)           };
-            parameters[0].Value = CabinetNo;
+                    new MySqlParameter("?ID", MySqlDbType.Int32)
+            };
+            parameters[0].Value = ID;
 
-            DTcms.Model.sy_cabinet model = new DTcms.Model.sy_cabinet();
+            DTcms.Model.sy_texture model = new DTcms.Model.sy_texture();
             DataSet ds = DbHelperMySql.Query(strSql.ToString(), parameters);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -182,38 +157,18 @@ namespace DTcms.DAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.sy_cabinet DataRowToModel(DataRow row)
+        public DTcms.Model.sy_texture DataRowToModel(DataRow row)
         {
-            DTcms.Model.sy_cabinet model = new DTcms.Model.sy_cabinet();
+            DTcms.Model.sy_texture model = new DTcms.Model.sy_texture();
             if (row != null)
             {
-                if (row["CabinetNo"] != null)
+                if (row["ID"] != null && row["ID"].ToString() != "")
                 {
-                    model.CabinetNo = row["CabinetNo"].ToString();
+                    model.ID = int.Parse(row["ID"].ToString());
                 }
-                if (row["IP"] != null)
+                if (row["Texture"] != null)
                 {
-                    model.IP = row["IP"].ToString();
-                }
-                if (row["Port"] != null)
-                {
-                    model.Port = row["Port"].ToString();
-                }
-                if (row["CardAddr"] != null)
-                {
-                    model.CardAddr = row["CardAddr"].ToString();
-                }
-                if (row["Location"] != null)
-                {
-                    model.Location = row["Location"].ToString();
-                }
-                if (row["Manager"] != null)
-                {
-                    model.Manager = row["Manager"].ToString();
-                }
-                if (row["Phone"] != null)
-                {
-                    model.Phone = row["Phone"].ToString();
+                    model.Texture = row["Texture"].ToString();
                 }
             }
             return model;
@@ -225,8 +180,8 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select CabinetNo,IP,Port,CardAddr,Location,Manager,Phone ");
-            strSql.Append(" FROM sy_cabinet ");
+            strSql.Append("select ID,Texture ");
+            strSql.Append(" FROM sy_texture ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -240,7 +195,7 @@ namespace DTcms.DAL
         public int GetRecordCount(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) FROM sy_cabinet ");
+            strSql.Append("select count(1) FROM sy_texture ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -269,9 +224,9 @@ namespace DTcms.DAL
             }
             else
             {
-                strSql.Append("order by T.CabinetNo desc");
+                strSql.Append("order by T.ID desc");
             }
-            strSql.Append(")AS Row, T.*  from sy_cabinet T ");
+            strSql.Append(")AS Row, T.*  from sy_texture T ");
             if (!string.IsNullOrEmpty(strWhere.Trim()))
             {
                 strSql.Append(" WHERE " + strWhere);
@@ -296,14 +251,14 @@ namespace DTcms.DAL
 					new MySqlParameter("?OrderType", MySqlDbType.Bit),
 					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
 					};
-			parameters[0].Value = "sy_cabinet";
-			parameters[1].Value = "CabinetNo";
+			parameters[0].Value = "sy_texture";
+			parameters[1].Value = "ID";
 			parameters[2].Value = PageSize;
 			parameters[3].Value = PageIndex;
 			parameters[4].Value = 0;
 			parameters[5].Value = 0;
 			parameters[6].Value = strWhere;	
-			return DbHelperMySQL.RunProcedure("UP_GetRecordByPage",parameters,"ds");
+			return DbHelperMySql.RunProcedure("UP_GetRecordByPage",parameters,"ds");
 		}*/
 
         #endregion  BasicMethod
@@ -314,7 +269,7 @@ namespace DTcms.DAL
         public DataSet GetList(int pageSize, int pageIndex, string strWhere, string filedOrder, out int recordCount)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * FROM sy_cabinet");
+            strSql.Append("select * FROM sy_texture");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);

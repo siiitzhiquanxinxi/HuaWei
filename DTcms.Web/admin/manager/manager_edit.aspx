@@ -88,7 +88,7 @@
     <dd><asp:TextBox ID="txtTelephone" runat="server" CssClass="input normal"></asp:TextBox></dd>
   </dl>
   <dl>
-    <dt>邮箱</dt>
+    <dt>卡号</dt>
     <dd><asp:TextBox ID="txtEmail" runat="server" CssClass="input normal"></asp:TextBox></dd>
   </dl>
 </div>

@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace DTcms.Web.admin.manager {
+namespace DTcms.Web.admin.Material {
     
     
-    public partial class manager_list {
+    public partial class material_list {
         
         /// <summary>
         /// form1 控件。
