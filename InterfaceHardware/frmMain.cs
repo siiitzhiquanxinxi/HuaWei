@@ -203,22 +203,25 @@ namespace InterfaceHardware
                         {
                             if (ListCode.Keys.Contains(NewByte[1]))//已开门
                             {
-                                byte[] w = new byte[5];
+                                byte[] w = new byte[6];
                                 w[0] = 0xFE;
                                 w[1] = NewByte[1];
-                                w[2] = 0x00;
-                                w[3] = (byte)(w[1] ^ w[2]);
-                                w[4] = 0xFF;
+                                w[2] = NewByte[2];
+                                w[3] = 0x00;
+                                w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                w[5] = 0xFF;
                                 socketServer.Send(w);
                             }
                             else
                             {
                                 //先执行门状态查询
-                                XmlNode node = frm.xDoc.SelectSingleNode("//configuration/personalSettings/add[@key=\"" + NewByte[1] + "\"]");
+                                XmlNode node = frm.xDoc.SelectSingleNode("//configuration/personalSettings/add[@key=\"" + NewByte[2] + "\"]");
                                 byte box =(byte) Convert.ToInt32(node.Attributes["value"].Value);
                                 byte[] writearr = BrandCommand.GetState(box);
-                                ListCode.Add(NewByte[1], socketServer);
+                                ListCode.Add(NewByte[2], socketServer);
                                 frm.serialPort1.Write(writearr, 0, writearr.Length);
+                                frm.Writelog("发送串口命令:" + frm.ByteToString(writearr), "Load", "SystemLog.txt");
+                                frm.TextBoxLog("发送串口命令:" + frm.ByteToString(writearr), "Load", false);
                             }
                         }
                         //if (slist[0] == "$" && slist[slist.Length - 1] == "￥")//校验命令完整性
@@ -389,7 +392,7 @@ namespace InterfaceHardware
                     }
                     else
                     {
-                        len = 5;
+                        len = 6;
                     }
                     byte[] result = new byte[len];
                     if (read < len)
@@ -423,12 +426,13 @@ namespace InterfaceHardware
                                     }
                                     else if (resultdata.State == 0x31)//打开状态
                                     {
-                                        byte[] w = new byte[5];
+                                        byte[] w = new byte[6];
                                         w[0] = 0xFE;
-                                        w[1] = resultdata.Box;
-                                        w[2] = 0x00;
-                                        w[3] = (byte)(w[1] ^ w[2]);
-                                        w[4] = 0xFF;
+                                        w[1] = resultdata.CardAddr;
+                                        w[2] = resultdata.Box;
+                                        w[3] = 0x00;
+                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                        w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
                                         Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
@@ -436,12 +440,13 @@ namespace InterfaceHardware
                                     }
                                     else
                                     {
-                                        byte[] w = new byte[5];
+                                        byte[] w = new byte[6];
                                         w[0] = 0xFE;
-                                        w[1] = resultdata.Box;
-                                        w[2] = 0xFF;
-                                        w[3] = (byte)(w[1] ^ w[2]);
-                                        w[4] = 0xFF;
+                                        w[1] = resultdata.CardAddr;
+                                        w[2] = resultdata.Box;
+                                        w[3] = 0xFF;
+                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                        w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
                                         Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
@@ -452,12 +457,13 @@ namespace InterfaceHardware
                                 {
                                     if (resultdata.State == 0x31)//执行成功
                                     {
-                                        byte[] w = new byte[5];
+                                        byte[] w = new byte[6];
                                         w[0] = 0xFE;
-                                        w[1] = resultdata.Box;
-                                        w[2] = 0x01;
-                                        w[3] = (byte)(w[1] ^ w[2]);
-                                        w[4] = 0xFF;
+                                        w[1] = resultdata.CardAddr;
+                                        w[2] = resultdata.Box;
+                                        w[3] = 0x01;
+                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                        w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
                                         Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
@@ -478,12 +484,13 @@ namespace InterfaceHardware
                                     }
                                     else//执行失败
                                     {
-                                        byte[] w = new byte[5];
+                                        byte[] w = new byte[6];
                                         w[0] = 0xFE;
-                                        w[1] = resultdata.Box;
-                                        w[2] = 0xFF;
-                                        w[3] = (byte)(w[1] ^ w[2]);
-                                        w[4] = 0xFF;
+                                        w[1] = resultdata.CardAddr;
+                                        w[2] = resultdata.Box;
+                                        w[3] = 0xFF;
+                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                        w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
                                         Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");

@@ -7,26 +7,26 @@ using System.Data;
 namespace DTcms.BLL
 {
     /// <summary>
-	/// sy_cabinet
+	/// sy_material_texture
 	/// </summary>
-	public partial class sy_cabinet
+	public partial class sy_material_texture
     {
-        private readonly DTcms.DAL.sy_cabinet dal = new DTcms.DAL.sy_cabinet();
-        public sy_cabinet()
+        private readonly DTcms.DAL.sy_material_texture dal = new DTcms.DAL.sy_material_texture();
+        public sy_material_texture()
         { }
         #region  BasicMethod
         /// <summary>
         /// 是否存在该记录
         /// </summary>
-        public bool Exists(string CabinetNo)
+        public bool Exists(int ID)
         {
-            return dal.Exists(CabinetNo);
+            return dal.Exists(ID);
         }
 
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public bool Add(DTcms.Model.sy_cabinet model)
+        public bool Add(DTcms.Model.sy_material_texture model)
         {
             return dal.Add(model);
         }
@@ -34,7 +34,7 @@ namespace DTcms.BLL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(DTcms.Model.sy_cabinet model)
+        public bool Update(DTcms.Model.sy_material_texture model)
         {
             return dal.Update(model);
         }
@@ -42,29 +42,28 @@ namespace DTcms.BLL
         /// <summary>
         /// 删除一条数据
         /// </summary>
-        public bool Delete(string CabinetNo)
+        public bool Delete(int ID)
         {
 
-            return dal.Delete(CabinetNo);
+            return dal.Delete(ID);
         }
         /// <summary>
         /// 删除一条数据
         /// </summary>
-        public bool DeleteList(string CabinetNolist)
+        public bool DeleteList(string IDlist)
         {
-            return dal.DeleteList(CabinetNolist);
+            return dal.DeleteList(IDlist);
         }
 
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.sy_cabinet GetModel(string CabinetNo)
+        public DTcms.Model.sy_material_texture GetModel(int ID)
         {
 
-            return dal.GetModel(CabinetNo);
+            return dal.GetModel(ID);
         }
 
-       
         /// <summary>
         /// 获得数据列表
         /// </summary>
@@ -75,7 +74,7 @@ namespace DTcms.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<DTcms.Model.sy_cabinet> GetModelList(string strWhere)
+        public List<DTcms.Model.sy_material_texture> GetModelList(string strWhere)
         {
             DataSet ds = dal.GetList(strWhere);
             return DataTableToList(ds.Tables[0]);
@@ -83,13 +82,13 @@ namespace DTcms.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public List<DTcms.Model.sy_cabinet> DataTableToList(DataTable dt)
+        public List<DTcms.Model.sy_material_texture> DataTableToList(DataTable dt)
         {
-            List<DTcms.Model.sy_cabinet> modelList = new List<DTcms.Model.sy_cabinet>();
+            List<DTcms.Model.sy_material_texture> modelList = new List<DTcms.Model.sy_material_texture>();
             int rowsCount = dt.Rows.Count;
             if (rowsCount > 0)
             {
-                DTcms.Model.sy_cabinet model;
+                DTcms.Model.sy_material_texture model;
                 for (int n = 0; n < rowsCount; n++)
                 {
                     model = dal.DataRowToModel(dt.Rows[n]);
@@ -132,13 +131,6 @@ namespace DTcms.BLL
         //return dal.GetList(PageSize,PageIndex,strWhere);
         //}
 
-        /// <summary>
-        /// 获得查询分页数据
-        /// </summary>
-        public DataSet GetList(int pageSize, int pageIndex, string strWhere, string filedOrder, out int recordCount)
-        {
-            return dal.GetList(pageSize, pageIndex, strWhere, filedOrder, out recordCount);
-        }
         #endregion  BasicMethod
         #region  ExtensionMethod
 

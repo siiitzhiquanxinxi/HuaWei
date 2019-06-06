@@ -21,7 +21,7 @@ namespace DTcms.Model
         private string _systemno;
         private string _brand;
         private string _spec;
-        private decimal? _long;
+        private decimal? _deep;
         private decimal? _wide;
         private decimal? _high;
         private string _unit;
@@ -90,10 +90,10 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public decimal? Long
+        public decimal? Deep
         {
-            set { _long = value; }
-            get { return _long; }
+            set { _deep = value; }
+            get { return _deep; }
         }
         /// <summary>
         /// 

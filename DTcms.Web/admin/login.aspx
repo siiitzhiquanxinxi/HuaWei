@@ -23,8 +23,7 @@
 <form id="form1" runat="server">
 <div style="width:100%; height:100%; min-width:300px; min-height:260px;"></div>
 <div class="login-wrap">
-    <div style="background:url(logo.png)">
-      </div>
+    
   <div class="login-logo">
       华为刀具智能柜管理系统</div>
   <div class="login-form">

@@ -8,11 +8,11 @@ using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
-    /// 数据访问类:sy_shelf
-    /// </summary>
-    public partial class sy_shelf
+	/// 数据访问类:sy_material_texture
+	/// </summary>
+	public partial class sy_material_texture
     {
-        public sy_shelf()
+        public sy_material_texture()
         { }
         #region  BasicMethod
         /// <summary>
@@ -21,7 +21,7 @@ namespace DTcms.DAL
         public bool Exists(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) from sy_shelf");
+            strSql.Append("select count(1) from sy_material_texture");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
@@ -35,32 +35,20 @@ namespace DTcms.DAL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public bool Add(DTcms.Model.sy_shelf model)
+        public bool Add(DTcms.Model.sy_material_texture model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into sy_shelf(");
-            strSql.Append("FK_CabinetNo,BoxNo,BoxAddr,Deep,Wide,High,X,Y,Type)");
+            strSql.Append("insert into sy_material_texture(");
+            strSql.Append("MaterialID,Texture,Coefficient)");
             strSql.Append(" values (");
-            strSql.Append("?FK_CabinetNo,?BoxNo,?BoxAddr,?Deep,?Wide,?High,?X,?Y,?Type)");
+            strSql.Append("?MaterialID,?Texture,?Coefficient)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?FK_CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxAddr", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Deep", MySqlDbType.Decimal,10),
-                    new MySqlParameter("?Wide", MySqlDbType.Decimal,10),
-                    new MySqlParameter("?High", MySqlDbType.Decimal,10),
-                    new MySqlParameter("?X", MySqlDbType.Int32,11),
-                    new MySqlParameter("?Y", MySqlDbType.Int32,11),
-                    new MySqlParameter("?Type", MySqlDbType.Int32,11)};
-            parameters[0].Value = model.FK_CabinetNo;
-            parameters[1].Value = model.BoxNo;
-            parameters[2].Value = model.BoxAddr;
-            parameters[3].Value = model.Deep;
-            parameters[4].Value = model.Wide;
-            parameters[5].Value = model.High;
-            parameters[6].Value = model.X;
-            parameters[7].Value = model.Y;
-            parameters[8].Value = model.Type;
+                    new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50),
+                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Coefficient", MySqlDbType.Decimal,18)};
+            parameters[0].Value = model.MaterialID;
+            parameters[1].Value = model.Texture;
+            parameters[2].Value = model.Coefficient;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -75,41 +63,23 @@ namespace DTcms.DAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(DTcms.Model.sy_shelf model)
+        public bool Update(DTcms.Model.sy_material_texture model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("update sy_shelf set ");
-            strSql.Append("FK_CabinetNo=?FK_CabinetNo,");
-            strSql.Append("BoxNo=?BoxNo,");
-            strSql.Append("BoxAddr=?BoxAddr,");
-            strSql.Append("Deep=?Deep,");
-            strSql.Append("Wide=?Wide,");
-            strSql.Append("High=?High,");
-            strSql.Append("X=?X,");
-            strSql.Append("Y=?Y,");
-            strSql.Append("Type=?Type");
+            strSql.Append("update sy_material_texture set ");
+            strSql.Append("MaterialID=?MaterialID,");
+            strSql.Append("Texture=?Texture,");
+            strSql.Append("Coefficient=?Coefficient");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?FK_CabinetNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxNo", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?BoxAddr", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Deep", MySqlDbType.Decimal,10),
-                    new MySqlParameter("?Wide", MySqlDbType.Decimal,10),
-                    new MySqlParameter("?High", MySqlDbType.Decimal,10),
-                    new MySqlParameter("?X", MySqlDbType.Int32,11),
-                    new MySqlParameter("?Y", MySqlDbType.Int32,11),
-                    new MySqlParameter("?Type", MySqlDbType.Int32,11),
+                    new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50),
+                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Coefficient", MySqlDbType.Decimal,18),
                     new MySqlParameter("?ID", MySqlDbType.Int32,11)};
-            parameters[0].Value = model.FK_CabinetNo;
-            parameters[1].Value = model.BoxNo;
-            parameters[2].Value = model.BoxAddr;
-            parameters[3].Value = model.Deep;
-            parameters[4].Value = model.Wide;
-            parameters[5].Value = model.High;
-            parameters[6].Value = model.X;
-            parameters[7].Value = model.Y;
-            parameters[8].Value = model.Type;
-            parameters[9].Value = model.ID;
+            parameters[0].Value = model.MaterialID;
+            parameters[1].Value = model.Texture;
+            parameters[2].Value = model.Coefficient;
+            parameters[3].Value = model.ID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -129,7 +99,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from sy_shelf ");
+            strSql.Append("delete from sy_material_texture ");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
@@ -152,7 +122,7 @@ namespace DTcms.DAL
         public bool DeleteList(string IDlist)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from sy_shelf ");
+            strSql.Append("delete from sy_material_texture ");
             strSql.Append(" where ID in (" + IDlist + ")  ");
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString());
             if (rows > 0)
@@ -169,18 +139,18 @@ namespace DTcms.DAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.sy_shelf GetModel(int ID)
+        public DTcms.Model.sy_material_texture GetModel(int ID)
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * from sy_shelf ");
+            strSql.Append("select ID,MaterialID,Texture,Coefficient from sy_material_texture ");
             strSql.Append(" where ID=?ID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ID", MySqlDbType.Int32)
             };
             parameters[0].Value = ID;
 
-            DTcms.Model.sy_shelf model = new DTcms.Model.sy_shelf();
+            DTcms.Model.sy_material_texture model = new DTcms.Model.sy_material_texture();
             DataSet ds = DbHelperMySql.Query(strSql.ToString(), parameters);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -196,50 +166,26 @@ namespace DTcms.DAL
         /// <summary>
         /// 得到一个对象实体
         /// </summary>
-        public DTcms.Model.sy_shelf DataRowToModel(DataRow row)
+        public DTcms.Model.sy_material_texture DataRowToModel(DataRow row)
         {
-            DTcms.Model.sy_shelf model = new DTcms.Model.sy_shelf();
+            DTcms.Model.sy_material_texture model = new DTcms.Model.sy_material_texture();
             if (row != null)
             {
                 if (row["ID"] != null && row["ID"].ToString() != "")
                 {
                     model.ID = int.Parse(row["ID"].ToString());
                 }
-                if (row["FK_CabinetNo"] != null)
+                if (row["MaterialID"] != null)
                 {
-                    model.FK_CabinetNo = row["FK_CabinetNo"].ToString();
+                    model.MaterialID = row["MaterialID"].ToString();
                 }
-                if (row["BoxNo"] != null)
+                if (row["Texture"] != null)
                 {
-                    model.BoxNo = row["BoxNo"].ToString();
+                    model.Texture = row["Texture"].ToString();
                 }
-                if (row["BoxAddr"] != null)
+                if (row["Coefficient"] != null && row["Coefficient"].ToString() != "")
                 {
-                    model.BoxAddr = row["BoxAddr"].ToString();
-                }
-                if (row["Deep"] != null && row["Deep"].ToString() != "")
-                {
-                    model.Deep = decimal.Parse(row["Deep"].ToString());
-                }
-                if (row["Wide"] != null && row["Wide"].ToString() != "")
-                {
-                    model.Wide = decimal.Parse(row["Wide"].ToString());
-                }
-                if (row["High"] != null && row["High"].ToString() != "")
-                {
-                    model.High = decimal.Parse(row["High"].ToString());
-                }
-                if (row["X"] != null && row["X"].ToString() != "")
-                {
-                    model.X = int.Parse(row["X"].ToString());
-                }
-                if (row["Y"] != null && row["Y"].ToString() != "")
-                {
-                    model.Y = int.Parse(row["Y"].ToString());
-                }
-                if (row["Type"] != null && row["Type"].ToString() != "")
-                {
-                    model.Type = int.Parse(row["Type"].ToString());
+                    model.Coefficient = decimal.Parse(row["Coefficient"].ToString());
                 }
             }
             return model;
@@ -251,8 +197,8 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * ");
-            strSql.Append(" FROM sy_shelf ");
+            strSql.Append("select ID,MaterialID,Texture,Coefficient ");
+            strSql.Append(" FROM sy_material_texture ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -266,7 +212,7 @@ namespace DTcms.DAL
         public int GetRecordCount(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) FROM sy_shelf ");
+            strSql.Append("select count(1) FROM sy_material_texture ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -297,7 +243,7 @@ namespace DTcms.DAL
             {
                 strSql.Append("order by T.ID desc");
             }
-            strSql.Append(")AS Row, T.*  from sy_shelf T ");
+            strSql.Append(")AS Row, T.*  from sy_material_texture T ");
             if (!string.IsNullOrEmpty(strWhere.Trim()))
             {
                 strSql.Append(" WHERE " + strWhere);
@@ -322,7 +268,7 @@ namespace DTcms.DAL
 					new MySqlParameter("?OrderType", MySqlDbType.Bit),
 					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
 					};
-			parameters[0].Value = "sy_shelf";
+			parameters[0].Value = "sy_material_texture";
 			parameters[1].Value = "ID";
 			parameters[2].Value = PageSize;
 			parameters[3].Value = PageIndex;
