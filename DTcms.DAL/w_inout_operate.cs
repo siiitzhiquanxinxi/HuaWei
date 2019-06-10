@@ -87,7 +87,7 @@ namespace DTcms.DAL
             parameters[2].Value = model.OperatorName;
             parameters[3].Value = model.Remark;
             parameters[4].Value = model.BillID;
-            
+
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {

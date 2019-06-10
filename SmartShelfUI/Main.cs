@@ -39,8 +39,8 @@ namespace SmartShelfUI
         ChildForm.Login frmLogin = null;
         ChildForm.Pick frmPick = null;
         ChildForm.Menu frmMenu = null;
-
         ChildForm.Return frmReturn = null;
+
         void showFormLogin()
         {
             if (frmPick != null)
