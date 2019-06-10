@@ -39,6 +39,12 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel_CAM = new System.Windows.Forms.Panel();
             this.dgvCamList = new System.Windows.Forms.DataGridView();
+            this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToolLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label12 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -53,12 +59,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToolLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
@@ -99,7 +99,7 @@
             // 
             // btnMenu
             // 
-            this.btnMenu.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMenu.BackgroundImage")));
+            this.btnMenu.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
             this.btnMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnMenu.FlatAppearance.BorderSize = 0;
             this.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -131,7 +131,7 @@
             // 
             // btnDisPick2
             // 
-            this.btnDisPick2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDisPick2.BackgroundImage")));
+            this.btnDisPick2.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnDisPick2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDisPick2.FlatAppearance.BorderSize = 0;
             this.btnDisPick2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -146,7 +146,7 @@
             // 
             // btnDisPick1
             // 
-            this.btnDisPick1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnDisPick1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnDisPick1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDisPick1.FlatAppearance.BorderSize = 0;
             this.btnDisPick1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -203,6 +203,51 @@
             this.dgvCamList.RowTemplate.Height = 40;
             this.dgvCamList.Size = new System.Drawing.Size(570, 581);
             this.dgvCamList.TabIndex = 0;
+            // 
+            // PartNum
+            // 
+            this.PartNum.DataPropertyName = "PartNum";
+            this.PartNum.HeaderText = "零件号";
+            this.PartNum.Name = "PartNum";
+            this.PartNum.ReadOnly = true;
+            // 
+            // ToolName
+            // 
+            this.ToolName.DataPropertyName = "ToolName";
+            this.ToolName.HeaderText = "道具名称";
+            this.ToolName.Name = "ToolName";
+            this.ToolName.ReadOnly = true;
+            // 
+            // WorkTime
+            // 
+            this.WorkTime.DataPropertyName = "WorkTime";
+            this.WorkTime.HeaderText = "加工时间";
+            this.WorkTime.Name = "WorkTime";
+            this.WorkTime.ReadOnly = true;
+            this.WorkTime.Width = 80;
+            // 
+            // ToolLevel
+            // 
+            this.ToolLevel.DataPropertyName = "ToolLevel";
+            this.ToolLevel.HeaderText = "刀具等级";
+            this.ToolLevel.Name = "ToolLevel";
+            this.ToolLevel.ReadOnly = true;
+            // 
+            // CabinetNo
+            // 
+            this.CabinetNo.DataPropertyName = "FK_CabinetNo";
+            this.CabinetNo.HeaderText = "柜号";
+            this.CabinetNo.Name = "CabinetNo";
+            this.CabinetNo.ReadOnly = true;
+            this.CabinetNo.Width = 60;
+            // 
+            // BoxNo
+            // 
+            this.BoxNo.DataPropertyName = "BoxNo";
+            this.BoxNo.HeaderText = "抽屉号";
+            this.BoxNo.Name = "BoxNo";
+            this.BoxNo.ReadOnly = true;
+            this.BoxNo.Width = 70;
             // 
             // label12
             // 
@@ -371,51 +416,6 @@
             this.label1.Size = new System.Drawing.Size(58, 22);
             this.label1.TabIndex = 0;
             this.label1.Text = "零件号";
-            // 
-            // PartNum
-            // 
-            this.PartNum.DataPropertyName = "PartNum";
-            this.PartNum.HeaderText = "零件号";
-            this.PartNum.Name = "PartNum";
-            this.PartNum.ReadOnly = true;
-            // 
-            // ToolName
-            // 
-            this.ToolName.DataPropertyName = "ToolName";
-            this.ToolName.HeaderText = "道具名称";
-            this.ToolName.Name = "ToolName";
-            this.ToolName.ReadOnly = true;
-            // 
-            // WorkTime
-            // 
-            this.WorkTime.DataPropertyName = "WorkTime";
-            this.WorkTime.HeaderText = "加工时间";
-            this.WorkTime.Name = "WorkTime";
-            this.WorkTime.ReadOnly = true;
-            this.WorkTime.Width = 80;
-            // 
-            // ToolLevel
-            // 
-            this.ToolLevel.DataPropertyName = "ToolLevel";
-            this.ToolLevel.HeaderText = "刀具等级";
-            this.ToolLevel.Name = "ToolLevel";
-            this.ToolLevel.ReadOnly = true;
-            // 
-            // CabinetNo
-            // 
-            this.CabinetNo.DataPropertyName = "FK_CabinetNo";
-            this.CabinetNo.HeaderText = "柜号";
-            this.CabinetNo.Name = "CabinetNo";
-            this.CabinetNo.ReadOnly = true;
-            this.CabinetNo.Width = 60;
-            // 
-            // BoxNo
-            // 
-            this.BoxNo.DataPropertyName = "BoxNo";
-            this.BoxNo.HeaderText = "抽屉号";
-            this.BoxNo.Name = "BoxNo";
-            this.BoxNo.ReadOnly = true;
-            this.BoxNo.Width = 70;
             // 
             // Pick
             // 

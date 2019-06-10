@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -72,6 +74,7 @@ namespace SmartShelfUI.ChildForm
         /// <param name="e"></param>
         private void btnOrder_Click(object sender, EventArgs e)
         {
+            panel_shelf.Controls.Clear();
             Button btn = sender as Button;
             string PartNum = btn.Tag.ToString();
             string sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
@@ -113,26 +116,185 @@ namespace SmartShelfUI.ChildForm
             string shelfNo = btnOpenDoor.Tag.ToString().Split('|')[1];
             string shelfId = btnOpenDoor.Tag.ToString().Split('|')[2];
             string PartNo = btnOpenDoor.Tag.ToString().Split('|')[3];
-
-            string sql = "select w.X,w.Y from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "' and s.ID = " + shelfId;
-            DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-            ChildForm.CellsLocation frmCellsLocation = new CellsLocation();
-            frmCellsLocation.ShelfID = int.Parse(shelfId);
-            frmCellsLocation.PartNum = PartNo;
-            if (dt != null && dt.Rows.Count > 0)
+            //开门TCPIP
+            string IP = "";
+            string Port = "";
+            DTcms.Model.sy_shelf shelf = new DTcms.BLL.sy_shelf().GetModel(int.Parse(shelfId));
+            DTcms.Model.sy_cabinet cabinet = new DTcms.Model.sy_cabinet();
+            if (shelf != null)
             {
-                for (int i = 0; i < dt.Rows.Count; i++)
+                cabinet = new DTcms.BLL.sy_cabinet().GetModelList("CabinetNo = '" + shelf.FK_CabinetNo + "'")[0];
+                IP = cabinet.IP;
+                Port = cabinet.Port;
+            }
+            if (connect(IP, Port))
+            {
+                byte[] rec_byte = null;
+                byte[] code_byte = new byte[6];
+                code_byte[0] = 0xFF;
+                code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
+                code_byte[2] = (byte)Convert.ToInt32(shelf.BoxAddr, 16);
+                code_byte[3] = 0x01;
+                code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
+                code_byte[5] = 0xFE;
+                rec_byte = sendtcpip(code_byte, IP, Port);
+                if (VerifyReceive(rec_byte))
                 {
-                    frmCellsLocation.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString());
+                    if (rec_byte[3] == 0x01)//门正常打开
+                    {
+                        string sql = "select w.X,w.Y from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "' and s.ID = " + shelfId;
+                        DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                        ChildForm.CellsLocation frmCellsLocation = new CellsLocation();
+                        frmCellsLocation.ShelfID = int.Parse(shelfId);
+                        frmCellsLocation.PartNum = PartNo;
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                frmCellsLocation.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString());
+                            }
+                        }
+                        frmCellsLocation.ShowDialog();
+                        //循环CAM表状态，是否更新任务令表状态
+                        List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("PartNum = '" + PartNo + "'");
+                        bool isDone = true;
+                        foreach (DTcms.Model.temp_camlist item in camlist)
+                        {
+                            if (item.ToolReadyState == 2)//已领刀
+                            {
+                                continue;
+                            }
+                            else if (item.ToolReadyState == -1)//有一把异常，主表状态就为异常
+                            {
+                                DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
+                                planorder.OrderReadyState = -1;
+                                new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                isDone = false;
+                                break;
+                            }
+                            else if (item.ToolReadyState == 1)//有一把未领，主表状态就为未领
+                            {
+                                DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
+                                planorder.OrderReadyState = 1;
+                                new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                isDone = false;
+                                break;
+                            }
+                            else if (item.ToolReadyState == 0)
+                            {
+                                isDone = false;
+                                break;
+                            }
+                        }
+                        if (isDone)
+                        {
+                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
+                            planorder.OrderReadyState = 2;
+                            new DTcms.BLL.temp_planorderlist().Update(planorder);
+                        }
+                    }
+                    else if (rec_byte[3] == 0x00)//门开着，不能打开
+                    {
+                        MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
+                    }
+                    else
+                    {
+                        MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("网络通讯返回错误！");
                 }
             }
-            frmCellsLocation.ShowDialog();
+            else
+            {
+                MessageBox.Show("网络通信失败！");
+            }
+
+
 
         }
 
         private void btnDone_Click(object sender, EventArgs e)
         {
             nextForm_exit();
+        }
+
+
+        private IPEndPoint serverFullAddr;
+        private Socket sock;
+        private bool connect(string IP, string Port)
+        {
+            IPAddress serverIP;
+            int port;
+            serverIP = IPAddress.Parse(IP);
+            port = int.Parse(Port);
+            try
+            {
+                serverFullAddr = new IPEndPoint(serverIP, port);//设置IP，端口  
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //指定本地主机地址和端口号  
+                sock.Connect(serverFullAddr);
+                sock.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        private byte[] sendtcpip(byte[] byteCode, string IP, string Port)
+        {
+            try
+            {
+                IPAddress serverIP;
+                int port;
+                serverIP = IPAddress.Parse(IP);
+                port = int.Parse(Port);
+                serverFullAddr = new IPEndPoint(serverIP, port);//设置IP，端口  
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //指定本地主机地址和端口号  
+                sock.Connect(serverFullAddr);
+                byte[] message = new byte[1024 * 64];
+                int bytes = 0;
+                //发送数据
+                sock.Send(byteCode);
+                bytes = sock.Receive(message);//接收数据 
+                byte[] returnreceive = new byte[bytes];
+                Array.Copy(message, 0, returnreceive, 0, bytes);
+                sock.Close();
+                return returnreceive;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            finally
+            {
+                sock.Close();
+            }
+        }
+        private bool VerifyReceive(byte[] receive)
+        {
+            if (receive.Length != 6)
+            {
+                return false;
+            }
+            if (receive[0] != 0xFE)
+            {
+                return false;
+            }
+            if (receive[5] != 0xFF)
+            {
+                return false;
+            }
+            if (receive[4] != Convert.ToByte(receive[1] ^ receive[2] ^ receive[3]))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

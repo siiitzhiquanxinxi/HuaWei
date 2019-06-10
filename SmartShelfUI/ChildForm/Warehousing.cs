@@ -137,7 +137,6 @@ namespace SmartShelfUI.ChildForm
                 return false;
             }
         }
-
         private byte[] sendtcpip(byte[] byteCode, string IP, string Port)
         {
             try
