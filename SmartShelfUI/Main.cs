@@ -28,72 +28,19 @@ namespace SmartShelfUI
             }
         }
 
-        //SocketWrapper MySocket;
         private void Main_Load(object sender, EventArgs e)
         {
             lblVersion.Text = "Version:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             //初始化tcpip连接
-            //try
-            //{
-            //    MySocket = new SocketWrapper(ConfigurationManager.AppSettings["serverip"], int.Parse(ConfigurationManager.AppSettings["serverport"]));
-            //    MySocket.CommandArrival += new SocketWrapper.CommandArrivalEventHandler(client_PlaintextReceived);
-            //    if (MySocket.Socket_Create_Connect())
-            //    {
-            //        MySocket.Run();
-            //    }
-            //    else
-            //    {
-            //        thStartSocket = new Thread(StartSocket);
-            //        thStartSocket.Start();
-            //        MessageBox.Show("连接失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Utils.WriteError("初始化tcpip连接", ex.ToString());
-            //}
 
             showFormLogin();
         }
 
-        /// <summary>
-        /// 接受TCP/IP反馈信息
-        /// </summary>
-        void client_PlaintextReceived(object sender, SocketWrapper.MyEventArgs e)
-        {
-            if (e.CommandBuf != null)
-            {
-                int inLen = e.CommandBuf.Length;
-                byte[] NewByte = new byte[inLen];
-                Array.Copy(e.CommandBuf, 0, NewByte, 0, inLen);
-                string receive_str = Encoding.Unicode.GetString(NewByte).Trim().Replace("\0", "");
-                if (receive_str == "")
-                { }
-            }
-        }
-
-        //Thread thStartSocket;
-        //void StartSocket()
-        //{
-        //    while (!MySocket.IsConnect)
-        //    {
-        //        try
-        //        {
-        //            MySocket.Socket_Create_Connect();
-        //            Thread.Sleep(2000);
-        //        }
-        //        catch (Exception)
-        //        { }
-        //    }
-        //    if (MySocket.IsConnect)
-        //    {
-        //        MySocket.Run();
-        //    }
-        //}
-
         ChildForm.Login frmLogin = null;
         ChildForm.Pick frmPick = null;
         ChildForm.Menu frmMenu = null;
+        ChildForm.Return frmReturn = null;
+
         void showFormLogin()
         {
             if (frmPick != null)
@@ -107,6 +54,7 @@ namespace SmartShelfUI
                 frmMenu = null;
             }
             globalField.Manager = null;
+            globalField.BillID = "";
             lblUserName.Visible = false;
             pxb_loginface.Visible = false;
             frmLogin = new ChildForm.Login();
@@ -149,6 +97,11 @@ namespace SmartShelfUI
                 frmPick.Close();
                 frmPick = null;
             }
+            if (frmReturn != null)
+            {
+                frmReturn.Close();
+                frmReturn = null;
+            }
             frmMenu = new ChildForm.Menu();
             frmMenu.nextForm_return += new ChildForm.Menu.FormHandle(showFormReturn);
             frmMenu.nextForm_repair += new ChildForm.Menu.FormHandle(showFormRepair);
@@ -163,7 +116,18 @@ namespace SmartShelfUI
         }
 
         void showFormReturn()
-        { MessageBox.Show("1"); }
+        {
+            if (frmMenu != null)
+            {
+                frmMenu.Close();
+                frmMenu = null;
+            }
+            frmReturn = new ChildForm.Return();
+            frmReturn.nextForm_exit += new ChildForm.Return.FormHandle(showFormMenu);
+            frmReturn.TopLevel = false;
+            panel_content.Controls.Add(frmReturn);
+            frmReturn.Show();
+        }
         void showFormRepair()
         { MessageBox.Show("1"); }
         void showFormUsers()
