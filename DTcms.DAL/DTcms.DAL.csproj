@@ -94,7 +94,6 @@
     <Compile Include="w_inout_operate.cs" />
     <Compile Include="w_inout_barcodedetail.cs" />
     <Compile Include="w_inout_detail.cs" />
-    <Compile Include="w_inout_operate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DTcms.Common\DTcms.Common.csproj">

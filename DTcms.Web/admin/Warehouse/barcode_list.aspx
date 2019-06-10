@@ -37,7 +37,7 @@
         <ul class="icon-list">
           <li><a class="add" href="barcode_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>"><i></i><span>新增</span></a></li>
           <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
-          <li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>
+          <%--<li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>--%>
         </ul>
       </div>
       <div class="r-list">
@@ -55,7 +55,7 @@
   <HeaderTemplate>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
     <tr>
-      <th width="8%">选择</th>
+      <%--<th width="8%">选择</th>--%>
       <th align="left" width="10%">批号</th>
       <th align="left" width="8%">刀具编号</th>
       <th align="left" width="8%">刀具名称</th>
@@ -69,10 +69,10 @@
   </HeaderTemplate>
   <ItemTemplate>
     <tr>
-      <td align="center">
+      <%--<td align="center">
         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
         <asp:HiddenField ID="hidId" Value='<%#Eval("BatchNumber")%>' runat="server" />
-      </td>
+      </td>--%>
       <td><%# Eval("BatchNumber") %></td>
       <td><%# Eval("MaterialID") %></td>
       <td><%# Eval("MaterialName") %></td>

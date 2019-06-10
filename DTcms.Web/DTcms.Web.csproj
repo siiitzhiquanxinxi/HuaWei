@@ -180,6 +180,7 @@
     <Content Include="admin\users\user_edit.aspx" />
     <Content Include="admin\users\user_list.aspx" />
     <Content Include="admin\users\user_sms.aspx" />
+    <Content Include="admin\Warehouse\barcode_edit.aspx" />
     <Content Include="admin\Warehouse\barcode_list.aspx" />
     <Content Include="api\oauth\feixin\index.aspx" />
     <Content Include="api\oauth\feixin\result_json.aspx" />
@@ -1282,6 +1283,13 @@
     </Compile>
     <Compile Include="admin\users\user_sms.aspx.designer.cs">
       <DependentUpon>user_sms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\barcode_edit.aspx.cs">
+      <DependentUpon>barcode_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\barcode_edit.aspx.designer.cs">
+      <DependentUpon>barcode_edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\Warehouse\barcode_list.aspx.cs">
       <DependentUpon>barcode_list.aspx</DependentUpon>
