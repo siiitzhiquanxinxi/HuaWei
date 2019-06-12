@@ -100,62 +100,100 @@ namespace SmartShelfUI.ChildForm
                                         lblToolBarcode.Text = lstmodel[0].BarCode;
                                         lblToolName.Text = lstmodel[0].MaterialName;
                                     });
-                                    return;
+                                    break;
                                 }
                             }
                         }
                         if (lstmodel[0].State == 1)//判断物料在库状态
                         {
-                            lstmodel[0].State = 2;
-                            new DTcms.BLL.w_barcode().Update(lstmodel[0]);
-                            DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
-                            inout.FK_BillID = globalField.BillID;
-                            inout.FK_SendBillNum = PartNum;
-                            inout.FK_ApproveNum = null;
-                            inout.BarCode = barcode;
-                            inout.BatchNumber = lstmodel[0].BatchNumber;
-                            inout.MaterialID = lstmodel[0].MaterialID;
-                            inout.MaterialName = lstmodel[0].MaterialName;
-                            inout.MaterialTypeID = lstmodel[0].MaterialTypeID;
-                            inout.MaterialType = lstmodel[0].MaterialType;
-                            inout.SystemNo = lstmodel[0].SystemNo;
-                            inout.Brand = lstmodel[0].Brand;
-                            inout.Spec = lstmodel[0].Spec;
-                            inout.Unit = lstmodel[0].Unit;
-                            inout.Num = lstmodel[0].Num;
-                            inout.IOFlag = -1;
-                            inout.InOutType = "计划领用";
-                            inout.FK_ShelfID = ShelfID;
-                            inout.X = lstmodel[0].X;
-                            inout.Y = lstmodel[0].Y;
-                            //计算减少寿命
-                            int ReduceWorkTime = 0;
-                            string sql = "select * from temp_camlist where ToolBarCode = '" + barcode + "' and ToolReadyState = 1";
-                            DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-                            if (dt != null && dt.Rows.Count > 0)
+                            List<DTcms.Model.temp_camlist> lstcam = new DTcms.BLL.temp_camlist().GetModelList("ToolBarCode = '" + barcode + "' and PartNum = '" + PartNum + "'");
+                            if (lstcam != null && lstcam.Count > 0 && lstcam[0].ToolReadyState == 1)
                             {
-                                ReduceWorkTime = int.Parse(dt.Rows[0]["WorkTime"].ToString());
+                                DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                                inout.FK_BillID = globalField.BillID;
+                                inout.FK_SendBillNum = PartNum;
+                                inout.FK_ApproveNum = null;
+                                inout.BarCode = barcode;
+                                inout.BatchNumber = lstmodel[0].BatchNumber;
+                                inout.MaterialID = lstmodel[0].MaterialID;
+                                inout.MaterialName = lstmodel[0].MaterialName;
+                                inout.MaterialTypeID = lstmodel[0].MaterialTypeID;
+                                inout.MaterialType = lstmodel[0].MaterialType;
+                                inout.SystemNo = lstmodel[0].SystemNo;
+                                inout.Brand = lstmodel[0].Brand;
+                                inout.Spec = lstmodel[0].Spec;
+                                inout.Unit = lstmodel[0].Unit;
+                                inout.Num = lstmodel[0].Num;
+                                inout.IOFlag = -1;
+                                inout.InOutType = "计划领用";
+                                inout.FK_ShelfID = ShelfID;
+                                inout.X = lstmodel[0].X;
+                                inout.Y = lstmodel[0].Y;
+                                //计算工作寿命
+                                decimal ReduceWorkTime = 0;
+                                
+                                ReduceWorkTime = Convert.ToDecimal(lstcam[0].WorkTime);
+                                string sql = "select * from temp_planorderlist where PartNum = '" + PartNum + "'";
+                                DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                                if (dt != null && dt.Rows.Count > 0)
+                                {
+                                    string MaterialTexture = dt.Rows[0]["MaterialTexture"].ToString();
+                                    sql = "select * from sy_material_texture where MaterialID = '" + lstmodel[0].MaterialID + "' and Texture = '" + MaterialTexture + "'";
+                                    dt = DbHelperMySql.Query(sql).Tables[0];
+                                    if (dt != null && dt.Rows.Count > 0)
+                                    {
+                                        ReduceWorkTime = Convert.ToDecimal(dt.Rows[0]["Coefficient"]) * ReduceWorkTime;
+                                    }
+                                }
+                                inout.WorkTime = Convert.ToInt32(ReduceWorkTime);
+                                inout.OperatorName = globalField.Manager.real_name;
+                                inout.OperatorTime = DateTime.Now;
+                                inout.InOutRemark = "";
+                                //添加领用记录
+                                new DTcms.BLL.w_inout_detail().Add(inout);
+                                //修改CAM表状态
+                                sql = "update temp_camlist set ToolReadyState = 2 where ToolBarCode = '" + barcode + "' and PartNum = '" + PartNum + "'";
+                                DbHelperMySql.ExecuteSql(sql);
+                                //修改道具在库状态，剩余加工寿命，道具等级
+                                DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(barcode);
+                                int RemainTime = 0;
+                                tool.State = 2;
+                                tool.RemainTime = RemainTime;
+                                if (tool.ToolLevel == "X")//如果是新刀，改为旧刀
+                                {
+                                    tool.ToolLevel = "F";
+                                }
+                                tool.RemainTime = tool.RemainTime - Convert.ToInt32(ReduceWorkTime);
+                                new DTcms.BLL.w_barcode().Update(tool);
                             }
-                            inout.WorkTime = ReduceWorkTime;
+                            else if (lstcam != null && lstcam.Count > 0 && lstcam[0].ToolReadyState != 1)
+                            {
+                                if (lstcam[0].ToolReadyState == 0)
+                                {
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        MessageBox.Show("该物料尚未备好料！");
+                                    });
+                                    return;
+                                }
+                                else if (lstcam[0].ToolReadyState == 2)
+                                {
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        MessageBox.Show("该物料已领取！");
+                                    });
+                                    return;
+                                }
+                                else
+                                {
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        MessageBox.Show("该物料状态异常！");
+                                    });
+                                    return;
+                                }
+                            }
 
-                            inout.OperatorName = globalField.Manager.real_name;
-                            inout.OperatorTime = DateTime.Now;
-                            inout.InOutRemark = "";
-                            //添加领用记录
-                            new DTcms.BLL.w_inout_detail().Add(inout);
-                            //修改CAM表状态
-                            sql = "update temp_camlist set ToolReadyState = 2 where ToolBarCode = '" + barcode + "' and PartNum = '" + PartNum + "'";
-                            DbHelperMySql.ExecuteSql(sql);
-                            //修改道具在库状态，剩余加工寿命，道具等级
-                            DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(barcode);
-                            int RemainTime = 0;
-                            tool.State = 2;
-                            tool.RemainTime = RemainTime;
-                            if (tool.ToolLevel == "X")
-                            {
-                                tool.ToolLevel = "F";
-                            }
-                            new DTcms.BLL.w_barcode().Update(tool);
                         }
                         else
                         {

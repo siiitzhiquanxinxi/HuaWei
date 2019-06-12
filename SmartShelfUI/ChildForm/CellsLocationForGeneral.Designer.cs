@@ -41,7 +41,7 @@
             this.panel_Cells.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_Cells.Location = new System.Drawing.Point(0, 0);
             this.panel_Cells.Name = "panel_Cells";
-            this.panel_Cells.Size = new System.Drawing.Size(1000, 810);
+            this.panel_Cells.Size = new System.Drawing.Size(1000, 880);
             this.panel_Cells.TabIndex = 0;
             // 
             // btnCancel
@@ -52,7 +52,7 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnCancel.ForeColor = System.Drawing.Color.Transparent;
-            this.btnCancel.Location = new System.Drawing.Point(586, 844);
+            this.btnCancel.Location = new System.Drawing.Point(586, 886);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(200, 60);
             this.btnCancel.TabIndex = 4;
@@ -68,7 +68,7 @@
             this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOK.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnOK.ForeColor = System.Drawing.Color.Transparent;
-            this.btnOK.Location = new System.Drawing.Point(139, 844);
+            this.btnOK.Location = new System.Drawing.Point(139, 886);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(200, 60);
             this.btnOK.TabIndex = 5;
@@ -80,7 +80,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(135, 919);
+            this.label1.Location = new System.Drawing.Point(145, 949);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(186, 21);
             this.label1.TabIndex = 6;
@@ -90,7 +90,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(582, 919);
+            this.label2.Location = new System.Drawing.Point(576, 949);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(234, 21);
             this.label2.TabIndex = 6;

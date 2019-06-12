@@ -45,6 +45,7 @@
             this.ToolLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label12 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -72,7 +73,7 @@
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel3.Controls.Add(this.panel_shelf);
             this.panel3.Controls.Add(this.label13);
-            this.panel3.Location = new System.Drawing.Point(1382, 13);
+            this.panel3.Location = new System.Drawing.Point(1400, 13);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(253, 755);
             this.panel3.TabIndex = 3;
@@ -105,11 +106,11 @@
             this.btnMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMenu.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnMenu.ForeColor = System.Drawing.Color.White;
-            this.btnMenu.Location = new System.Drawing.Point(1650, 533);
+            this.btnMenu.Location = new System.Drawing.Point(1659, 532);
             this.btnMenu.Name = "btnMenu";
             this.btnMenu.Size = new System.Drawing.Size(258, 103);
             this.btnMenu.TabIndex = 2;
-            this.btnMenu.Text = "功能菜单";
+            this.btnMenu.Text = "主菜单";
             this.btnMenu.UseVisualStyleBackColor = true;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
             // 
@@ -121,7 +122,7 @@
             this.btnDone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDone.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDone.ForeColor = System.Drawing.Color.White;
-            this.btnDone.Location = new System.Drawing.Point(1650, 665);
+            this.btnDone.Location = new System.Drawing.Point(1659, 665);
             this.btnDone.Name = "btnDone";
             this.btnDone.Size = new System.Drawing.Size(258, 103);
             this.btnDone.TabIndex = 2;
@@ -137,12 +138,13 @@
             this.btnDisPick2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisPick2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDisPick2.ForeColor = System.Drawing.Color.White;
-            this.btnDisPick2.Location = new System.Drawing.Point(1649, 140);
+            this.btnDisPick2.Location = new System.Drawing.Point(1659, 140);
             this.btnDisPick2.Name = "btnDisPick2";
             this.btnDisPick2.Size = new System.Drawing.Size(258, 103);
             this.btnDisPick2.TabIndex = 2;
             this.btnDisPick2.Text = "零星领用（非任务令）刀具";
             this.btnDisPick2.UseVisualStyleBackColor = true;
+            this.btnDisPick2.Click += new System.EventHandler(this.btnDisPick2_Click);
             // 
             // btnDisPick1
             // 
@@ -152,12 +154,13 @@
             this.btnDisPick1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisPick1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDisPick1.ForeColor = System.Drawing.Color.White;
-            this.btnDisPick1.Location = new System.Drawing.Point(1650, 13);
+            this.btnDisPick1.Location = new System.Drawing.Point(1659, 13);
             this.btnDisPick1.Name = "btnDisPick1";
             this.btnDisPick1.Size = new System.Drawing.Size(258, 103);
             this.btnDisPick1.TabIndex = 2;
             this.btnDisPick1.Text = "零星领用（任务令）刀具";
             this.btnDisPick1.UseVisualStyleBackColor = true;
+            this.btnDisPick1.Click += new System.EventHandler(this.btnDisPick1_Click);
             // 
             // panel2
             // 
@@ -170,9 +173,9 @@
             this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.label9);
-            this.panel2.Location = new System.Drawing.Point(713, 13);
+            this.panel2.Location = new System.Drawing.Point(690, 13);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(651, 755);
+            this.panel2.Size = new System.Drawing.Size(704, 755);
             this.panel2.TabIndex = 1;
             // 
             // panel_CAM
@@ -181,7 +184,7 @@
             this.panel_CAM.Controls.Add(this.dgvCamList);
             this.panel_CAM.Location = new System.Drawing.Point(41, 85);
             this.panel_CAM.Name = "panel_CAM";
-            this.panel_CAM.Size = new System.Drawing.Size(570, 581);
+            this.panel_CAM.Size = new System.Drawing.Size(622, 581);
             this.panel_CAM.TabIndex = 2;
             // 
             // dgvCamList
@@ -195,13 +198,14 @@
             this.WorkTime,
             this.ToolLevel,
             this.CabinetNo,
-            this.BoxNo});
+            this.BoxNo,
+            this.ToolReadyState});
             this.dgvCamList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCamList.Location = new System.Drawing.Point(0, 0);
             this.dgvCamList.Name = "dgvCamList";
             this.dgvCamList.ReadOnly = true;
             this.dgvCamList.RowTemplate.Height = 40;
-            this.dgvCamList.Size = new System.Drawing.Size(570, 581);
+            this.dgvCamList.Size = new System.Drawing.Size(622, 581);
             this.dgvCamList.TabIndex = 0;
             // 
             // PartNum
@@ -214,7 +218,7 @@
             // ToolName
             // 
             this.ToolName.DataPropertyName = "ToolName";
-            this.ToolName.HeaderText = "道具名称";
+            this.ToolName.HeaderText = "刀具名称";
             this.ToolName.Name = "ToolName";
             this.ToolName.ReadOnly = true;
             // 
@@ -232,6 +236,7 @@
             this.ToolLevel.HeaderText = "刀具等级";
             this.ToolLevel.Name = "ToolLevel";
             this.ToolLevel.ReadOnly = true;
+            this.ToolLevel.Width = 90;
             // 
             // CabinetNo
             // 
@@ -248,6 +253,13 @@
             this.BoxNo.Name = "BoxNo";
             this.BoxNo.ReadOnly = true;
             this.BoxNo.Width = 70;
+            // 
+            // ToolReadyState
+            // 
+            this.ToolReadyState.DataPropertyName = "ToolReadyState";
+            this.ToolReadyState.HeaderText = "备料状态";
+            this.ToolReadyState.Name = "ToolReadyState";
+            this.ToolReadyState.ReadOnly = true;
             // 
             // label12
             // 
@@ -477,5 +489,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ToolLevel;
         private System.Windows.Forms.DataGridViewTextBoxColumn CabinetNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn BoxNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ToolReadyState;
     }
 }

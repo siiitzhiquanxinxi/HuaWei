@@ -90,6 +90,7 @@
     <Compile Include="user_point_log.cs" />
     <Compile Include="user_recharge.cs" />
     <Compile Include="u_printlog.cs" />
+    <Compile Include="w_approvelist.cs" />
     <Compile Include="w_barcode.cs" />
     <Compile Include="w_inout_detail.cs" />
     <Compile Include="w_inout_operate.cs" />

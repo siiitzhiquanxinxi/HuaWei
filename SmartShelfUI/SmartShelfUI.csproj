@@ -69,6 +69,18 @@
     <Compile Include="ChildForm\CellsLocationForWarehousing.Designer.cs">
       <DependentUpon>CellsLocationForWarehousing.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChildForm\DisPick_Plan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChildForm\DisPick_Plan.Designer.cs">
+      <DependentUpon>DisPick_Plan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChildForm\DisPick_UnPlan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChildForm\DisPick_UnPlan.Designer.cs">
+      <DependentUpon>DisPick_UnPlan.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChildForm\Login.cs">
       <SubType>Form</SubType>
     </Compile>

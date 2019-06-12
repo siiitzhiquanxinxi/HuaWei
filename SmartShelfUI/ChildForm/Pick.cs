@@ -37,7 +37,7 @@ namespace SmartShelfUI.ChildForm
         /// </summary>
         private void GetOrderList()
         {
-            string sql = "select * from temp_planorderlist where OrderReadyState = 0 order by PlanWorkTime asc";
+            string sql = "select * from temp_planorderlist where OrderReadyState = 1 order by PlanWorkTime asc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -77,8 +77,8 @@ namespace SmartShelfUI.ChildForm
             panel_shelf.Controls.Clear();
             Button btn = sender as Button;
             string PartNum = btn.Tag.ToString();
-            string sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
-            sql += " order by s.FK_CabinetNo,s.BoxNo";
+            string sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNum + "'";
+            sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -155,6 +155,10 @@ namespace SmartShelfUI.ChildForm
                             }
                         }
                         frmCellsLocation.ShowDialog();
+                        sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "'";
+                        sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
+                        dt = DbHelperMySql.Query(sql).Tables[0];
+                        dgvCamList.DataSource = dt;
                         //循环CAM表状态，是否更新任务令表状态
                         List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("PartNum = '" + PartNo + "'");
                         bool isDone = true;
@@ -201,7 +205,6 @@ namespace SmartShelfUI.ChildForm
                     {
                         MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
                     }
-
                 }
                 else
                 {
@@ -212,9 +215,6 @@ namespace SmartShelfUI.ChildForm
             {
                 MessageBox.Show("网络通信失败！");
             }
-
-
-
         }
 
         private void btnDone_Click(object sender, EventArgs e)
@@ -295,6 +295,24 @@ namespace SmartShelfUI.ChildForm
                 return false;
             }
             return true;
+        }
+        /// <summary>
+        /// 计划零星领用
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDisPick1_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// 非计划另行领用
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDisPick2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
