@@ -22,6 +22,10 @@ namespace SmartShelfUI.ChildForm
         public delegate void FormHandle();
         public event FormHandle nextForm_menu;
         public event FormHandle nextForm_exit;
+
+        public event FormHandle nextForm_dispick_plan;
+        public event FormHandle nextForm_dispick_unplan;
+
         private void btnMenu_Click(object sender, EventArgs e)
         {
             nextForm_menu();
@@ -303,7 +307,7 @@ namespace SmartShelfUI.ChildForm
         /// <param name="e"></param>
         private void btnDisPick1_Click(object sender, EventArgs e)
         {
-
+            nextForm_dispick_plan();
         }
         /// <summary>
         /// 非计划另行领用
@@ -312,7 +316,7 @@ namespace SmartShelfUI.ChildForm
         /// <param name="e"></param>
         private void btnDisPick2_Click(object sender, EventArgs e)
         {
-
+            nextForm_dispick_unplan();
         }
     }
 }

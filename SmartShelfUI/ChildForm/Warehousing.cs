@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,73 +23,140 @@ namespace SmartShelfUI.ChildForm
 
         private void Warehousing_Load(object sender, EventArgs e)
         {
-            spCom.PortName = ConfigurationManager.AppSettings["rfidcom"].Trim();
+            try
+            {
+                spCom.PortName = ConfigurationManager.AppSettings["qrcom"].Trim();
+                if (!spCom.IsOpen)
+                {
+                    spCom.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("串口打开失败：" + ex.ToString());
+            }
         }
 
+        DTcms.Model.w_barcode tool = null;
+        DTcms.Model.sy_shelf shelf = null;
+        DTcms.Model.sy_cabinet cabinet = null;
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            byte[] result = new byte[16];
-            int rLength = spCom.Read(result, 0, result.Length);
-            if (rLength >= 1)
+            Thread.Sleep(300);
+            try
             {
-                if (true)
+                byte[] result = new byte[128];
+                int rLength = spCom.Read(result, 0, result.Length);
+                if (rLength >= 8)
                 {
-                    //开门并显示9宫格
-                    string barcode = result.ToString();
-                    List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode + "' and State = 0");
+                    string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "'");
+                    if (lstmodel != null && lstmodel.Count > 0)
                     {
-                        if (lstmodel != null && lstmodel.Count > 0)
+                        tool = lstmodel[0];
+                        shelf = new DTcms.BLL.sy_shelf().GetModel(Convert.ToInt32(lstmodel[0].FK_ShelfID));
+                        cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
+                        this.BeginInvoke((MethodInvoker)delegate
                         {
-                            string IP = "";
-                            string Port = "";
-                            if (connect(IP, Port))
+                            lblToolName.Text = lstmodel[0].MaterialName;
+                            lblToolLevel.Text = lstmodel[0].ToolLevel;
+                            lblRestWorkTime.Text = lstmodel[0].RemainTime.ToString() + " min";
+                            lblCabinetNo.Text = cabinet.CabinetNo + "号";
+                            lblShelfNo.Text = shelf.BoxNo + "号";
+                            lblToolState.Text = lstmodel[0].State == 0 ? "待入库" : lstmodel[0].State == 1 ? "在库" : lstmodel[0].State == 2 ? "出库中" : lstmodel[0].State == 3 ? "修磨中" : lstmodel[0].State == -1 ? "报废" : lstmodel[0].State == 4 ? "工单锁定" : "其他异常";
+                        });
+                        if (shelf != null)
+                        {
+                            this.BeginInvoke((MethodInvoker)delegate
                             {
-                                byte[] rec_byte = null;
-                                byte[] code_byte = new byte[6];
-                                code_byte[0] = 0xFF;
-                                code_byte[1] = 0x01;
-                                code_byte[2] = 0x21;
-                                code_byte[3] = 0x01;
-                                code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
-                                code_byte[5] = 0xFE;
-                                rec_byte = sendtcpip(code_byte, IP, Port);
-                                if (VerifyReceive(rec_byte))
+                                panel_Cells.Controls.Clear();
+                            });
+                            int x = Convert.ToInt16(shelf.X);
+                            int y = Convert.ToInt16(shelf.Y);
+                            for (int i = 0; i < x; i++)
+                            {
+                                for (int j = 0; j < y; j++)
                                 {
-                                    ChildForm.CellsLocationForWarehousing frm = new CellsLocationForWarehousing();
-                                    if (frm.ShowDialog() == DialogResult.OK)//入库成功
+                                    Button b = new Button();
+                                    b.FlatAppearance.BorderSize = 0;
+                                    b.FlatStyle = FlatStyle.Flat;
+                                    b.Location = new Point(20 + 65 * i, 20 + 55 * j);
+                                    b.Size = new Size(55, 45);
+                                    b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                                    b.BackColor = SystemColors.ControlDark;
+                                    if (lstmodel[0].X == i + 1 && lstmodel[0].Y == j + 1)
                                     {
-
+                                        b.BackColor = Color.Orange;
                                     }
-                                    else//取消入库
-                                    {
-
-                                    }
-                                }
-                                else
-                                {
+                                    b.UseVisualStyleBackColor = true;
                                     this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        MessageBox.Show("网络通讯返回错误！");
+                                        panel_Cells.Controls.Add(b);
                                     });
                                 }
+                            }
+                            if (tool.State != 0)
+                            {
+                                MessageBox.Show("道具状态错误！（非待入库状态）");
+                                return;
                             }
                             else
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    MessageBox.Show("网络通信失败！");
+                                    CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
+                                    frmCells.tool = this.tool;
+                                    frmCells.cabinet = this.cabinet;
+                                    frmCells.shelf = this.shelf;
+                                    if (frmCells.ShowDialog() == DialogResult.OK)
+                                    {
+                                        //修改刀具状态
+                                        tool.State = 1;
+                                        new DTcms.BLL.w_barcode().Update(tool);
+                                        //生成入库记录
+                                        DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                                        inout.FK_BillID = globalField.BillID;
+                                        inout.BarCode = tool.BarCode;
+                                        inout.BatchNumber = tool.BatchNumber;
+                                        inout.MaterialID = tool.MaterialID;
+                                        inout.MaterialName = tool.MaterialName;
+                                        inout.MaterialTypeID = tool.MaterialTypeID;
+                                        inout.MaterialType = tool.MaterialType;
+                                        inout.SystemNo = tool.SystemNo;
+                                        inout.Brand = tool.Brand;
+                                        inout.Spec = tool.Spec;
+                                        inout.Unit = tool.Unit;
+                                        inout.Num = tool.Num;
+                                        inout.IOFlag = 1;
+                                        inout.FK_SendBillNum = null;
+                                        inout.FK_ApproveNum = null;
+                                        inout.InOutType = "入库";
+                                        inout.FK_ShelfID = shelf.ID;
+                                        inout.X = shelf.X;
+                                        inout.Y = shelf.Y;
+                                        inout.WorkTime = 0;
+                                        inout.OperatorName = globalField.Manager.real_name;
+                                        inout.OperatorTime = DateTime.Now;
+                                        inout.InOutRemark = "";
+                                        new DTcms.BLL.w_inout_detail().Add(inout);
+                                    }
                                 });
                             }
                         }
-                        else
+                    }
+                    else
+                    {
+                        this.BeginInvoke((MethodInvoker)delegate
                         {
-                            this.BeginInvoke((MethodInvoker)delegate
-                            {
-                                MessageBox.Show("该道具编码不在待入库清单中！");
-                            });
-                        }
+                            MessageBox.Show("没有查询到该物料！");
+                        });
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Utils.WriteError("入库扫码", ex.ToString());
             }
         }
 
@@ -112,8 +180,6 @@ namespace SmartShelfUI.ChildForm
             }
             return true;
         }
-
-
 
         private IPEndPoint serverFullAddr;
         private Socket sock;
@@ -169,5 +235,12 @@ namespace SmartShelfUI.ChildForm
             }
         }
 
+        private void Warehousing_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (spCom.IsOpen)
+            {
+                spCom.Close();
+            }
+        }
     }
 }

@@ -104,7 +104,7 @@ namespace SmartShelfUI.ChildForm
                                 }
                             }
                         }
-                        if (lstmodel[0].State == 1)//判断物料在库状态
+                        if (lstmodel[0].State == 4)//判断物料在库状态
                         {
                             List<DTcms.Model.temp_camlist> lstcam = new DTcms.BLL.temp_camlist().GetModelList("ToolBarCode = '" + barcode + "' and PartNum = '" + PartNum + "'");
                             if (lstcam != null && lstcam.Count > 0 && lstcam[0].ToolReadyState == 1)
@@ -131,7 +131,7 @@ namespace SmartShelfUI.ChildForm
                                 inout.Y = lstmodel[0].Y;
                                 //计算工作寿命
                                 decimal ReduceWorkTime = 0;
-                                
+
                                 ReduceWorkTime = Convert.ToDecimal(lstcam[0].WorkTime);
                                 string sql = "select * from temp_planorderlist where PartNum = '" + PartNum + "'";
                                 DataTable dt = DbHelperMySql.Query(sql).Tables[0];
@@ -166,7 +166,7 @@ namespace SmartShelfUI.ChildForm
                                 tool.RemainTime = tool.RemainTime - Convert.ToInt32(ReduceWorkTime);
                                 new DTcms.BLL.w_barcode().Update(tool);
                             }
-                            else if (lstcam != null && lstcam.Count > 0 && lstcam[0].ToolReadyState != 1)
+                            else if (lstcam != null && lstcam.Count > 0 && lstcam[0].ToolReadyState != 4)
                             {
                                 if (lstcam[0].ToolReadyState == 0)
                                 {
@@ -181,6 +181,14 @@ namespace SmartShelfUI.ChildForm
                                     this.BeginInvoke((MethodInvoker)delegate
                                     {
                                         MessageBox.Show("该物料已领取！");
+                                    });
+                                    return;
+                                }
+                                else if (lstcam[0].ToolReadyState == 2)
+                                {
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        MessageBox.Show("该物料未锁定！");
                                     });
                                     return;
                                 }
@@ -214,9 +222,9 @@ namespace SmartShelfUI.ChildForm
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Utils.WriteError("领料扫码", ex.ToString());
             }
 
         }

@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
 using DTcms.DBUtility;
-
+using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
@@ -38,9 +39,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into w_approvelist(");
-            strSql.Append("ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark)");
+            strSql.Append("ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture)");
             strSql.Append(" values (");
-            strSql.Append("?ApproveNum,?CreateDate,?CreateById,?CreateByName,?ApplyRemark,?IsPlanApprove,?ApproveState,?ApplyPartNum,?ApplyToolName,?ApplyWorkTime,?ApplyToolLevel,?ApplyOldToolBarCode,?ApproveById,?ApproveByName,?ApproveDate,?ApproveNewToolBarCode,?ApproveRemark)");
+            strSql.Append("?ApproveNum,?CreateDate,?CreateById,?CreateByName,?ApplyRemark,?IsPlanApprove,?ApproveState,?ApplyPartNum,?ApplyToolName,?ApplyWorkTime,?ApplyToolLevel,?ApplyOldToolBarCode,?ApproveById,?ApproveByName,?ApproveDate,?ApproveNewToolBarCode,?ApproveRemark,?Texture)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255),
                     new MySqlParameter("?CreateDate", MySqlDbType.Datetime),
@@ -58,7 +59,8 @@ namespace DTcms.DAL
                     new MySqlParameter("?ApproveByName", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApproveDate", MySqlDbType.Datetime),
                     new MySqlParameter("?ApproveNewToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveRemark", MySqlDbType.VarChar,255)};
+                    new MySqlParameter("?ApproveRemark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.ApproveNum;
             parameters[1].Value = model.CreateDate;
             parameters[2].Value = model.CreateById;
@@ -76,6 +78,7 @@ namespace DTcms.DAL
             parameters[14].Value = model.ApproveDate;
             parameters[15].Value = model.ApproveNewToolBarCode;
             parameters[16].Value = model.ApproveRemark;
+            parameters[17].Value = model.Texture;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -109,7 +112,8 @@ namespace DTcms.DAL
             strSql.Append("ApproveByName=?ApproveByName,");
             strSql.Append("ApproveDate=?ApproveDate,");
             strSql.Append("ApproveNewToolBarCode=?ApproveNewToolBarCode,");
-            strSql.Append("ApproveRemark=?ApproveRemark");
+            strSql.Append("ApproveRemark=?ApproveRemark,");
+            strSql.Append("Texture=?Texture");
             strSql.Append(" where ApproveNum=?ApproveNum ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?CreateDate", MySqlDbType.Datetime),
@@ -128,6 +132,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?ApproveDate", MySqlDbType.Datetime),
                     new MySqlParameter("?ApproveNewToolBarCode", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApproveRemark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.CreateDate;
             parameters[1].Value = model.CreateById;
@@ -145,7 +150,8 @@ namespace DTcms.DAL
             parameters[13].Value = model.ApproveDate;
             parameters[14].Value = model.ApproveNewToolBarCode;
             parameters[15].Value = model.ApproveRemark;
-            parameters[16].Value = model.ApproveNum;
+            parameters[16].Value = model.Texture;
+            parameters[17].Value = model.ApproveNum;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -208,7 +214,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark from w_approvelist ");
+            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture from w_approvelist ");
             strSql.Append(" where ApproveNum=?ApproveNum ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255)          };
@@ -303,6 +309,10 @@ namespace DTcms.DAL
                 {
                     model.ApproveRemark = row["ApproveRemark"].ToString();
                 }
+                if (row["Texture"] != null)
+                {
+                    model.Texture = row["Texture"].ToString();
+                }
             }
             return model;
         }
@@ -313,7 +323,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark ");
+            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture ");
             strSql.Append(" FROM w_approvelist ");
             if (strWhere.Trim() != "")
             {
@@ -333,7 +343,7 @@ namespace DTcms.DAL
             {
                 strSql.Append(" where " + strWhere);
             }
-            object obj = DbHelperSQL.GetSingle(strSql.ToString());
+            object obj = DbHelperMySql.GetSingle(strSql.ToString());
             if (obj == null)
             {
                 return 0;

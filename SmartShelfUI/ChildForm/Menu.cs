@@ -25,6 +25,7 @@ namespace SmartShelfUI.ChildForm
         public event FormHandle nextForm_warehouse;
         public event FormHandle nextForm_stock;
         public event FormHandle nextForm_exit;
+        public event FormHandle nextForm_web;
         private void btnReturn_Click(object sender, EventArgs e)
         {
             nextForm_return();
@@ -55,6 +56,11 @@ namespace SmartShelfUI.ChildForm
         private void btnBack_Click(object sender, EventArgs e)
         {
             nextForm_exit();
+        }
+
+        private void btnWeb_Click(object sender, EventArgs e)
+        {
+            nextForm_web();
         }
     }
 }

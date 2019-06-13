@@ -108,6 +108,7 @@
             this.Controls.Add(this.panel_Cells);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CellsLocationForGeneral";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CellsLocationForGeneral";
             this.Load += new System.EventHandler(this.CellsLocationForGeneral_Load);
             this.ResumeLayout(false);

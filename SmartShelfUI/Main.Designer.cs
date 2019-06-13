@@ -33,7 +33,9 @@
             this.panel_content = new System.Windows.Forms.Panel();
             this.pxb_loginface = new System.Windows.Forms.PictureBox();
             this.lblUserName = new System.Windows.Forms.Label();
+            this.btnBack = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pxb_loginface)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnBack)).BeginInit();
             this.SuspendLayout();
             // 
             // lblSoftwareTitle
@@ -93,12 +95,26 @@
             this.lblUserName.Text = "欢迎您，\r\n刘萌萌";
             this.lblUserName.Visible = false;
             // 
+            // btnBack
+            // 
+            this.btnBack.BackColor = System.Drawing.Color.Transparent;
+            this.btnBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBack.Image = global::SmartShelfUI.Properties.Resources.返回;
+            this.btnBack.Location = new System.Drawing.Point(1835, 962);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(73, 106);
+            this.btnBack.TabIndex = 44;
+            this.btnBack.TabStop = false;
+            this.btnBack.Visible = false;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::SmartShelfUI.Properties.Resources.背景1920_1080;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.pxb_loginface);
             this.Controls.Add(this.panel_content);
@@ -106,9 +122,10 @@
             this.Controls.Add(this.lblSoftwareTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main";
-            this.Text = "Main";
+            this.Text = "航瑞成智能柜刀具领用系统";
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pxb_loginface)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnBack)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -121,5 +138,6 @@
         private System.Windows.Forms.Panel panel_content;
         private System.Windows.Forms.PictureBox pxb_loginface;
         private System.Windows.Forms.Label lblUserName;
+        private System.Windows.Forms.PictureBox btnBack;
     }
 }

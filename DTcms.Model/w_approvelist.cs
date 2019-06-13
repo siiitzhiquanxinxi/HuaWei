@@ -27,6 +27,7 @@ namespace DTcms.Model
         private DateTime? _approvedate;
         private string _approvenewtoolbarcode;
         private string _approveremark;
+        private string _texture;
         /// <summary>
         /// 
         /// </summary>
@@ -162,6 +163,14 @@ namespace DTcms.Model
         {
             set { _approveremark = value; }
             get { return _approveremark; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Texture
+        {
+            set { _texture = value; }
+            get { return _texture; }
         }
         #endregion Model
 

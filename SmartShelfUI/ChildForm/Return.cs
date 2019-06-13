@@ -56,6 +56,9 @@ namespace SmartShelfUI.ChildForm
                     case 1:
                         MessageBox.Show("该物料已在库，请核实！");
                         break;
+                    case 4:
+                        MessageBox.Show("该物料已在库，请核实！");
+                        break;
                     case 3:
                         MessageBox.Show("该物料修磨中，请选择修磨刀入库！");
                         break;
@@ -94,10 +97,51 @@ namespace SmartShelfUI.ChildForm
                     frmCells.tool = this.tool;
                     frmCells.cabinet = this.cabinet;
                     frmCells.shelf = this.shelf;
-                    if (frmCells.DialogResult == DialogResult.OK)
+                    if (this.tool.State != 2)
                     {
-                        ///生成记录
+                        MessageBox.Show("该刀具状态错误！(非出库状态中)");
+                        return;
                     }
+                    else
+                    {
+                        if (frmCells.ShowDialog() == DialogResult.OK)
+                        {
+                            //修改刀具状态
+                            tool.State = 1;
+                            new DTcms.BLL.w_barcode().Update(tool);
+                            //生成归还记录
+                            DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                            inout.FK_BillID = globalField.BillID;
+                            inout.BarCode = tool.BarCode;
+                            inout.BatchNumber = tool.BatchNumber;
+                            inout.MaterialID = tool.MaterialID;
+                            inout.MaterialName = tool.MaterialName;
+                            inout.MaterialTypeID = tool.MaterialTypeID;
+                            inout.MaterialType = tool.MaterialType;
+                            inout.SystemNo = tool.SystemNo;
+                            inout.Brand = tool.Brand;
+                            inout.Spec = tool.Spec;
+                            inout.Unit = tool.Unit;
+                            inout.Num = tool.Num;
+                            inout.IOFlag = 1;
+                            List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + tool.BarCode + "' and IOFlag = -1 order by OperatorTime desc");
+                            if (lstdetail != null && lstdetail.Count > 0)
+                            {
+                                inout.FK_SendBillNum = lstdetail[0].FK_SendBillNum;
+                                inout.FK_ApproveNum = lstdetail[0].FK_ApproveNum;
+                                inout.InOutType = lstdetail[0].InOutType.Replace("领用", "归还");
+                            }
+                            inout.FK_ShelfID = shelf.ID;
+                            inout.X = shelf.X;
+                            inout.Y = shelf.Y;
+                            inout.WorkTime = 0;
+                            inout.OperatorName = globalField.Manager.real_name;
+                            inout.OperatorTime = DateTime.Now;
+                            inout.InOutRemark = "";
+                            new DTcms.BLL.w_inout_detail().Add(inout);
+                        }
+                    }
+
                 }
                 else
                 {
@@ -110,15 +154,92 @@ namespace SmartShelfUI.ChildForm
             }
         }
 
-
         private void btnBaofei_Click(object sender, EventArgs e)
         {
-
+            if (this.tool.State != 2)
+            {
+                MessageBox.Show("该刀具状态错误！(非出库状态中)");
+            }
+            else if (MessageBox.Show("确认报废？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                //修改刀具状态
+                tool.State = -1;
+                new DTcms.BLL.w_barcode().Update(tool);
+                //生成报废记录
+                DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                inout.FK_BillID = globalField.BillID;
+                inout.BarCode = tool.BarCode;
+                inout.BatchNumber = tool.BatchNumber;
+                inout.MaterialID = tool.MaterialID;
+                inout.MaterialName = tool.MaterialName;
+                inout.MaterialTypeID = tool.MaterialTypeID;
+                inout.MaterialType = tool.MaterialType;
+                inout.SystemNo = tool.SystemNo;
+                inout.Brand = tool.Brand;
+                inout.Spec = tool.Spec;
+                inout.Unit = tool.Unit;
+                inout.Num = tool.Num;
+                inout.IOFlag = 0;
+                List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + tool.BarCode + "' and IOFlag = -1 order by OperatorTime desc");
+                if (lstdetail != null && lstdetail.Count > 0)
+                {
+                    inout.FK_SendBillNum = lstdetail[0].FK_SendBillNum;
+                    inout.FK_ApproveNum = lstdetail[0].FK_ApproveNum;
+                    inout.InOutType = "报废";
+                }
+                inout.FK_ShelfID = shelf.ID;
+                inout.X = shelf.X;
+                inout.Y = shelf.Y;
+                inout.WorkTime = 0;
+                inout.OperatorName = globalField.Manager.real_name;
+                inout.OperatorTime = DateTime.Now;
+                inout.InOutRemark = "";
+                new DTcms.BLL.w_inout_detail().Add(inout);
+            }
         }
 
         private void btnXiumo_Click(object sender, EventArgs e)
         {
-
+            if (this.tool.State != 2)
+            {
+                MessageBox.Show("该刀具状态错误！(非出库状态中)");
+            }
+            else if (MessageBox.Show("确认去修磨？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                //修改刀具状态
+                tool.State = 3;
+                new DTcms.BLL.w_barcode().Update(tool);
+                //生成报废记录
+                DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                inout.FK_BillID = globalField.BillID;
+                inout.BarCode = tool.BarCode;
+                inout.BatchNumber = tool.BatchNumber;
+                inout.MaterialID = tool.MaterialID;
+                inout.MaterialName = tool.MaterialName;
+                inout.MaterialTypeID = tool.MaterialTypeID;
+                inout.MaterialType = tool.MaterialType;
+                inout.SystemNo = tool.SystemNo;
+                inout.Brand = tool.Brand;
+                inout.Spec = tool.Spec;
+                inout.Unit = tool.Unit;
+                inout.Num = tool.Num;
+                inout.IOFlag = 0;
+                List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + tool.BarCode + "' and IOFlag = -1 order by OperatorTime desc");
+                if (lstdetail != null && lstdetail.Count > 0)
+                {
+                    inout.FK_SendBillNum = lstdetail[0].FK_SendBillNum;
+                    inout.FK_ApproveNum = lstdetail[0].FK_ApproveNum;
+                    inout.InOutType = "修磨";
+                }
+                inout.FK_ShelfID = shelf.ID;
+                inout.X = shelf.X;
+                inout.Y = shelf.Y;
+                inout.WorkTime = 0;
+                inout.OperatorName = globalField.Manager.real_name;
+                inout.OperatorTime = DateTime.Now;
+                inout.InOutRemark = "";
+                new DTcms.BLL.w_inout_detail().Add(inout);
+            }
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -130,78 +251,85 @@ namespace SmartShelfUI.ChildForm
         DTcms.Model.sy_cabinet cabinet = null;
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            Thread.Sleep(300);
-
-            byte[] result = new byte[8];
-            int rLength = spCom.Read(result, 0, result.Length);
-            if (rLength >= 8)
+            try
             {
-                string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
-                List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "'");
-                if (lstmodel != null && lstmodel.Count > 0)
+                byte[] result = new byte[8];
+                int rLength = spCom.Read(result, 0, result.Length);
+                if (rLength >= 8)
                 {
-                    tool = lstmodel[0];
-                    shelf = new DTcms.BLL.sy_shelf().GetModel(Convert.ToInt32(lstmodel[0].FK_ShelfID));
-                    cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
-                    this.BeginInvoke((MethodInvoker)delegate
+                    string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "'");
+                    if (lstmodel != null && lstmodel.Count > 0)
                     {
-                        lblToolName.Text = lstmodel[0].MaterialName;
-                        lblToolLevel.Text = lstmodel[0].ToolLevel;
-                        lblRestWorkTime.Text = lstmodel[0].RemainTime.ToString() + " min";
-                        lblCabinetNo.Text = cabinet.CabinetNo + "号";
-                        lblShelfNo.Text = shelf.BoxNo + "号";
-                        lblToolState.Text = lstmodel[0].State == 0 ? "待入库" : lstmodel[0].State == 1 ? "在库" : lstmodel[0].State == 2 ? "出库中" : lstmodel[0].State == 3 ? "修磨中" : lstmodel[0].State == -1 ? "报废" : "其他异常";
-                        if (lstmodel[0].State == 2)
+                        tool = lstmodel[0];
+                        shelf = new DTcms.BLL.sy_shelf().GetModel(Convert.ToInt32(lstmodel[0].FK_ShelfID));
+                        cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
+                        this.BeginInvoke((MethodInvoker)delegate
                         {
-                            List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + lstmodel[0].BarCode + "' and IOFlag = -1 order by OperatorTime desc");
-                            if (lstdetail != null && lstdetail.Count > 0)
+                            lblToolName.Text = lstmodel[0].MaterialName;
+                            lblToolLevel.Text = lstmodel[0].ToolLevel;
+                            lblRestWorkTime.Text = lstmodel[0].RemainTime.ToString() + " min";
+                            lblCabinetNo.Text = cabinet.CabinetNo + "号";
+                            lblShelfNo.Text = shelf.BoxNo + "号";
+                            lblToolState.Text = lstmodel[0].State == 0 ? "待入库" : lstmodel[0].State == 1 ? "在库" : lstmodel[0].State == 2 ? "出库中" : lstmodel[0].State == 3 ? "修磨中" : lstmodel[0].State == -1 ? "报废" : lstmodel[0].State == 4 ? "工单锁定" : "其他异常";
+                            if (lstmodel[0].State == 2)
                             {
-                                lblLastPickMan.Text = lstdetail[0].OperatorName;
-                                lblLastPickTime.Text = Convert.ToDateTime(lstdetail[0].OperatorTime).ToString("yyyy年MM月dd日 HH时mm分");
-                                lblLastPickType.Text = lstdetail[0].InOutType;
-                                lblLastPickPartNum.Text = !string.IsNullOrEmpty(lstdetail[0].FK_SendBillNum) ? lstdetail[0].FK_SendBillNum : (lstdetail[0].FK_ApproveNum + "（申请单号）");
-                            }
-
-                        }
-
-                    });
-                    if (shelf != null)
-                    {
-                        int x = Convert.ToInt16(shelf.X);
-                        int y = Convert.ToInt16(shelf.Y);
-                        for (int i = 0; i < x; i++)
-                        {
-                            for (int j = 0; j < y; j++)
-                            {
-                                Button b = new Button();
-                                b.FlatAppearance.BorderSize = 0;
-                                b.FlatStyle = FlatStyle.Flat;
-                                b.Location = new Point(20 + 65 * i, 20 + 55 * j);
-                                b.Size = new Size(55, 45);
-                                b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
-                                b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-                                b.BackColor = SystemColors.ControlDark;
-                                if (lstmodel[0].X == i + 1 && lstmodel[0].Y == j + 1)
+                                List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + lstmodel[0].BarCode + "' and IOFlag = -1 order by OperatorTime desc");
+                                if (lstdetail != null && lstdetail.Count > 0)
                                 {
-                                    b.BackColor = Color.Orange;
+                                    lblLastPickMan.Text = lstdetail[0].OperatorName;
+                                    lblLastPickTime.Text = Convert.ToDateTime(lstdetail[0].OperatorTime).ToString("yyyy年MM月dd日 HH时mm分");
+                                    lblLastPickType.Text = lstdetail[0].InOutType;
+                                    lblLastPickPartNum.Text = !string.IsNullOrEmpty(lstdetail[0].FK_SendBillNum) ? lstdetail[0].FK_SendBillNum : (lstdetail[0].FK_ApproveNum + "（申请单号）");
                                 }
-                                b.UseVisualStyleBackColor = true;
-                                this.BeginInvoke((MethodInvoker)delegate
+                            }
+                        });
+                        if (shelf != null)
+                        {
+                            this.BeginInvoke((MethodInvoker)delegate
+                            {
+                                panel_Cells.Controls.Clear();
+                            });
+                            int x = Convert.ToInt16(shelf.X);
+                            int y = Convert.ToInt16(shelf.Y);
+                            for (int i = 0; i < x; i++)
+                            {
+                                for (int j = 0; j < y; j++)
                                 {
-                                    panel_Cells.Controls.Add(b);
-                                });
+                                    Button b = new Button();
+                                    b.FlatAppearance.BorderSize = 0;
+                                    b.FlatStyle = FlatStyle.Flat;
+                                    b.Location = new Point(20 + 65 * i, 20 + 55 * j);
+                                    b.Size = new Size(55, 45);
+                                    b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                                    b.BackColor = SystemColors.ControlDark;
+                                    if (lstmodel[0].X == i + 1 && lstmodel[0].Y == j + 1)
+                                    {
+                                        b.BackColor = Color.Orange;
+                                    }
+                                    b.UseVisualStyleBackColor = true;
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        panel_Cells.Controls.Add(b);
+                                    });
 
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    this.BeginInvoke((MethodInvoker)delegate
+                    else
                     {
-                        MessageBox.Show("没有查询到该物料！");
-                    });
+                        this.BeginInvoke((MethodInvoker)delegate
+                        {
+                            MessageBox.Show("没有查询到该物料！");
+                        });
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Utils.WriteError("归还扫码", ex.ToString());
             }
         }
 
