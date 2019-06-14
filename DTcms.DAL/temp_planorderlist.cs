@@ -22,9 +22,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select count(1) from temp_planorderlist");
-            strSql.Append(" where Id=?Id");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?Id", MySqlDbType.Int32)
+                    new MySqlParameter("@Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -39,24 +39,26 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into temp_planorderlist(");
-            strSql.Append("PartNum,PartName,MaterialTexture,PlanWorkTime,MachineLathe,OrderReadyState,CreateDate)");
+            strSql.Append("PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,OrderReadyState,CreateDate)");
             strSql.Append(" values (");
-            strSql.Append("?PartNum,?PartName,?MaterialTexture,?PlanWorkTime,?MachineLathe,?OrderReadyState,?CreateDate)");
+            strSql.Append("@PartNum,@PartName,@MaterialTexture,@PlanWorkTime,@DelayWorkTime,@MachineLathe,@OrderReadyState,@CreateDate)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?PartNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?PartName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?MaterialTexture", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?PlanWorkTime", MySqlDbType.Datetime),
-                    new MySqlParameter("?MachineLathe", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?OrderReadyState", MySqlDbType.Int32,11),
-                    new MySqlParameter("?CreateDate", MySqlDbType.Datetime)};
+                    new MySqlParameter("@PartNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@PartName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@MaterialTexture", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@PlanWorkTime", MySqlDbType.Datetime),
+                    new MySqlParameter("@DelayWorkTime", MySqlDbType.Datetime),
+                    new MySqlParameter("@MachineLathe", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@OrderReadyState", MySqlDbType.Int32,11),
+                    new MySqlParameter("@CreateDate", MySqlDbType.Datetime)};
             parameters[0].Value = model.PartNum;
             parameters[1].Value = model.PartName;
             parameters[2].Value = model.MaterialTexture;
             parameters[3].Value = model.PlanWorkTime;
-            parameters[4].Value = model.MachineLathe;
-            parameters[5].Value = model.OrderReadyState;
-            parameters[6].Value = model.CreateDate;
+            parameters[4].Value = model.DelayWorkTime;
+            parameters[5].Value = model.MachineLathe;
+            parameters[6].Value = model.OrderReadyState;
+            parameters[7].Value = model.CreateDate;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -75,31 +77,34 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update temp_planorderlist set ");
-            strSql.Append("PartNum=?PartNum,");
-            strSql.Append("PartName=?PartName,");
-            strSql.Append("MaterialTexture=?MaterialTexture,");
-            strSql.Append("PlanWorkTime=?PlanWorkTime,");
-            strSql.Append("MachineLathe=?MachineLathe,");
-            strSql.Append("OrderReadyState=?OrderReadyState,");
-            strSql.Append("CreateDate=?CreateDate");
-            strSql.Append(" where Id=?Id");
+            strSql.Append("PartNum=@PartNum,");
+            strSql.Append("PartName=@PartName,");
+            strSql.Append("MaterialTexture=@MaterialTexture,");
+            strSql.Append("PlanWorkTime=@PlanWorkTime,");
+            strSql.Append("DelayWorkTime=@DelayWorkTime,");
+            strSql.Append("MachineLathe=@MachineLathe,");
+            strSql.Append("OrderReadyState=@OrderReadyState,");
+            strSql.Append("CreateDate=@CreateDate");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?PartNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?PartName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?MaterialTexture", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?PlanWorkTime", MySqlDbType.Datetime),
-                    new MySqlParameter("?MachineLathe", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?OrderReadyState", MySqlDbType.Int32,11),
-                    new MySqlParameter("?CreateDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?Id", MySqlDbType.Int32,11)};
+                    new MySqlParameter("@PartNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@PartName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@MaterialTexture", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@PlanWorkTime", MySqlDbType.Datetime),
+                    new MySqlParameter("@DelayWorkTime", MySqlDbType.Datetime),
+                    new MySqlParameter("@MachineLathe", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@OrderReadyState", MySqlDbType.Int32,11),
+                    new MySqlParameter("@CreateDate", MySqlDbType.Datetime),
+                    new MySqlParameter("@Id", MySqlDbType.Int32,11)};
             parameters[0].Value = model.PartNum;
             parameters[1].Value = model.PartName;
             parameters[2].Value = model.MaterialTexture;
             parameters[3].Value = model.PlanWorkTime;
-            parameters[4].Value = model.MachineLathe;
-            parameters[5].Value = model.OrderReadyState;
-            parameters[6].Value = model.CreateDate;
-            parameters[7].Value = model.Id;
+            parameters[4].Value = model.DelayWorkTime;
+            parameters[5].Value = model.MachineLathe;
+            parameters[6].Value = model.OrderReadyState;
+            parameters[7].Value = model.CreateDate;
+            parameters[8].Value = model.Id;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -120,9 +125,9 @@ namespace DTcms.DAL
 
             StringBuilder strSql = new StringBuilder();
             strSql.Append("delete from temp_planorderlist ");
-            strSql.Append(" where Id=?Id");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?Id", MySqlDbType.Int32)
+                    new MySqlParameter("@Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -163,10 +168,10 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select Id,PartNum,PartName,MaterialTexture,PlanWorkTime,MachineLathe,OrderReadyState,CreateDate from temp_planorderlist ");
-            strSql.Append(" where Id=?Id");
+            strSql.Append("select Id,PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,OrderReadyState,CreateDate from temp_planorderlist ");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?Id", MySqlDbType.Int32)
+                    new MySqlParameter("@Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -211,6 +216,10 @@ namespace DTcms.DAL
                 {
                     model.PlanWorkTime = DateTime.Parse(row["PlanWorkTime"].ToString());
                 }
+                if (row["DelayWorkTime"] != null && row["DelayWorkTime"].ToString() != "")
+                {
+                    model.DelayWorkTime = DateTime.Parse(row["DelayWorkTime"].ToString());
+                }
                 if (row["MachineLathe"] != null)
                 {
                     model.MachineLathe = row["MachineLathe"].ToString();
@@ -233,7 +242,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select Id,PartNum,PartName,MaterialTexture,PlanWorkTime,MachineLathe,OrderReadyState,CreateDate ");
+            strSql.Append("select Id,PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,OrderReadyState,CreateDate ");
             strSql.Append(" FROM temp_planorderlist ");
             if (strWhere.Trim() != "")
             {
@@ -296,13 +305,13 @@ namespace DTcms.DAL
 		public DataSet GetList(int PageSize,int PageIndex,string strWhere)
 		{
 			MySqlParameter[] parameters = {
-					new MySqlParameter("?tblName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("?fldName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("?PageSize", MySqlDbType.Int32),
-					new MySqlParameter("?PageIndex", MySqlDbType.Int32),
-					new MySqlParameter("?IsReCount", MySqlDbType.Bit),
-					new MySqlParameter("?OrderType", MySqlDbType.Bit),
-					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
+					new MySqlParameter("@tblName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("@fldName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("@PageSize", MySqlDbType.Int32),
+					new MySqlParameter("@PageIndex", MySqlDbType.Int32),
+					new MySqlParameter("@IsReCount", MySqlDbType.Bit),
+					new MySqlParameter("@OrderType", MySqlDbType.Bit),
+					new MySqlParameter("@strWhere", MySqlDbType.VarChar,1000),
 					};
 			parameters[0].Value = "temp_planorderlist";
 			parameters[1].Value = "Id";

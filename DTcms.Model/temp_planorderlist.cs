@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace DTcms.Model
 {
     /// <summary>
-	/// temp_planorderlist:实体类(属性说明自动提取数据库字段的描述信息)
-	/// </summary>
-	[Serializable]
+    /// temp_planorderlist:实体类(属性说明自动提取数据库字段的描述信息)
+    /// </summary>
+    [Serializable]
     public partial class temp_planorderlist
     {
         public temp_planorderlist()
@@ -19,6 +15,7 @@ namespace DTcms.Model
         private string _partname;
         private string _materialtexture;
         private DateTime? _planworktime;
+        private DateTime? _delayworktime;
         private string _machinelathe;
         private int? _orderreadystate;
         private DateTime? _createdate;
@@ -65,6 +62,14 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
+        public DateTime? DelayWorkTime
+        {
+            set { _delayworktime = value; }
+            get { return _delayworktime; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public string MachineLathe
         {
             set { _machinelathe = value; }
@@ -90,3 +95,4 @@ namespace DTcms.Model
 
     }
 }
+
