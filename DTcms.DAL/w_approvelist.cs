@@ -23,9 +23,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select count(1) from w_approvelist");
-            strSql.Append(" where ApproveNum=?ApproveNum ");
+            strSql.Append(" where ApproveNum=@ApproveNum ");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255)          };
+                    new MySqlParameter("@ApproveNum", MySqlDbType.VarChar,255)          };
             parameters[0].Value = ApproveNum;
 
             return DbHelperMySql.Exists(strSql.ToString(), parameters);
@@ -39,28 +39,29 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into w_approvelist(");
-            strSql.Append("ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture)");
+            strSql.Append("ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyCamId,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture)");
             strSql.Append(" values (");
-            strSql.Append("?ApproveNum,?CreateDate,?CreateById,?CreateByName,?ApplyRemark,?IsPlanApprove,?ApproveState,?ApplyPartNum,?ApplyToolName,?ApplyWorkTime,?ApplyToolLevel,?ApplyOldToolBarCode,?ApproveById,?ApproveByName,?ApproveDate,?ApproveNewToolBarCode,?ApproveRemark,?Texture)");
+            strSql.Append("@ApproveNum,@CreateDate,@CreateById,@CreateByName,@ApplyRemark,@IsPlanApprove,@ApproveState,@ApplyPartNum,@ApplyCamId,@ApplyToolName,@ApplyWorkTime,@ApplyToolLevel,@ApplyOldToolBarCode,@ApproveById,@ApproveByName,@ApproveDate,@ApproveNewToolBarCode,@ApproveRemark,@Texture)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?CreateDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?CreateById", MySqlDbType.Int32,255),
-                    new MySqlParameter("?CreateByName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyRemark", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?IsPlanApprove", MySqlDbType.Int32,255),
-                    new MySqlParameter("?ApproveState", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ApplyPartNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyToolName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyWorkTime", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ApplyToolLevel", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyOldToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveById", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ApproveByName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?ApproveNewToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveRemark", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255)};
+                    new MySqlParameter("@ApproveNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@CreateDate", MySqlDbType.Datetime),
+                    new MySqlParameter("@CreateById", MySqlDbType.Int32,255),
+                    new MySqlParameter("@CreateByName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyRemark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@IsPlanApprove", MySqlDbType.Int32,255),
+                    new MySqlParameter("@ApproveState", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApplyPartNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyCamId", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApplyToolName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyWorkTime", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApplyToolLevel", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyOldToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveById", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApproveByName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveDate", MySqlDbType.Datetime),
+                    new MySqlParameter("@ApproveNewToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveRemark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@Texture", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.ApproveNum;
             parameters[1].Value = model.CreateDate;
             parameters[2].Value = model.CreateById;
@@ -69,16 +70,17 @@ namespace DTcms.DAL
             parameters[5].Value = model.IsPlanApprove;
             parameters[6].Value = model.ApproveState;
             parameters[7].Value = model.ApplyPartNum;
-            parameters[8].Value = model.ApplyToolName;
-            parameters[9].Value = model.ApplyWorkTime;
-            parameters[10].Value = model.ApplyToolLevel;
-            parameters[11].Value = model.ApplyOldToolBarCode;
-            parameters[12].Value = model.ApproveById;
-            parameters[13].Value = model.ApproveByName;
-            parameters[14].Value = model.ApproveDate;
-            parameters[15].Value = model.ApproveNewToolBarCode;
-            parameters[16].Value = model.ApproveRemark;
-            parameters[17].Value = model.Texture;
+            parameters[8].Value = model.ApplyCamId;
+            parameters[9].Value = model.ApplyToolName;
+            parameters[10].Value = model.ApplyWorkTime;
+            parameters[11].Value = model.ApplyToolLevel;
+            parameters[12].Value = model.ApplyOldToolBarCode;
+            parameters[13].Value = model.ApproveById;
+            parameters[14].Value = model.ApproveByName;
+            parameters[15].Value = model.ApproveDate;
+            parameters[16].Value = model.ApproveNewToolBarCode;
+            parameters[17].Value = model.ApproveRemark;
+            parameters[18].Value = model.Texture;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -97,43 +99,45 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update w_approvelist set ");
-            strSql.Append("CreateDate=?CreateDate,");
-            strSql.Append("CreateById=?CreateById,");
-            strSql.Append("CreateByName=?CreateByName,");
-            strSql.Append("ApplyRemark=?ApplyRemark,");
-            strSql.Append("IsPlanApprove=?IsPlanApprove,");
-            strSql.Append("ApproveState=?ApproveState,");
-            strSql.Append("ApplyPartNum=?ApplyPartNum,");
-            strSql.Append("ApplyToolName=?ApplyToolName,");
-            strSql.Append("ApplyWorkTime=?ApplyWorkTime,");
-            strSql.Append("ApplyToolLevel=?ApplyToolLevel,");
-            strSql.Append("ApplyOldToolBarCode=?ApplyOldToolBarCode,");
-            strSql.Append("ApproveById=?ApproveById,");
-            strSql.Append("ApproveByName=?ApproveByName,");
-            strSql.Append("ApproveDate=?ApproveDate,");
-            strSql.Append("ApproveNewToolBarCode=?ApproveNewToolBarCode,");
-            strSql.Append("ApproveRemark=?ApproveRemark,");
-            strSql.Append("Texture=?Texture");
-            strSql.Append(" where ApproveNum=?ApproveNum ");
+            strSql.Append("CreateDate=@CreateDate,");
+            strSql.Append("CreateById=@CreateById,");
+            strSql.Append("CreateByName=@CreateByName,");
+            strSql.Append("ApplyRemark=@ApplyRemark,");
+            strSql.Append("IsPlanApprove=@IsPlanApprove,");
+            strSql.Append("ApproveState=@ApproveState,");
+            strSql.Append("ApplyPartNum=@ApplyPartNum,");
+            strSql.Append("ApplyCamId=@ApplyCamId,");
+            strSql.Append("ApplyToolName=@ApplyToolName,");
+            strSql.Append("ApplyWorkTime=@ApplyWorkTime,");
+            strSql.Append("ApplyToolLevel=@ApplyToolLevel,");
+            strSql.Append("ApplyOldToolBarCode=@ApplyOldToolBarCode,");
+            strSql.Append("ApproveById=@ApproveById,");
+            strSql.Append("ApproveByName=@ApproveByName,");
+            strSql.Append("ApproveDate=@ApproveDate,");
+            strSql.Append("ApproveNewToolBarCode=@ApproveNewToolBarCode,");
+            strSql.Append("ApproveRemark=@ApproveRemark,");
+            strSql.Append("Texture=@Texture");
+            strSql.Append(" where ApproveNum=@ApproveNum ");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?CreateDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?CreateById", MySqlDbType.Int32,255),
-                    new MySqlParameter("?CreateByName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyRemark", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?IsPlanApprove", MySqlDbType.Int32,255),
-                    new MySqlParameter("?ApproveState", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ApplyPartNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyToolName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyWorkTime", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ApplyToolLevel", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyOldToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveById", MySqlDbType.Int32,11),
-                    new MySqlParameter("?ApproveByName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveDate", MySqlDbType.Datetime),
-                    new MySqlParameter("?ApproveNewToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveRemark", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?Texture", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255)};
+                    new MySqlParameter("@CreateDate", MySqlDbType.Datetime),
+                    new MySqlParameter("@CreateById", MySqlDbType.Int32,255),
+                    new MySqlParameter("@CreateByName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyRemark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@IsPlanApprove", MySqlDbType.Int32,255),
+                    new MySqlParameter("@ApproveState", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApplyPartNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyCamId", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApplyToolName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyWorkTime", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApplyToolLevel", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApplyOldToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveById", MySqlDbType.Int32,11),
+                    new MySqlParameter("@ApproveByName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveDate", MySqlDbType.Datetime),
+                    new MySqlParameter("@ApproveNewToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveRemark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@Texture", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ApproveNum", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.CreateDate;
             parameters[1].Value = model.CreateById;
             parameters[2].Value = model.CreateByName;
@@ -141,17 +145,18 @@ namespace DTcms.DAL
             parameters[4].Value = model.IsPlanApprove;
             parameters[5].Value = model.ApproveState;
             parameters[6].Value = model.ApplyPartNum;
-            parameters[7].Value = model.ApplyToolName;
-            parameters[8].Value = model.ApplyWorkTime;
-            parameters[9].Value = model.ApplyToolLevel;
-            parameters[10].Value = model.ApplyOldToolBarCode;
-            parameters[11].Value = model.ApproveById;
-            parameters[12].Value = model.ApproveByName;
-            parameters[13].Value = model.ApproveDate;
-            parameters[14].Value = model.ApproveNewToolBarCode;
-            parameters[15].Value = model.ApproveRemark;
-            parameters[16].Value = model.Texture;
-            parameters[17].Value = model.ApproveNum;
+            parameters[7].Value = model.ApplyCamId;
+            parameters[8].Value = model.ApplyToolName;
+            parameters[9].Value = model.ApplyWorkTime;
+            parameters[10].Value = model.ApplyToolLevel;
+            parameters[11].Value = model.ApplyOldToolBarCode;
+            parameters[12].Value = model.ApproveById;
+            parameters[13].Value = model.ApproveByName;
+            parameters[14].Value = model.ApproveDate;
+            parameters[15].Value = model.ApproveNewToolBarCode;
+            parameters[16].Value = model.ApproveRemark;
+            parameters[17].Value = model.Texture;
+            parameters[18].Value = model.ApproveNum;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -172,9 +177,9 @@ namespace DTcms.DAL
 
             StringBuilder strSql = new StringBuilder();
             strSql.Append("delete from w_approvelist ");
-            strSql.Append(" where ApproveNum=?ApproveNum ");
+            strSql.Append(" where ApproveNum=@ApproveNum ");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255)          };
+                    new MySqlParameter("@ApproveNum", MySqlDbType.VarChar,255)          };
             parameters[0].Value = ApproveNum;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
@@ -214,10 +219,10 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture from w_approvelist ");
-            strSql.Append(" where ApproveNum=?ApproveNum ");
+            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyCamId,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture from w_approvelist ");
+            strSql.Append(" where ApproveNum=@ApproveNum ");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?ApproveNum", MySqlDbType.VarChar,255)          };
+                    new MySqlParameter("@ApproveNum", MySqlDbType.VarChar,255)          };
             parameters[0].Value = ApproveNum;
 
             DTcms.Model.w_approvelist model = new DTcms.Model.w_approvelist();
@@ -273,6 +278,10 @@ namespace DTcms.DAL
                 {
                     model.ApplyPartNum = row["ApplyPartNum"].ToString();
                 }
+                if (row["ApplyCamId"] != null && row["ApplyCamId"].ToString() != "")
+                {
+                    model.ApplyCamId = int.Parse(row["ApplyCamId"].ToString());
+                }
                 if (row["ApplyToolName"] != null)
                 {
                     model.ApplyToolName = row["ApplyToolName"].ToString();
@@ -323,7 +332,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture ");
+            strSql.Append("select ApproveNum,CreateDate,CreateById,CreateByName,ApplyRemark,IsPlanApprove,ApproveState,ApplyPartNum,ApplyCamId,ApplyToolName,ApplyWorkTime,ApplyToolLevel,ApplyOldToolBarCode,ApproveById,ApproveByName,ApproveDate,ApproveNewToolBarCode,ApproveRemark,Texture ");
             strSql.Append(" FROM w_approvelist ");
             if (strWhere.Trim() != "")
             {
@@ -343,7 +352,7 @@ namespace DTcms.DAL
             {
                 strSql.Append(" where " + strWhere);
             }
-            object obj = DbHelperMySql.GetSingle(strSql.ToString());
+            object obj = DbHelperSQL.GetSingle(strSql.ToString());
             if (obj == null)
             {
                 return 0;
@@ -386,13 +395,13 @@ namespace DTcms.DAL
 		public DataSet GetList(int PageSize,int PageIndex,string strWhere)
 		{
 			MySqlParameter[] parameters = {
-					new MySqlParameter("?tblName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("?fldName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("?PageSize", MySqlDbType.Int32),
-					new MySqlParameter("?PageIndex", MySqlDbType.Int32),
-					new MySqlParameter("?IsReCount", MySqlDbType.Bit),
-					new MySqlParameter("?OrderType", MySqlDbType.Bit),
-					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
+					new MySqlParameter("@tblName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("@fldName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("@PageSize", MySqlDbType.Int32),
+					new MySqlParameter("@PageIndex", MySqlDbType.Int32),
+					new MySqlParameter("@IsReCount", MySqlDbType.Bit),
+					new MySqlParameter("@OrderType", MySqlDbType.Bit),
+					new MySqlParameter("@strWhere", MySqlDbType.VarChar,1000),
 					};
 			parameters[0].Value = "w_approvelist";
 			parameters[1].Value = "ApproveNum";
@@ -410,4 +419,3 @@ namespace DTcms.DAL
         #endregion  ExtensionMethod
     }
 }
-

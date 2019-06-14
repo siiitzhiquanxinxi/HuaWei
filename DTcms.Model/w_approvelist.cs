@@ -18,6 +18,7 @@ namespace DTcms.Model
         private int? _isplanapprove;
         private int? _approvestate;
         private string _applypartnum;
+        private int? _applycamid;
         private string _applytoolname;
         private int? _applyworktime;
         private string _applytoollevel;
@@ -91,6 +92,14 @@ namespace DTcms.Model
         {
             set { _applypartnum = value; }
             get { return _applypartnum; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int? ApplyCamId
+        {
+            set { _applycamid = value; }
+            get { return _applycamid; }
         }
         /// <summary>
         /// 
