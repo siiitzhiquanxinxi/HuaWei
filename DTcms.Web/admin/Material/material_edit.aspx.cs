@@ -34,6 +34,46 @@ namespace DTcms.Web.admin.Material
                 {
                     ShowInfo(this.id);
                 }
+                if (action == DTEnums.ActionEnum.Add.ToString()) //新增
+                {
+                    //string sql = "select * from sy_material order by MaterialID desc";
+                    DataTable dt = bll.GetList("1=1 order by MaterialID desc").Tables[0];
+                    if(dt.Rows.Count==0)
+                    {
+                        this.txtMaterialID.Text = "000001";
+                    }
+                    else
+                    {
+                        int i = dt.Rows.Count;
+                        if (i <= 999999)
+                        {
+                            if (i < 10)
+                            {
+                                this.txtMaterialID.Text ="00000" + Convert.ToString(i);
+                            }
+                            else if (i >= 10 && i < 100)
+                            {
+                                this.txtMaterialID.Text = "0000" + Convert.ToString(i);
+                            }
+                            else if (i >= 100 && i < 1000)
+                            {
+                                this.txtMaterialID.Text = "000" + Convert.ToString(i);
+                            }
+                            else if (i >= 1000 && i < 10000)
+                            {
+                                this.txtMaterialID.Text = "00" + Convert.ToString(i);
+                            }
+                            else if (i >= 10000 && i < 100000)
+                            {
+                                this.txtMaterialID.Text = "0" + Convert.ToString(i);
+                            }
+                            else
+                            {
+                                this.txtMaterialID.Text =  Convert.ToString(i);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -53,6 +93,7 @@ namespace DTcms.Web.admin.Material
         {
             Model.sy_material model = bll.GetModel(_id);
             txtMaterialID.Text = model.MaterialID;
+            txtCode.Text = model.Code;
             txtMaterialName.Text = model.MaterialName;
             ddlMaterialType.SelectedValue = model.MaterialTypeID;
             txtBrand.Text = model.Brand;
@@ -175,6 +216,7 @@ namespace DTcms.Web.admin.Material
             if (!IsCheck()) return;
             DTcms.Model.sy_material model = new DTcms.Model.sy_material();
             model.MaterialID = txtMaterialID.Text.Trim();
+            model.Code = txtCode.Text.Trim();
             model.MaterialName = txtMaterialName.Text.Trim();
             model.MaterialTypeID = ddlMaterialType.SelectedValue;
             model.MaterialType = ddlMaterialType.SelectedItem.Text;
@@ -218,6 +260,7 @@ namespace DTcms.Web.admin.Material
 
         protected void btnSet_Click(object sender, EventArgs e)
         {
+            if(txtMaterialID.Text.Trim()!="")
             Response.Redirect("materialtexture_edit.aspx?MaterialID=" + this.txtMaterialID.Text.Trim());
         }
     }

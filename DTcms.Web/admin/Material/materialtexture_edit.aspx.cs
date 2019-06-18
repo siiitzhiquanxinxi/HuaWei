@@ -16,6 +16,11 @@ namespace DTcms.Web.admin.Material
             this.MaterialID = DTRequest.GetQueryString("MaterialID");
             if (!Page.IsPostBack)
             {
+                if (MaterialID=="")
+                {
+                    JscriptMsg("记录不存在或已被删除！", "back");
+                    return;
+                }
                 ManagerBind();
                 ShowInfo(this.MaterialID);
             }

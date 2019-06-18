@@ -40,11 +40,12 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sy_material(");
-            strSql.Append("MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime)");
+            strSql.Append("MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime)");
             strSql.Append(" values (");
-            strSql.Append("?MaterialID,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Deep,?Wide,?High,?Unit,?Supplier,?State,?Remark,?Pic,?Minimum,?TotalTime)");
+            strSql.Append("?MaterialID,?Code,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Deep,?Wide,?High,?Unit,?Supplier,?State,?Remark,?Pic,?Minimum,?TotalTime)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50),
+                    new MySqlParameter("?Code", MySqlDbType.VarChar,50),
                     new MySqlParameter("?MaterialName", MySqlDbType.VarChar,50),
                     new MySqlParameter("?MaterialTypeID", MySqlDbType.VarChar,50),
                     new MySqlParameter("?MaterialType", MySqlDbType.VarChar,50),
@@ -62,22 +63,23 @@ namespace DTcms.DAL
                     new MySqlParameter("?Minimum", MySqlDbType.Decimal,10),
                     new MySqlParameter("?TotalTime", MySqlDbType.Int32,10)};
             parameters[0].Value = model.MaterialID;
-            parameters[1].Value = model.MaterialName;
-            parameters[2].Value = model.MaterialTypeID;
-            parameters[3].Value = model.MaterialType;
-            parameters[4].Value = model.SystemNo;
-            parameters[5].Value = model.Brand;
-            parameters[6].Value = model.Spec;
-            parameters[7].Value = model.Deep;
-            parameters[8].Value = model.Wide;
-            parameters[9].Value = model.High;
-            parameters[10].Value = model.Unit;
-            parameters[11].Value = model.Supplier;
-            parameters[12].Value = model.State;
-            parameters[13].Value = model.Remark;
-            parameters[14].Value = model.Pic;
-            parameters[15].Value = model.Minimum;
-            parameters[16].Value = model.TotalTime;
+            parameters[1].Value = model.Code;
+            parameters[2].Value = model.MaterialName;
+            parameters[3].Value = model.MaterialTypeID;
+            parameters[4].Value = model.MaterialType;
+            parameters[5].Value = model.SystemNo;
+            parameters[6].Value = model.Brand;
+            parameters[7].Value = model.Spec;
+            parameters[8].Value = model.Deep;
+            parameters[9].Value = model.Wide;
+            parameters[10].Value = model.High;
+            parameters[11].Value = model.Unit;
+            parameters[12].Value = model.Supplier;
+            parameters[13].Value = model.State;
+            parameters[14].Value = model.Remark;
+            parameters[15].Value = model.Pic;
+            parameters[16].Value = model.Minimum;
+            parameters[17].Value = model.TotalTime;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -96,6 +98,7 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update sy_material set ");
+            strSql.Append("Code=?Code,");
             strSql.Append("MaterialName=?MaterialName,");
             strSql.Append("MaterialTypeID=?MaterialTypeID,");
             strSql.Append("MaterialType=?MaterialType,");
@@ -114,6 +117,7 @@ namespace DTcms.DAL
             strSql.Append("TotalTime=?TotalTime");
             strSql.Append(" where MaterialID=?MaterialID ");
             MySqlParameter[] parameters = {
+                    new MySqlParameter("?Code", MySqlDbType.VarChar,50),
                     new MySqlParameter("?MaterialName", MySqlDbType.VarChar,50),
                     new MySqlParameter("?MaterialTypeID", MySqlDbType.VarChar,50),
                     new MySqlParameter("?MaterialType", MySqlDbType.VarChar,50),
@@ -131,23 +135,24 @@ namespace DTcms.DAL
                     new MySqlParameter("?Minimum", MySqlDbType.Decimal,10),
                     new MySqlParameter("?TotalTime", MySqlDbType.Int32,10),
                     new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50)};
-            parameters[0].Value = model.MaterialName;
-            parameters[1].Value = model.MaterialTypeID;
-            parameters[2].Value = model.MaterialType;
-            parameters[3].Value = model.SystemNo;
-            parameters[4].Value = model.Brand;
-            parameters[5].Value = model.Spec;
-            parameters[6].Value = model.Deep;
-            parameters[7].Value = model.Wide;
-            parameters[8].Value = model.High;
-            parameters[9].Value = model.Unit;
-            parameters[10].Value = model.Supplier;
-            parameters[11].Value = model.State;
-            parameters[12].Value = model.Remark;
-            parameters[13].Value = model.Pic;
-            parameters[14].Value = model.Minimum;
-            parameters[15].Value = model.TotalTime;
-            parameters[16].Value = model.MaterialID;
+            parameters[0].Value = model.Code;
+            parameters[1].Value = model.MaterialName;
+            parameters[2].Value = model.MaterialTypeID;
+            parameters[3].Value = model.MaterialType;
+            parameters[4].Value = model.SystemNo;
+            parameters[5].Value = model.Brand;
+            parameters[6].Value = model.Spec;
+            parameters[7].Value = model.Deep;
+            parameters[8].Value = model.Wide;
+            parameters[9].Value = model.High;
+            parameters[10].Value = model.Unit;
+            parameters[11].Value = model.Supplier;
+            parameters[12].Value = model.State;
+            parameters[13].Value = model.Remark;
+            parameters[14].Value = model.Pic;
+            parameters[15].Value = model.Minimum;
+            parameters[16].Value = model.TotalTime;
+            parameters[17].Value = model.MaterialID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -210,7 +215,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime from sy_material ");
+            strSql.Append("select MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime from sy_material ");
             strSql.Append(" where MaterialID=?MaterialID ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50)           };
@@ -240,6 +245,10 @@ namespace DTcms.DAL
                 if (row["MaterialID"] != null)
                 {
                     model.MaterialID = row["MaterialID"].ToString();
+                }
+                if (row["Code"] != null)
+                {
+                    model.Code = row["Code"].ToString();
                 }
                 if (row["MaterialName"] != null)
                 {
@@ -293,7 +302,8 @@ namespace DTcms.DAL
                 {
                     model.Remark = row["Remark"].ToString();
                 }
-                model.Pic=(byte[])row["Pic"];
+                if (row["Pic"] != System.DBNull.Value)
+                    model.Pic=(byte[])row["Pic"];
                 if (row["Minimum"] != null && row["Minimum"].ToString() != "")
                 {
                     model.Minimum = decimal.Parse(row["Minimum"].ToString());
@@ -312,7 +322,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MaterialID,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime ");
+            strSql.Append("select MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime ");
             strSql.Append(" FROM sy_material ");
             if (strWhere.Trim() != "")
             {

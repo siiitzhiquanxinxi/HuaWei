@@ -50,7 +50,10 @@ namespace DTcms.Web.admin.Material
         {
             BLL.sy_material bll = new BLL.sy_material();
             Model.sy_material model = bll.GetModel(Id);
-            return new MemoryStream(model.Pic);
+            if (model.Pic != null)
+                return new MemoryStream(model.Pic);
+            else
+                return null;
         }
 
     }

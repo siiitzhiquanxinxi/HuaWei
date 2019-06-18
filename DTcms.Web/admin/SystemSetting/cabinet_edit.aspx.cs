@@ -128,7 +128,8 @@ namespace DTcms.Web.admin.SystemSetting
 
         protected void btnShelf_Click(object sender, EventArgs e)
         {
-            Response.Redirect("shelf_edit.aspx?CabinetNo="+this.txtCabinetNo.Text.Trim());
+            if (txtCabinetNo.Text.Trim() != "")
+                Response.Redirect("shelf_edit.aspx?CabinetNo="+this.txtCabinetNo.Text.Trim());
         }
     }
 }

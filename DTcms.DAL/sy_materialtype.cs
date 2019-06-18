@@ -40,12 +40,14 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sy_materialtype(");
-            strSql.Append("MaterialTypeName)");
+            strSql.Append("MaterialTypeName,Code)");
             strSql.Append(" values (");
-            strSql.Append("?MaterialTypeName)");
+            strSql.Append("?MaterialTypeName,?Code)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?MaterialTypeName", MySqlDbType.VarChar,255)};
+                    new MySqlParameter("?MaterialTypeName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Code", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.MaterialTypeName;
+            parameters[1].Value = model.Code;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -64,13 +66,16 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update sy_materialtype set ");
-            strSql.Append("MaterialTypeName=?MaterialTypeName");
+            strSql.Append("MaterialTypeName=?MaterialTypeName,");
+            strSql.Append("Code=?Code");
             strSql.Append(" where MaterialTypeID=?MaterialTypeID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?MaterialTypeName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Code", MySqlDbType.VarChar,255),
                     new MySqlParameter("?MaterialTypeID", MySqlDbType.Int32,11)};
             parameters[0].Value = model.MaterialTypeName;
-            parameters[1].Value = model.MaterialTypeID;
+            parameters[1].Value = model.Code;
+            parameters[2].Value = model.MaterialTypeID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -134,7 +139,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MaterialTypeID,MaterialTypeName from sy_materialtype ");
+            strSql.Append("select MaterialTypeID,MaterialTypeName,Code from sy_materialtype ");
             strSql.Append(" where MaterialTypeID=?MaterialTypeID");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?MaterialTypeID", MySqlDbType.Int32)
@@ -170,6 +175,10 @@ namespace DTcms.DAL
                 {
                     model.MaterialTypeName = row["MaterialTypeName"].ToString();
                 }
+                if (row["Code"] != null)
+                {
+                    model.Code = row["Code"].ToString();
+                }
             }
             return model;
         }
@@ -180,7 +189,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MaterialTypeID,MaterialTypeName ");
+            strSql.Append("select MaterialTypeID,MaterialTypeName,Code ");
             strSql.Append(" FROM sy_materialtype ");
             if (strWhere.Trim() != "")
             {
@@ -263,7 +272,20 @@ namespace DTcms.DAL
 
         #endregion  BasicMethod
         #region  ExtensionMethod
-
+        /// <summary>
+        /// 获得查询分页数据
+        /// </summary>
+        public DataSet GetList(int pageSize, int pageIndex, string strWhere, string filedOrder, out int recordCount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * FROM sy_materialtype");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            recordCount = Convert.ToInt32(DbHelperMySql.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            return DbHelperMySql.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), filedOrder));
+        }
         #endregion  ExtensionMethod
     }
 }

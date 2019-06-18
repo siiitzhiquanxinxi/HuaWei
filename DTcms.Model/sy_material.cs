@@ -15,6 +15,7 @@ namespace DTcms.Model
         { }
         #region Model
         private string _materialid;
+        private string _code;
         private string _materialname;
         private string _materialtypeid;
         private string _materialtype;
@@ -38,6 +39,14 @@ namespace DTcms.Model
         {
             set { _materialid = value; }
             get { return _materialid; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public string Code
+        {
+            set { _code = value; }
+            get { return _code; }
         }
         /// <summary>
         /// 

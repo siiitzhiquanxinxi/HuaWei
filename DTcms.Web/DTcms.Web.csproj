@@ -180,8 +180,14 @@
     <Content Include="admin\users\user_edit.aspx" />
     <Content Include="admin\users\user_list.aspx" />
     <Content Include="admin\users\user_sms.aspx" />
+    <Content Include="admin\Warehouse\approve_check.aspx" />
+    <Content Include="admin\Warehouse\approve_chek_list.aspx" />
+    <Content Include="admin\Warehouse\approve_list.aspx" />
     <Content Include="admin\Warehouse\barcode_edit.aspx" />
     <Content Include="admin\Warehouse\barcode_list.aspx" />
+    <Content Include="admin\Warehouse\choosebarcode.aspx" />
+    <Content Include="admin\Warehouse\choosematerial.aspx" />
+    <Content Include="admin\Warehouse\warehousenum_query.aspx" />
     <Content Include="api\oauth\feixin\index.aspx" />
     <Content Include="api\oauth\feixin\result_json.aspx" />
     <Content Include="api\oauth\feixin\return_url.aspx" />
@@ -1284,6 +1290,27 @@
     <Compile Include="admin\users\user_sms.aspx.designer.cs">
       <DependentUpon>user_sms.aspx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Warehouse\approve_check.aspx.cs">
+      <DependentUpon>approve_check.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\approve_check.aspx.designer.cs">
+      <DependentUpon>approve_check.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\approve_chek_list.aspx.cs">
+      <DependentUpon>approve_chek_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\approve_chek_list.aspx.designer.cs">
+      <DependentUpon>approve_chek_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\approve_list.aspx.cs">
+      <DependentUpon>approve_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\approve_list.aspx.designer.cs">
+      <DependentUpon>approve_list.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\Warehouse\barcode_edit.aspx.cs">
       <DependentUpon>barcode_edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1297,6 +1324,27 @@
     </Compile>
     <Compile Include="admin\Warehouse\barcode_list.aspx.designer.cs">
       <DependentUpon>barcode_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\choosebarcode.aspx.cs">
+      <DependentUpon>choosebarcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\choosebarcode.aspx.designer.cs">
+      <DependentUpon>choosebarcode.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\choosematerial.aspx.cs">
+      <DependentUpon>choosematerial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\choosematerial.aspx.designer.cs">
+      <DependentUpon>choosematerial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\warehousenum_query.aspx.cs">
+      <DependentUpon>warehousenum_query.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\warehousenum_query.aspx.designer.cs">
+      <DependentUpon>warehousenum_query.aspx</DependentUpon>
     </Compile>
     <Compile Include="api\oauth\feixin\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -1447,6 +1495,7 @@
     <Content Include="xmlconfig\urls.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="admin\Warehouse\Export\" />
     <Folder Include="html\" />
     <Folder Include="plugins\" />
     <Folder Include="upload\" />

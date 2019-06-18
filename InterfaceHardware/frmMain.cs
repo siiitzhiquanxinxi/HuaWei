@@ -5,12 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Configuration;
 using System.IO;
-using System.IO.Ports;
 using System.Net.Sockets;
 using System.Net;
 using System.Xml;
@@ -40,7 +38,7 @@ namespace InterfaceHardware
                 {
                     MessageBox.Show("Brandxml加载失败");
                     Writelog("Brandxml加载失败", "Load", "ErrLog.txt");
-                    TextBoxLog("Brandxml加载失败", "Load", true);
+                    //TextBoxLog("Brandxml加载失败", "Load", true);
                 }
                 bOpen();//打开控制板
                 TCPOpen();//启动TCP
@@ -114,7 +112,7 @@ namespace InterfaceHardware
                     int clientPort = (acceptSock.RemoteEndPoint as IPEndPoint).Port;
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        this.textBox1.Text += "客户端IP:" + clientIP.ToString() + "\r\n";
+                        this.textBox1.Text += "客户端IP:" + clientIP.ToString() ;
                     });
                     //客户端网络结点号  
                     string remoteEndPoint = acceptSock.RemoteEndPoint.ToString();
@@ -143,7 +141,7 @@ namespace InterfaceHardware
             {
                 frm.BeginInvoke((MethodInvoker)delegate
                 {
-                    frm.TextBoxLog(mes, "RecvMsg", false);
+                    //frm.TextBoxLog(mes, "RecvMsg", true);
                 });
             }
             public void setlog(string mes, frmMain frm)
@@ -157,7 +155,7 @@ namespace InterfaceHardware
             {
                 frm.BeginInvoke((MethodInvoker)delegate
                 {
-                    frm.Writelog(mes, "socket", "ErrLog.txt");
+                    frm.Writelog(mes, "RecvMsg", "ErrLog.txt");
                 });
             }
             //public void setstatustrip(string mes, frmMain frm)
@@ -220,8 +218,8 @@ namespace InterfaceHardware
                                 byte[] writearr = BrandCommand.GetState(box);
                                 ListCode.Add(NewByte[2], socketServer);
                                 frm.serialPort1.Write(writearr, 0, writearr.Length);
-                                frm.Writelog("发送串口命令:" + frm.ByteToString(writearr), "Load", "SystemLog.txt");
-                                frm.TextBoxLog("发送串口命令:" + frm.ByteToString(writearr), "Load", false);
+                                frm.Writelog("发送串口命令:" + frm.ByteToString(writearr), "RecvMsg", "SystemLog.txt");
+                                //frm.TextBoxLog("发送串口命令:" + frm.ByteToString(writearr), "RecvMsg", false);
                             }
                         }
                         //if (slist[0] == "$" && slist[slist.Length - 1] == "￥")//校验命令完整性
@@ -359,7 +357,7 @@ namespace InterfaceHardware
             }
             catch(Exception ex)
             {
-                TextBoxLog("控制板串口打开失败", "bOpen", false);
+                //TextBoxLog("控制板串口打开失败", "bOpen", false);
                 Writelog(ex.ToString(), "bOpen", "ErrLog.txt");
                 return;
             }
@@ -372,7 +370,7 @@ namespace InterfaceHardware
             }
             catch (Exception ex)
             {
-                TextBoxLog("控制板端口侦听错误", "bOpen", false);
+                //TextBoxLog("控制板端口侦听错误", "bOpen", false);
                 Writelog(ex.ToString(), "bOpen", "ErrLog.txt");
             }
         }
@@ -403,8 +401,8 @@ namespace InterfaceHardware
                     else
                     {
                         serialPort1.Read(result, 0, result.Length);
-                        Writelog("串口接收命令:" + ByteToString(result), "Load", "SystemLog.txt");
-                        TextBoxLog("串口接收命令:" + ByteToString(result), "Load", false);
+                        Writelog("串口接收命令:" + ByteToString(result), "ReadCommPort1", "SystemLog.txt");
+                        //TextBoxLog("串口接收命令:" + ByteToString(result), "ReadCommPort1", false);
                         BrandCommand.ResultData resultdata = new BrandCommand.ResultData();
                         if (ConfigurationManager.AppSettings["Brand"].Trim() == "HC")
                             resultdata = BrandCommand.HCResultAnalyse(result);
@@ -420,8 +418,9 @@ namespace InterfaceHardware
                                     {
                                         byte[] writearr = BrandCommand.OpenBox(resultdata.Box);//执行开门
                                         serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                         continue;
                                     }
                                     else if (resultdata.State == 0x31)//打开状态
@@ -435,8 +434,8 @@ namespace InterfaceHardware
                                         w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                     }
                                     else
                                     {
@@ -449,8 +448,8 @@ namespace InterfaceHardware
                                         w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                     }
                                 }
                                 else if (resultdata.Command == 0x47)//开门
@@ -466,17 +465,22 @@ namespace InterfaceHardware
                                         w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                         if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
                                         {
+
+                                            byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x32);//打开绿灯
+                                            serialPort1.Write(writearr, 0, writearr.Length);
+                                            Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
                                             ledtime = Convert.ToInt32(ConfigurationManager.AppSettings["LedTime"].Trim());
                                             //timLED.Enabled = true;
                                             a.settimLED(frm,true);
-                                            byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);
+                                            Thread.Sleep(500);
+                                            writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);
                                             serialPort1.Write(writearr, 0, writearr.Length);
-                                            Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                            TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                            Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                            //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                             Thread.Sleep(500);
                                             continue;
                                         }
@@ -493,8 +497,8 @@ namespace InterfaceHardware
                                         w[5] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                     }
                                 }
                             }
@@ -504,23 +508,27 @@ namespace InterfaceHardware
                                 {
                                     if (resultdata.State == 0x31 && ledtime < 0)//打开状态且超时
                                     {
-                                        byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x31, resultdata.CardAddr);//打开红灯
+                                        byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭所有灯
                                         serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        Thread.Sleep(500);
+                                        writearr = BrandCommand.LEDControl(resultdata.Box, 0x31, resultdata.CardAddr);//打开红灯
+                                        serialPort1.Write(writearr, 0, writearr.Length);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                         Thread.Sleep(500);
                                         writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询
                                         serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                         Thread.Sleep(500);
                                     }
                                     else if (resultdata.State == 0x31 && ledtime >= 0)//打开状态未超时
                                     {
                                             byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询
                                             serialPort1.Write(writearr, 0, writearr.Length);
-                                            Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                            TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                            Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                            //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                             Thread.Sleep(500);
                                         if (!timLED.Enabled)
                                         {
@@ -534,8 +542,8 @@ namespace InterfaceHardware
                                         a.settimLED(frm, false);
                                         byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭红灯
                                         serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                         Thread.Sleep(500);
                                     }
                                 }
@@ -552,8 +560,8 @@ namespace InterfaceHardware
                                     {
                                         byte[] writearr = BrandCommand.OpenBox(resultdata.Box);//执行开门
                                         serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                         return;
                                     }
                                     else if (resultdata.State == 0x11)//打开状态
@@ -566,8 +574,8 @@ namespace InterfaceHardware
                                         w[4] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                     }
                                     else
                                     {
@@ -579,8 +587,8 @@ namespace InterfaceHardware
                                         w[4] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                     }
                                 }
                                 else if (resultdata.Command == 0x8A)//开门
@@ -595,8 +603,8 @@ namespace InterfaceHardware
                                         w[4] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                         if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
                                         {
                                             ledtime = Convert.ToInt32(ConfigurationManager.AppSettings["LedTime"].Trim());
@@ -615,8 +623,8 @@ namespace InterfaceHardware
                                         w[4] = 0xFF;
                                         ListCode[resultdata.Box].Send(w);
                                         ListCode.Remove(resultdata.Box);
-                                        Writelog("TCP回复命令:" + ByteToString(w), "Load", "SystemLog.txt");
-                                        TextBoxLog("TCP回复命令:" + ByteToString(w), "Load", false);
+                                        Writelog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
                                     }
                                 }
                             }
@@ -629,15 +637,15 @@ namespace InterfaceHardware
                                         byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x31, resultdata.CardAddr);//打开红灯
                                         serialPort1.Write(writearr, 0, writearr.Length);
                                         Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
                                         Thread.Sleep(500);
                                     }
                                     else if (resultdata.State == 0x11 && ledtime >= 0)//打开状态未超时
                                     {
                                         byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);
                                         serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr), "Load", "SystemLog.txt");
-                                        TextBoxLog("发送串口命令:" + ByteToString(writearr), "Load", false);
+                                        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
                                         Thread.Sleep(500);
                                     }
                                     else if (resultdata.State == 0x00)//关闭状态
@@ -655,7 +663,7 @@ namespace InterfaceHardware
             }
             catch (Exception ex)
             {
-                TextBoxLog("控制板通讯错误", "ReadCommPort1", false);
+                //TextBoxLog("控制板通讯错误", "ReadCommPort1", false);
                 Writelog(ex.ToString(), "ReadCommPort1", "ErrLog.txt");
                 //ReadComMachine.Abort();
                 //this.serialPort1.Close();

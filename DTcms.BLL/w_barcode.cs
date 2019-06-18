@@ -74,6 +74,13 @@ namespace DTcms.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
+        public DataSet GetListWithCabinetNo(string strWhere)
+        {
+            return dal.GetListWithCabinetNo(strWhere);
+        }
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
         public List<DTcms.Model.w_barcode> GetModelList(string strWhere)
         {
             DataSet ds = dal.GetList(strWhere);

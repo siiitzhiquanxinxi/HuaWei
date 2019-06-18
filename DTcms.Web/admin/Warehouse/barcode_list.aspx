@@ -36,7 +36,7 @@
       <div class="l-list">
         <ul class="icon-list">
           <li><a class="add" href="barcode_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>"><i></i><span>新增</span></a></li>
-          <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
+          <%--<li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>--%>
           <%--<li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>--%>
         </ul>
       </div>
@@ -56,14 +56,14 @@
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
     <tr>
       <%--<th width="8%">选择</th>--%>
-      <th align="left" width="10%">批号</th>
-      <th align="left" width="8%">刀具编号</th>
-      <th align="left" width="8%">刀具名称</th>
-      <th align="left" width="8%">刀具分类</th>
-      <th align="left" width="8%">品牌</th>
-      <th align="left" width="10%">规格</th>
-      <th align="left" width="5%">单位</th>
-      <th align="left" width="8%">数量</th>
+      <th align="center" width="10%">批号</th>
+      <th align="center" width="8%">刀具编号</th>
+      <th align="center" width="8%">刀具名称</th>
+      <th align="center" width="8%">刀具分类</th>
+      <th align="center" width="8%">品牌</th>
+      <th align="center" width="10%">规格</th>
+      <th align="center" width="5%">单位</th>
+      <th align="center" width="8%">数量</th>
       <th width="8%">操作</th>
     </tr>
   </HeaderTemplate>
@@ -73,15 +73,20 @@
         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
         <asp:HiddenField ID="hidId" Value='<%#Eval("BatchNumber")%>' runat="server" />
       </td>--%>
-      <td><%# Eval("BatchNumber") %></td>
-      <td><%# Eval("MaterialID") %></td>
-      <td><%# Eval("MaterialName") %></td>
-      <td><%# Eval("MaterialType") %></td>
-      <td><%# Eval("Brand") %></td>
-        <td><%# Eval("Spec") %></td>
-        <td><%# Eval("Unit") %></td>
-        <td><%# Eval("Num") %></td>
-      <td align="center"><a href="barcode_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&BatchNumber=<%#Eval("BatchNumber")%>">修改</a></td>
+      <td align="center"><%# Eval("BatchNumber") %></td>
+      <td align="center"><%# Eval("MaterialID") %></td>
+      <td align="center"><%# Eval("MaterialName") %></td>
+      <td align="center"><%# Eval("MaterialType") %></td>
+      <td align="center"><%# Eval("Brand") %></td>
+        <td align="center"><%# Eval("Spec") %></td>
+        <td align="center"><%# Eval("Unit") %></td>
+        <td align="center"><%# Eval("Num") %></td>
+      <td align="center">
+          <%--<a href="barcode_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&BatchNumber=<%#Eval("BatchNumber")%>">修改</a>--%>
+              <asp:LinkButton ID="lbtnExport" runat="server" CommandArgument='<%#Eval("BatchNumber") %>' OnClick="lbtnExport_Click">导出</asp:LinkButton>
+              <asp:LinkButton ID="lbtnDel" runat="server" CommandArgument='<%#Eval("BatchNumber") %>' OnClick="lbtnDel_Click">删除</asp:LinkButton>
+      </td>
+        
     </tr>
   </ItemTemplate>
   <FooterTemplate>
@@ -95,12 +100,12 @@
 <!--内容底部-->
 <div class="line20"></div>
 <div class="pagelist">
-  <div class="l-btns">
+  <%--<div class="l-btns">
     <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);"
                 OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>
   </div>
-  <div id="PageContent" runat="server" class="default"></div>
-</div>
+ <div id="PageContent" runat="server" class="default"></div>
+</div>--%>
 <!--/内容底部-->
 </form>
 </body>
