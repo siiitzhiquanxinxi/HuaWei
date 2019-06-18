@@ -16,6 +16,7 @@ namespace DTcms.Model
         #region Model
         private int _materialtypeid;
         private string _materialtypename;
+        private string _code;
         /// <summary>
         /// auto_increment
         /// </summary>
@@ -31,6 +32,14 @@ namespace DTcms.Model
         {
             set { _materialtypename = value; }
             get { return _materialtypename; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public string Code
+        {
+            set { _code = value; }
+            get { return _code; }
         }
         #endregion Model
 

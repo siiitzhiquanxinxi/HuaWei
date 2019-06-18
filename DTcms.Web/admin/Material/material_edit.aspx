@@ -72,7 +72,11 @@
 <div class="tab-content">
   <dl>
     <dt>刀具编号</dt>
-    <dd><asp:TextBox ID="txtMaterialID" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox> <span class="Validform_checktip">*</span></dd>
+    <dd><asp:TextBox ID="txtMaterialID" runat="server" CssClass="input normal"  sucmsg=" " Enabled="False"></asp:TextBox> <span class="Validform_checktip">*</span></dd>
+  </dl> 
+    <dl>
+    <dt>条码生成前缀</dt>
+    <dd><asp:TextBox ID="txtCode" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox> <span class="Validform_checktip">*</span></dd>
   </dl> 
   <dl>
     <dt>刀具名称</dt>

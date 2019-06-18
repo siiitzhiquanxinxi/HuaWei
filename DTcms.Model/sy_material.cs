@@ -15,6 +15,7 @@ namespace DTcms.Model
         { }
         #region Model
         private string _materialid;
+        private string _code;
         private string _materialname;
         private string _materialtypeid;
         private string _materialtype;
@@ -31,6 +32,7 @@ namespace DTcms.Model
         private byte[] _pic;
         private decimal? _minimum;
         private int? _totaltime;
+        private int? _iscanrepair;
         /// <summary>
         /// 
         /// </summary>
@@ -38,6 +40,14 @@ namespace DTcms.Model
         {
             set { _materialid = value; }
             get { return _materialid; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public string Code
+        {
+            set { _code = value; }
+            get { return _code; }
         }
         /// <summary>
         /// 
@@ -166,6 +176,14 @@ namespace DTcms.Model
         {
             set { _totaltime = value; }
             get { return _totaltime; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public int? IsCanRepair
+        {
+            set { _iscanrepair = value; }
+            get { return _iscanrepair; }
         }
         #endregion Model
 
