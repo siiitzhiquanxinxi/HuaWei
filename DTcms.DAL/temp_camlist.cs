@@ -21,9 +21,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select count(1) from temp_camlist");
-            strSql.Append(" where Id=@Id");
+            strSql.Append(" where Id=?Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("@Id", MySqlDbType.Int32)
+                    new MySqlParameter("?Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -40,18 +40,18 @@ namespace DTcms.DAL
             strSql.Append("insert into temp_camlist(");
             strSql.Append("PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode,ToolDiam,ToolHandle,ToolLong,Remark)");
             strSql.Append(" values (");
-            strSql.Append("@PartNum,@ToolName,@WorkTime,@ToolLevel,@ToolReadyState,@ToolBarCode,@ToolDiam,@ToolHandle,@ToolLong,@Remark)");
+            strSql.Append("?PartNum,?ToolName,?WorkTime,?ToolLevel,?ToolReadyState,?ToolBarCode,?ToolDiam,?ToolHandle,?ToolLong,?Remark)");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("@PartNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@WorkTime", MySqlDbType.Int32,11),
-                    new MySqlParameter("@ToolLevel", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolReadyState", MySqlDbType.Int32,11),
-                    new MySqlParameter("@ToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolDiam", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolHandle", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolLong", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@Remark", MySqlDbType.VarChar,255)};
+                    new MySqlParameter("?PartNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?WorkTime", MySqlDbType.Int32,11),
+                    new MySqlParameter("?ToolLevel", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolReadyState", MySqlDbType.Int32,11),
+                    new MySqlParameter("?ToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolDiam", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolHandle", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolLong", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Remark", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.PartNum;
             parameters[1].Value = model.ToolName;
             parameters[2].Value = model.WorkTime;
@@ -80,29 +80,29 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update temp_camlist set ");
-            strSql.Append("PartNum=@PartNum,");
-            strSql.Append("ToolName=@ToolName,");
-            strSql.Append("WorkTime=@WorkTime,");
-            strSql.Append("ToolLevel=@ToolLevel,");
-            strSql.Append("ToolReadyState=@ToolReadyState,");
-            strSql.Append("ToolBarCode=@ToolBarCode,");
-            strSql.Append("ToolDiam=@ToolDiam,");
-            strSql.Append("ToolHandle=@ToolHandle,");
-            strSql.Append("ToolLong=@ToolLong,");
-            strSql.Append("Remark=@Remark");
-            strSql.Append(" where Id=@Id");
+            strSql.Append("PartNum=?PartNum,");
+            strSql.Append("ToolName=?ToolName,");
+            strSql.Append("WorkTime=?WorkTime,");
+            strSql.Append("ToolLevel=?ToolLevel,");
+            strSql.Append("ToolReadyState=?ToolReadyState,");
+            strSql.Append("ToolBarCode=?ToolBarCode,");
+            strSql.Append("ToolDiam=?ToolDiam,");
+            strSql.Append("ToolHandle=?ToolHandle,");
+            strSql.Append("ToolLong=?ToolLong,");
+            strSql.Append("Remark=?Remark");
+            strSql.Append(" where Id=?Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("@PartNum", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@WorkTime", MySqlDbType.Int32,11),
-                    new MySqlParameter("@ToolLevel", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolReadyState", MySqlDbType.Int32,11),
-                    new MySqlParameter("@ToolBarCode", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolDiam", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolHandle", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@ToolLong", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@Remark", MySqlDbType.VarChar,255),
-                    new MySqlParameter("@Id", MySqlDbType.Int32,11)};
+                    new MySqlParameter("?PartNum", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolName", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?WorkTime", MySqlDbType.Int32,11),
+                    new MySqlParameter("?ToolLevel", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolReadyState", MySqlDbType.Int32,11),
+                    new MySqlParameter("?ToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolDiam", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolHandle", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ToolLong", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Remark", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?Id", MySqlDbType.Int32,11)};
             parameters[0].Value = model.PartNum;
             parameters[1].Value = model.ToolName;
             parameters[2].Value = model.WorkTime;
@@ -134,9 +134,9 @@ namespace DTcms.DAL
 
             StringBuilder strSql = new StringBuilder();
             strSql.Append("delete from temp_camlist ");
-            strSql.Append(" where Id=@Id");
+            strSql.Append(" where Id=?Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("@Id", MySqlDbType.Int32)
+                    new MySqlParameter("?Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -178,9 +178,9 @@ namespace DTcms.DAL
 
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select Id,PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode,ToolDiam,ToolHandle,ToolLong,Remark from temp_camlist ");
-            strSql.Append(" where Id=@Id");
+            strSql.Append(" where Id=?Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("@Id", MySqlDbType.Int32)
+                    new MySqlParameter("?Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -322,13 +322,13 @@ namespace DTcms.DAL
 		public DataSet GetList(int PageSize,int PageIndex,string strWhere)
 		{
 			MySqlParameter[] parameters = {
-					new MySqlParameter("@tblName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("@fldName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("@PageSize", MySqlDbType.Int32),
-					new MySqlParameter("@PageIndex", MySqlDbType.Int32),
-					new MySqlParameter("@IsReCount", MySqlDbType.Bit),
-					new MySqlParameter("@OrderType", MySqlDbType.Bit),
-					new MySqlParameter("@strWhere", MySqlDbType.VarChar,1000),
+					new MySqlParameter("?tblName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("?fldName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("?PageSize", MySqlDbType.Int32),
+					new MySqlParameter("?PageIndex", MySqlDbType.Int32),
+					new MySqlParameter("?IsReCount", MySqlDbType.Bit),
+					new MySqlParameter("?OrderType", MySqlDbType.Bit),
+					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
 					};
 			parameters[0].Value = "temp_camlist";
 			parameters[1].Value = "Id";

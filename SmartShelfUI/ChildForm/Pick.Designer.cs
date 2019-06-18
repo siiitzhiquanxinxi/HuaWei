@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pick));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel_shelf = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
@@ -44,17 +44,9 @@
             this.btnDisPick2 = new System.Windows.Forms.Button();
             this.btnDisPick1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnCancelCAM = new System.Windows.Forms.Button();
             this.panel_CAM = new System.Windows.Forms.Panel();
             this.dgvCamList = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel_order = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnCancelCAM = new System.Windows.Forms.Button();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,6 +55,15 @@
             this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_order = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnRefreshOrder = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
@@ -176,6 +177,22 @@
             this.panel2.Size = new System.Drawing.Size(704, 755);
             this.panel2.TabIndex = 1;
             // 
+            // btnCancelCAM
+            // 
+            this.btnCancelCAM.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnCancelCAM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCancelCAM.FlatAppearance.BorderSize = 0;
+            this.btnCancelCAM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelCAM.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCancelCAM.ForeColor = System.Drawing.Color.Transparent;
+            this.btnCancelCAM.Location = new System.Drawing.Point(242, 672);
+            this.btnCancelCAM.Name = "btnCancelCAM";
+            this.btnCancelCAM.Size = new System.Drawing.Size(200, 48);
+            this.btnCancelCAM.TabIndex = 5;
+            this.btnCancelCAM.Text = "取消CAM";
+            this.btnCancelCAM.UseVisualStyleBackColor = true;
+            this.btnCancelCAM.Click += new System.EventHandler(this.btnCancelCAM_Click);
+            // 
             // panel_CAM
             // 
             this.panel_CAM.AutoScroll = true;
@@ -208,10 +225,86 @@
             this.dgvCamList.Size = new System.Drawing.Size(622, 621);
             this.dgvCamList.TabIndex = 0;
             // 
+            // ID
+            // 
+            this.ID.DataPropertyName = "Id";
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // PartNum
+            // 
+            this.PartNum.DataPropertyName = "PartNum";
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.PartNum.DefaultCellStyle = dataGridViewCellStyle8;
+            this.PartNum.HeaderText = "零件号";
+            this.PartNum.Name = "PartNum";
+            this.PartNum.ReadOnly = true;
+            // 
+            // ToolName
+            // 
+            this.ToolName.DataPropertyName = "ToolName";
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ToolName.DefaultCellStyle = dataGridViewCellStyle9;
+            this.ToolName.HeaderText = "刀具名称";
+            this.ToolName.Name = "ToolName";
+            this.ToolName.ReadOnly = true;
+            // 
+            // WorkTime
+            // 
+            this.WorkTime.DataPropertyName = "WorkTime";
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.WorkTime.DefaultCellStyle = dataGridViewCellStyle10;
+            this.WorkTime.HeaderText = "加工时间";
+            this.WorkTime.Name = "WorkTime";
+            this.WorkTime.ReadOnly = true;
+            this.WorkTime.Width = 80;
+            // 
+            // ToolLevel
+            // 
+            this.ToolLevel.DataPropertyName = "ToolLevel";
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.ToolLevel.DefaultCellStyle = dataGridViewCellStyle11;
+            this.ToolLevel.HeaderText = "刀具等级";
+            this.ToolLevel.Name = "ToolLevel";
+            this.ToolLevel.ReadOnly = true;
+            this.ToolLevel.Width = 90;
+            // 
+            // CabinetNo
+            // 
+            this.CabinetNo.DataPropertyName = "FK_CabinetNo";
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle12;
+            this.CabinetNo.HeaderText = "柜号";
+            this.CabinetNo.Name = "CabinetNo";
+            this.CabinetNo.ReadOnly = true;
+            this.CabinetNo.Width = 60;
+            // 
+            // BoxNo
+            // 
+            this.BoxNo.DataPropertyName = "BoxNo";
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle13;
+            this.BoxNo.HeaderText = "抽屉号";
+            this.BoxNo.Name = "BoxNo";
+            this.BoxNo.ReadOnly = true;
+            this.BoxNo.Width = 70;
+            // 
+            // ToolReadyState
+            // 
+            this.ToolReadyState.DataPropertyName = "ToolReadyState";
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.ToolReadyState.DefaultCellStyle = dataGridViewCellStyle14;
+            this.ToolReadyState.HeaderText = "备料状态";
+            this.ToolReadyState.Name = "ToolReadyState";
+            this.ToolReadyState.ReadOnly = true;
+            // 
             // panel1
             // 
             this.panel1.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.btnRefreshOrder);
             this.panel1.Controls.Add(this.panel_order);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
@@ -304,96 +397,21 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "零件号";
             // 
-            // btnCancelCAM
+            // btnRefreshOrder
             // 
-            this.btnCancelCAM.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
-            this.btnCancelCAM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCancelCAM.FlatAppearance.BorderSize = 0;
-            this.btnCancelCAM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelCAM.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCancelCAM.ForeColor = System.Drawing.Color.Transparent;
-            this.btnCancelCAM.Location = new System.Drawing.Point(242, 672);
-            this.btnCancelCAM.Name = "btnCancelCAM";
-            this.btnCancelCAM.Size = new System.Drawing.Size(200, 48);
-            this.btnCancelCAM.TabIndex = 5;
-            this.btnCancelCAM.Text = "取消CAM";
-            this.btnCancelCAM.UseVisualStyleBackColor = true;
-            this.btnCancelCAM.Click += new System.EventHandler(this.btnCancelCAM_Click);
-            // 
-            // ID
-            // 
-            this.ID.DataPropertyName = "Id";
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Visible = false;
-            // 
-            // PartNum
-            // 
-            this.PartNum.DataPropertyName = "PartNum";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.PartNum.DefaultCellStyle = dataGridViewCellStyle1;
-            this.PartNum.HeaderText = "零件号";
-            this.PartNum.Name = "PartNum";
-            this.PartNum.ReadOnly = true;
-            // 
-            // ToolName
-            // 
-            this.ToolName.DataPropertyName = "ToolName";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ToolName.DefaultCellStyle = dataGridViewCellStyle2;
-            this.ToolName.HeaderText = "刀具名称";
-            this.ToolName.Name = "ToolName";
-            this.ToolName.ReadOnly = true;
-            // 
-            // WorkTime
-            // 
-            this.WorkTime.DataPropertyName = "WorkTime";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.WorkTime.DefaultCellStyle = dataGridViewCellStyle3;
-            this.WorkTime.HeaderText = "加工时间";
-            this.WorkTime.Name = "WorkTime";
-            this.WorkTime.ReadOnly = true;
-            this.WorkTime.Width = 80;
-            // 
-            // ToolLevel
-            // 
-            this.ToolLevel.DataPropertyName = "ToolLevel";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.ToolLevel.DefaultCellStyle = dataGridViewCellStyle4;
-            this.ToolLevel.HeaderText = "刀具等级";
-            this.ToolLevel.Name = "ToolLevel";
-            this.ToolLevel.ReadOnly = true;
-            this.ToolLevel.Width = 90;
-            // 
-            // CabinetNo
-            // 
-            this.CabinetNo.DataPropertyName = "FK_CabinetNo";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle5;
-            this.CabinetNo.HeaderText = "柜号";
-            this.CabinetNo.Name = "CabinetNo";
-            this.CabinetNo.ReadOnly = true;
-            this.CabinetNo.Width = 60;
-            // 
-            // BoxNo
-            // 
-            this.BoxNo.DataPropertyName = "BoxNo";
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle6;
-            this.BoxNo.HeaderText = "抽屉号";
-            this.BoxNo.Name = "BoxNo";
-            this.BoxNo.ReadOnly = true;
-            this.BoxNo.Width = 70;
-            // 
-            // ToolReadyState
-            // 
-            this.ToolReadyState.DataPropertyName = "ToolReadyState";
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.ToolReadyState.DefaultCellStyle = dataGridViewCellStyle7;
-            this.ToolReadyState.HeaderText = "备料状态";
-            this.ToolReadyState.Name = "ToolReadyState";
-            this.ToolReadyState.ReadOnly = true;
+            this.btnRefreshOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+            this.btnRefreshOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefreshOrder.FlatAppearance.BorderSize = 0;
+            this.btnRefreshOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshOrder.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRefreshOrder.ForeColor = System.Drawing.Color.Transparent;
+            this.btnRefreshOrder.Location = new System.Drawing.Point(213, 675);
+            this.btnRefreshOrder.Name = "btnRefreshOrder";
+            this.btnRefreshOrder.Size = new System.Drawing.Size(200, 39);
+            this.btnRefreshOrder.TabIndex = 6;
+            this.btnRefreshOrder.Text = "刷  新";
+            this.btnRefreshOrder.UseVisualStyleBackColor = true;
+            this.btnRefreshOrder.Click += new System.EventHandler(this.btnRefreshOrder_Click);
             // 
             // Pick
             // 
@@ -451,5 +469,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CabinetNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn BoxNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToolReadyState;
+        private System.Windows.Forms.Button btnRefreshOrder;
     }
 }

@@ -27,7 +27,6 @@ namespace SmartShelfUI.ChildForm
                 lblPalnWorkPlan.Text = Convert.ToDateTime(plan.PlanWorkTime).ToString("yyyy年MM月dd日 HH:mm");
                 lblNowTime.Text = DateTime.Now.ToString("yyyy年MM月dd日 HH:mm");
             }
-
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -55,6 +54,16 @@ namespace SmartShelfUI.ChildForm
                     item.ToolReadyState = 0;
                     item.ToolBarCode = "";
                     new DTcms.BLL.temp_camlist().Update(item);
+                    if (!string.IsNullOrEmpty(item.ToolBarCode))
+                    {
+                        DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(item.ToolBarCode);
+                        if (tool.State == 4)
+                        {
+                            tool.State = 1;
+                            new DTcms.BLL.w_barcode().Update(tool);
+                        }
+                    }
+
                 }
                 this.DialogResult = DialogResult.OK;
                 this.Close();
