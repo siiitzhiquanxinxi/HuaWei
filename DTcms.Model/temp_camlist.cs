@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace DTcms.Model
 {
     /// <summary>
-	/// temp_camlist:实体类(属性说明自动提取数据库字段的描述信息)
-	/// </summary>
-	[Serializable]
+    /// temp_camlist:实体类(属性说明自动提取数据库字段的描述信息)
+    /// </summary>
+    [Serializable]
     public partial class temp_camlist
     {
         public temp_camlist()
@@ -21,6 +17,10 @@ namespace DTcms.Model
         private string _toollevel;
         private int? _toolreadystate;
         private string _toolbarcode;
+        private string _tooldiam;
+        private string _toolhandle;
+        private string _toollong;
+        private string _remark;
         /// <summary>
         /// auto_increment
         /// </summary>
@@ -77,7 +77,40 @@ namespace DTcms.Model
             set { _toolbarcode = value; }
             get { return _toolbarcode; }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ToolDiam
+        {
+            set { _tooldiam = value; }
+            get { return _tooldiam; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ToolHandle
+        {
+            set { _toolhandle = value; }
+            get { return _toolhandle; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ToolLong
+        {
+            set { _toollong = value; }
+            get { return _toollong; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Remark
+        {
+            set { _remark = value; }
+            get { return _remark; }
+        }
         #endregion Model
 
     }
 }
+

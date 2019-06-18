@@ -54,6 +54,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnCancelCAM = new System.Windows.Forms.Button();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -167,6 +169,7 @@
             // 
             this.panel2.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel2.Controls.Add(this.btnCancelCAM);
             this.panel2.Controls.Add(this.panel_CAM);
             this.panel2.Location = new System.Drawing.Point(690, 13);
             this.panel2.Name = "panel2";
@@ -188,6 +191,7 @@
             this.dgvCamList.AllowUserToDeleteRows = false;
             this.dgvCamList.ColumnHeadersHeight = 40;
             this.dgvCamList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
             this.PartNum,
             this.ToolName,
             this.WorkTime,
@@ -200,6 +204,7 @@
             this.dgvCamList.Name = "dgvCamList";
             this.dgvCamList.ReadOnly = true;
             this.dgvCamList.RowTemplate.Height = 40;
+            this.dgvCamList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCamList.Size = new System.Drawing.Size(622, 621);
             this.dgvCamList.TabIndex = 0;
             // 
@@ -298,6 +303,30 @@
             this.label1.Size = new System.Drawing.Size(58, 22);
             this.label1.TabIndex = 0;
             this.label1.Text = "零件号";
+            // 
+            // btnCancelCAM
+            // 
+            this.btnCancelCAM.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnCancelCAM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCancelCAM.FlatAppearance.BorderSize = 0;
+            this.btnCancelCAM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelCAM.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCancelCAM.ForeColor = System.Drawing.Color.Transparent;
+            this.btnCancelCAM.Location = new System.Drawing.Point(242, 672);
+            this.btnCancelCAM.Name = "btnCancelCAM";
+            this.btnCancelCAM.Size = new System.Drawing.Size(200, 48);
+            this.btnCancelCAM.TabIndex = 5;
+            this.btnCancelCAM.Text = "取消CAM";
+            this.btnCancelCAM.UseVisualStyleBackColor = true;
+            this.btnCancelCAM.Click += new System.EventHandler(this.btnCancelCAM_Click);
+            // 
+            // ID
+            // 
+            this.ID.DataPropertyName = "Id";
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
             // 
             // PartNum
             // 
@@ -413,6 +442,8 @@
         private System.Windows.Forms.Panel panel_shelf;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.DataGridView dgvCamList;
+        private System.Windows.Forms.Button btnCancelCAM;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn PartNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToolName;
         private System.Windows.Forms.DataGridViewTextBoxColumn WorkTime;

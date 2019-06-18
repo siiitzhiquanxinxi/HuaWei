@@ -45,6 +45,8 @@ namespace SmartShelfUI
         ChildForm.DisPick_UnPlan frmDisPick_UnPlan = null;
         ChildForm.Warehousing frmWarehousing = null;
         ChildForm.Userscard frmUserscard = null;
+        ChildForm.Repair frmRepair = null;
+        ChildForm.Stock frmStock = null;
         void showFormLogin()
         {
             if (frmPick != null)
@@ -132,6 +134,16 @@ namespace SmartShelfUI
                 frmUserscard.Close();
                 frmUserscard = null;
             }
+            if (frmStock != null)
+            {
+                frmStock.Close();
+                frmStock = null;
+            }
+            if (frmRepair != null)
+            {
+                frmRepair.Close();
+                frmRepair = null;
+            }
             frmMenu = new ChildForm.Menu();
             frmMenu.nextForm_return += new ChildForm.Menu.FormHandle(showFormReturn);
             frmMenu.nextForm_repair += new ChildForm.Menu.FormHandle(showFormRepair);
@@ -189,7 +201,15 @@ namespace SmartShelfUI
         }
         void showFormRepair()
         {
-            MessageBox.Show("1");
+            if (frmMenu != null)
+            {
+                frmMenu.Close();
+                frmMenu = null;
+            }
+            frmRepair = new ChildForm.Repair();
+            frmRepair.TopLevel = false;
+            panel_content.Controls.Add(frmRepair);
+            frmRepair.Show();
             btnBack.Visible = true;
         }
         void showFormUsers()
@@ -221,7 +241,15 @@ namespace SmartShelfUI
         }
         void showFormStock()
         {
-            MessageBox.Show("4");
+            if (frmMenu != null)
+            {
+                frmMenu.Close();
+                frmMenu = null;
+            }
+            frmStock = new ChildForm.Stock();
+            frmStock.TopLevel = false;
+            panel_content.Controls.Add(frmStock);
+            frmStock.Show();
             btnBack.Visible = true;
         }
         void showFormWeb()

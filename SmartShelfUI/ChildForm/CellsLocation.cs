@@ -21,6 +21,7 @@ namespace SmartShelfUI.ChildForm
         }
         public int ShelfID;
         public string PartNum;
+        string BarCode = "";
         public List<string> lstSelected;
 
         private string inoutID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
@@ -31,9 +32,14 @@ namespace SmartShelfUI.ChildForm
             if (!spCom.IsOpen)
             {
                 try
-                { spCom.Open(); }
+                {
+                    spCom.Open();
+                    spCom.Write("LON\r\n");
+                }
                 catch
-                { MessageBox.Show("串口打开失败！"); }
+                {
+                    MessageBox.Show("串口打开失败！");
+                }
             }
             DTcms.Model.sy_shelf shelf = new DTcms.BLL.sy_shelf().GetModel(ShelfID);
             if (shelf != null)
@@ -47,10 +53,12 @@ namespace SmartShelfUI.ChildForm
                         Button b = new Button();
                         b.FlatAppearance.BorderSize = 0;
                         b.FlatStyle = FlatStyle.Flat;
-                        b.Location = new Point(30 + 70 * i, 30 + 70 * j);
-                        b.Size = new Size(60, 60);
-                        b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
-                        b.Font = new Font("微软雅黑", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                        b.Location = new Point(20 + 65 * i, 20 + 55 * j);
+                        b.Size = new Size(55, 45);
+                        b.Tag = (i + 1).ToString() + "-" + (j + 1).ToString();
+                        //b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                        b.Text = (j * x + i + 1).ToString();
+                        b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
                         b.BackColor = SystemColors.ControlDark;
                         foreach (string item in lstSelected)
                         {
@@ -77,11 +85,25 @@ namespace SmartShelfUI.ChildForm
             Thread.Sleep(300);
             try
             {
+                string receive_str = "";
                 byte[] result = new byte[8];
                 int rLength = spCom.Read(result, 0, result.Length);
                 if (rLength >= 8)
                 {
-                    string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    //string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    foreach (byte item in result)
+                    {
+                        receive_str += Convert.ToChar(item);
+                    }
+                    string barcode = receive_str.Trim();
+                    if (barcode == BarCode)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        BarCode = barcode;
+                    }
                     List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "' and FK_ShelfID = " + ShelfID);
                     if (lstmodel != null && lstmodel.Count > 0)
                     {
@@ -91,7 +113,7 @@ namespace SmartShelfUI.ChildForm
                             if (item is Button)
                             {
                                 Button b = item as Button;
-                                if (b.Text.ToString() == lstmodel[0].X + "-" + lstmodel[0].Y)
+                                if (b.Tag.ToString() == lstmodel[0].X + "-" + lstmodel[0].Y)
                                 {
                                     this.BeginInvoke((MethodInvoker)delegate
                                     {
@@ -156,9 +178,7 @@ namespace SmartShelfUI.ChildForm
                                 DbHelperMySql.ExecuteSql(sql);
                                 //修改道具在库状态，剩余加工寿命，道具等级
                                 DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(barcode);
-                                int RemainTime = 0;
                                 tool.State = 2;
-                                tool.RemainTime = RemainTime;
                                 if (tool.ToolLevel == "X")//如果是新刀，改为旧刀
                                 {
                                     tool.ToolLevel = "F";
@@ -235,6 +255,7 @@ namespace SmartShelfUI.ChildForm
             {
                 try
                 {
+                    spCom.Write("LOFF\r\n");
                     spCom.Close();
                 }
                 catch (Exception ex)

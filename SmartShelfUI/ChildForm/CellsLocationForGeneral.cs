@@ -33,10 +33,12 @@ namespace SmartShelfUI.ChildForm
                         Button b = new Button();
                         b.FlatAppearance.BorderSize = 0;
                         b.FlatStyle = FlatStyle.Flat;
-                        b.Location = new Point(30 + 70 * i, 30 + 70 * j);
-                        b.Size = new Size(60, 60);
-                        b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
-                        b.Font = new Font("微软雅黑", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                        b.Location = new Point(20 + 65 * i, 20 + 55 * j);
+                        b.Size = new Size(55, 45);
+                        b.Tag = (i + 1).ToString() + "-" + (j + 1).ToString();
+                        //b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                        b.Text = (j * x + i + 1).ToString();
+                        b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
                         b.BackColor = SystemColors.ControlDark;
                         if (tool.X == i + 1 && tool.Y == j + 1)
                         {

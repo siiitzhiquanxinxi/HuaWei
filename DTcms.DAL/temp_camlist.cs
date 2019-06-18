@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient;
 using DTcms.DBUtility;
-using System.Data;
+
 namespace DTcms.DAL
 {
     /// <summary>
-	/// 数据访问类:temp_camlist
-	/// </summary>
-	public partial class temp_camlist
+    /// 数据访问类:temp_camlist
+    /// </summary>
+    public partial class temp_camlist
     {
         public temp_camlist()
         { }
@@ -22,38 +21,47 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select count(1) from temp_camlist");
-            strSql.Append(" where Id=?Id");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?Id", MySqlDbType.Int32)
+                    new MySqlParameter("@Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
             return DbHelperMySql.Exists(strSql.ToString(), parameters);
         }
 
+
         /// <summary>
-		/// 增加一条数据
-		/// </summary>
-		public bool Add(DTcms.Model.temp_camlist model)
+        /// 增加一条数据
+        /// </summary>
+        public bool Add(DTcms.Model.temp_camlist model)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into temp_camlist(");
-            strSql.Append("PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode)");
+            strSql.Append("PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode,ToolDiam,ToolHandle,ToolLong,Remark)");
             strSql.Append(" values (");
-            strSql.Append("@PartNum,@ToolName,@WorkTime,@ToolLevel,@ToolReadyState,@ToolBarCode)");
+            strSql.Append("@PartNum,@ToolName,@WorkTime,@ToolLevel,@ToolReadyState,@ToolBarCode,@ToolDiam,@ToolHandle,@ToolLong,@Remark)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("@PartNum", MySqlDbType.VarChar,255),
                     new MySqlParameter("@ToolName", MySqlDbType.VarChar,255),
                     new MySqlParameter("@WorkTime", MySqlDbType.Int32,11),
                     new MySqlParameter("@ToolLevel", MySqlDbType.VarChar,255),
                     new MySqlParameter("@ToolReadyState", MySqlDbType.Int32,11),
-                    new MySqlParameter("@ToolBarCode", MySqlDbType.VarChar,255)};
+                    new MySqlParameter("@ToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ToolDiam", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ToolHandle", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ToolLong", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@Remark", MySqlDbType.VarChar,255)};
             parameters[0].Value = model.PartNum;
             parameters[1].Value = model.ToolName;
             parameters[2].Value = model.WorkTime;
             parameters[3].Value = model.ToolLevel;
             parameters[4].Value = model.ToolReadyState;
             parameters[5].Value = model.ToolBarCode;
+            parameters[6].Value = model.ToolDiam;
+            parameters[7].Value = model.ToolHandle;
+            parameters[8].Value = model.ToolLong;
+            parameters[9].Value = model.Remark;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -77,7 +85,11 @@ namespace DTcms.DAL
             strSql.Append("WorkTime=@WorkTime,");
             strSql.Append("ToolLevel=@ToolLevel,");
             strSql.Append("ToolReadyState=@ToolReadyState,");
-            strSql.Append("ToolBarCode=@ToolBarCode");
+            strSql.Append("ToolBarCode=@ToolBarCode,");
+            strSql.Append("ToolDiam=@ToolDiam,");
+            strSql.Append("ToolHandle=@ToolHandle,");
+            strSql.Append("ToolLong=@ToolLong,");
+            strSql.Append("Remark=@Remark");
             strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
                     new MySqlParameter("@PartNum", MySqlDbType.VarChar,255),
@@ -86,6 +98,10 @@ namespace DTcms.DAL
                     new MySqlParameter("@ToolLevel", MySqlDbType.VarChar,255),
                     new MySqlParameter("@ToolReadyState", MySqlDbType.Int32,11),
                     new MySqlParameter("@ToolBarCode", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ToolDiam", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ToolHandle", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@ToolLong", MySqlDbType.VarChar,255),
+                    new MySqlParameter("@Remark", MySqlDbType.VarChar,255),
                     new MySqlParameter("@Id", MySqlDbType.Int32,11)};
             parameters[0].Value = model.PartNum;
             parameters[1].Value = model.ToolName;
@@ -93,7 +109,11 @@ namespace DTcms.DAL
             parameters[3].Value = model.ToolLevel;
             parameters[4].Value = model.ToolReadyState;
             parameters[5].Value = model.ToolBarCode;
-            parameters[6].Value = model.Id;
+            parameters[6].Value = model.ToolDiam;
+            parameters[7].Value = model.ToolHandle;
+            parameters[8].Value = model.ToolLong;
+            parameters[9].Value = model.Remark;
+            parameters[10].Value = model.Id;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -114,9 +134,9 @@ namespace DTcms.DAL
 
             StringBuilder strSql = new StringBuilder();
             strSql.Append("delete from temp_camlist ");
-            strSql.Append(" where Id=?Id");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?Id", MySqlDbType.Int32)
+                    new MySqlParameter("@Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -157,10 +177,10 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select Id,PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode from temp_camlist ");
-            strSql.Append(" where Id=?Id");
+            strSql.Append("select Id,PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode,ToolDiam,ToolHandle,ToolLong,Remark from temp_camlist ");
+            strSql.Append(" where Id=@Id");
             MySqlParameter[] parameters = {
-                    new MySqlParameter("?Id", MySqlDbType.Int32)
+                    new MySqlParameter("@Id", MySqlDbType.Int32)
             };
             parameters[0].Value = Id;
 
@@ -213,6 +233,22 @@ namespace DTcms.DAL
                 {
                     model.ToolBarCode = row["ToolBarCode"].ToString();
                 }
+                if (row["ToolDiam"] != null)
+                {
+                    model.ToolDiam = row["ToolDiam"].ToString();
+                }
+                if (row["ToolHandle"] != null)
+                {
+                    model.ToolHandle = row["ToolHandle"].ToString();
+                }
+                if (row["ToolLong"] != null)
+                {
+                    model.ToolLong = row["ToolLong"].ToString();
+                }
+                if (row["Remark"] != null)
+                {
+                    model.Remark = row["Remark"].ToString();
+                }
             }
             return model;
         }
@@ -223,7 +259,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select Id,PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode ");
+            strSql.Append("select Id,PartNum,ToolName,WorkTime,ToolLevel,ToolReadyState,ToolBarCode,ToolDiam,ToolHandle,ToolLong,Remark ");
             strSql.Append(" FROM temp_camlist ");
             if (strWhere.Trim() != "")
             {
@@ -243,7 +279,7 @@ namespace DTcms.DAL
             {
                 strSql.Append(" where " + strWhere);
             }
-            object obj = DbHelperSQL.GetSingle(strSql.ToString());
+            object obj = DbHelperMySql.GetSingle(strSql.ToString());
             if (obj == null)
             {
                 return 0;
@@ -286,13 +322,13 @@ namespace DTcms.DAL
 		public DataSet GetList(int PageSize,int PageIndex,string strWhere)
 		{
 			MySqlParameter[] parameters = {
-					new MySqlParameter("?tblName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("?fldName", MySqlDbType.VarChar, 255),
-					new MySqlParameter("?PageSize", MySqlDbType.Int32),
-					new MySqlParameter("?PageIndex", MySqlDbType.Int32),
-					new MySqlParameter("?IsReCount", MySqlDbType.Bit),
-					new MySqlParameter("?OrderType", MySqlDbType.Bit),
-					new MySqlParameter("?strWhere", MySqlDbType.VarChar,1000),
+					new MySqlParameter("@tblName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("@fldName", MySqlDbType.VarChar, 255),
+					new MySqlParameter("@PageSize", MySqlDbType.Int32),
+					new MySqlParameter("@PageIndex", MySqlDbType.Int32),
+					new MySqlParameter("@IsReCount", MySqlDbType.Bit),
+					new MySqlParameter("@OrderType", MySqlDbType.Bit),
+					new MySqlParameter("@strWhere", MySqlDbType.VarChar,1000),
 					};
 			parameters[0].Value = "temp_camlist";
 			parameters[1].Value = "Id";
@@ -310,3 +346,4 @@ namespace DTcms.DAL
         #endregion  ExtensionMethod
     }
 }
+

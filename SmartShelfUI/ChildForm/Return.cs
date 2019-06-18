@@ -30,6 +30,7 @@ namespace SmartShelfUI.ChildForm
                 {
                     spCom.Open();
                 }
+                spCom.Write("LON\r\n");
             }
             catch (Exception ex)
             {
@@ -156,6 +157,11 @@ namespace SmartShelfUI.ChildForm
 
         private void btnBaofei_Click(object sender, EventArgs e)
         {
+            if (this.tool == null)
+            {
+                MessageBox.Show("请先扫描刀具编码！");
+                return;
+            }
             if (this.tool.State != 2)
             {
                 MessageBox.Show("该刀具状态错误！(非出库状态中)");
@@ -200,6 +206,11 @@ namespace SmartShelfUI.ChildForm
 
         private void btnXiumo_Click(object sender, EventArgs e)
         {
+            if (this.tool == null)
+            {
+                MessageBox.Show("请先扫描刀具编码！");
+                return;
+            }
             if (this.tool.State != 2)
             {
                 MessageBox.Show("该刀具状态错误！(非出库状态中)");
@@ -209,7 +220,7 @@ namespace SmartShelfUI.ChildForm
                 //修改刀具状态
                 tool.State = 3;
                 new DTcms.BLL.w_barcode().Update(tool);
-                //生成报废记录
+                //生成修磨记录
                 DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
                 inout.FK_BillID = globalField.BillID;
                 inout.BarCode = tool.BarCode;
@@ -249,15 +260,30 @@ namespace SmartShelfUI.ChildForm
         DTcms.Model.w_barcode tool = null;
         DTcms.Model.sy_shelf shelf = null;
         DTcms.Model.sy_cabinet cabinet = null;
+        string BarCode = "";
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             try
             {
-                byte[] result = new byte[8];
+                string receive_str = "";
+                byte[] result = new byte[64];
                 int rLength = spCom.Read(result, 0, result.Length);
                 if (rLength >= 8)
                 {
-                    string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    //string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    foreach (byte item in result)
+                    {
+                        receive_str += Convert.ToChar(item);
+                    }
+                    string barcode = receive_str.Trim();
+                    if (barcode == BarCode)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        BarCode = barcode;
+                    }
                     List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "'");
                     if (lstmodel != null && lstmodel.Count > 0)
                     {
@@ -301,7 +327,9 @@ namespace SmartShelfUI.ChildForm
                                     b.FlatStyle = FlatStyle.Flat;
                                     b.Location = new Point(20 + 65 * i, 20 + 55 * j);
                                     b.Size = new Size(55, 45);
-                                    b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    b.Tag = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    //b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    b.Text = (j * x + i + 1).ToString();
                                     b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
                                     b.BackColor = SystemColors.ControlDark;
                                     if (lstmodel[0].X == i + 1 && lstmodel[0].Y == j + 1)
@@ -337,6 +365,7 @@ namespace SmartShelfUI.ChildForm
         {
             if (spCom.IsOpen)
             {
+                spCom.Write("LOFF\r\n");
                 spCom.Close();
             }
         }

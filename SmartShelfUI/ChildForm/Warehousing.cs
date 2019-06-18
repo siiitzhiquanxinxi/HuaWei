@@ -30,6 +30,7 @@ namespace SmartShelfUI.ChildForm
                 {
                     spCom.Open();
                 }
+                spCom.Write("LON\r\n");
             }
             catch (Exception ex)
             {
@@ -40,16 +41,31 @@ namespace SmartShelfUI.ChildForm
         DTcms.Model.w_barcode tool = null;
         DTcms.Model.sy_shelf shelf = null;
         DTcms.Model.sy_cabinet cabinet = null;
+        string BarCode = "";
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             Thread.Sleep(300);
             try
             {
+                string receive_str = "";
                 byte[] result = new byte[128];
                 int rLength = spCom.Read(result, 0, result.Length);
                 if (rLength >= 8)
                 {
-                    string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    //string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
+                    foreach (byte item in result)
+                    {
+                        receive_str += Convert.ToChar(item);
+                    }
+                    string barcode = receive_str.Trim();
+                    if (barcode == BarCode)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        BarCode = barcode;
+                    }
                     List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "'");
                     if (lstmodel != null && lstmodel.Count > 0)
                     {
@@ -82,7 +98,9 @@ namespace SmartShelfUI.ChildForm
                                     b.FlatStyle = FlatStyle.Flat;
                                     b.Location = new Point(20 + 65 * i, 20 + 55 * j);
                                     b.Size = new Size(55, 45);
-                                    b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    b.Tag = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    //b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                                    b.Text = (j * x + i + 1).ToString();
                                     b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
                                     b.BackColor = SystemColors.ControlDark;
                                     if (lstmodel[0].X == i + 1 && lstmodel[0].Y == j + 1)
@@ -239,6 +257,7 @@ namespace SmartShelfUI.ChildForm
         {
             if (spCom.IsOpen)
             {
+                spCom.Write("LOFF\r\n");
                 spCom.Close();
             }
         }

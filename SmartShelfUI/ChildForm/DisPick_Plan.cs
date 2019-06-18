@@ -29,6 +29,10 @@ namespace SmartShelfUI.ChildForm
             dgv_ApproveList.DataSource = null;
             string sql = "select * from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 1 order by ApproveState desc,CreateDate desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dt.Rows[i]["ApproveState"] = dt.Rows[i]["ApproveState"].ToString() == "0" ? "待审核" : "已审核";
+            }
             dgv_ApproveList.DataSource = dt;
         }
 
@@ -97,19 +101,12 @@ namespace SmartShelfUI.ChildForm
                                             inout.Y = tool.Y;
                                             //计算工作寿命
                                             decimal ReduceWorkTime = 0;
-
                                             ReduceWorkTime = Convert.ToDecimal(approve.ApplyWorkTime);
-                                            string sql = "select * from temp_planorderlist where PartNum = '" + approve.Texture + "'";
+                                            string sql = "select * from sy_material_texture where MaterialID = '" + tool.MaterialID + "' and Texture = '" + approve.Texture + "'";
                                             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
                                             if (dt != null && dt.Rows.Count > 0)
                                             {
-                                                string MaterialTexture = dt.Rows[0]["MaterialTexture"].ToString();
-                                                sql = "select * from sy_material_texture where MaterialID = '" + tool.MaterialID + "' and Texture = '" + MaterialTexture + "'";
-                                                dt = DbHelperMySql.Query(sql).Tables[0];
-                                                if (dt != null && dt.Rows.Count > 0)
-                                                {
-                                                    ReduceWorkTime = Convert.ToDecimal(dt.Rows[0]["Coefficient"]) * ReduceWorkTime;
-                                                }
+                                                ReduceWorkTime = Convert.ToDecimal(dt.Rows[0]["Coefficient"]) * ReduceWorkTime;
                                             }
                                             inout.WorkTime = Convert.ToInt32(ReduceWorkTime);
                                             inout.OperatorName = globalField.Manager.real_name;
@@ -118,19 +115,56 @@ namespace SmartShelfUI.ChildForm
                                             //添加领用记录
                                             new DTcms.BLL.w_inout_detail().Add(inout);
                                             //修改CAM表状态
-                                            sql = "update temp_camlist set ToolReadyState = 2 where ToolBarCode = '" + approve.ApplyOldToolBarCode + "' and PartNum = '" + PartNum + "'";
+                                            sql = "update temp_camlist set ToolReadyState = 2 where Id = " + approve.ApplyCamId.ToString();
                                             DbHelperMySql.ExecuteSql(sql);
                                             //修改道具在库状态，剩余加工寿命，道具等级
-                                            //DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(barcode);
-                                            int RemainTime = 0;
                                             tool.State = 2;
-                                            tool.RemainTime = RemainTime;
                                             if (tool.ToolLevel == "X")//如果是新刀，改为旧刀
                                             {
                                                 tool.ToolLevel = "F";
                                             }
                                             tool.RemainTime = tool.RemainTime - Convert.ToInt32(ReduceWorkTime);
                                             new DTcms.BLL.w_barcode().Update(tool);
+                                            //更新审核表状态
+                                            approve.ApproveState = 2;
+                                            new DTcms.BLL.w_approvelist().Update(approve);
+                                            //循环CAM表状态，是否更新任务令表状态
+                                            List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'");
+                                            bool isDone = true;
+                                            foreach (DTcms.Model.temp_camlist item in camlist)
+                                            {
+                                                if (item.ToolReadyState == 2)//已领刀
+                                                {
+                                                    continue;
+                                                }
+                                                else if (item.ToolReadyState == -1)//有一把异常，主表状态就为异常
+                                                {
+                                                    DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
+                                                    planorder.OrderReadyState = -1;
+                                                    new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                                    isDone = false;
+                                                    break;
+                                                }
+                                                else if (item.ToolReadyState == 1)//有一把未领，主表状态就为未领
+                                                {
+                                                    DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
+                                                    planorder.OrderReadyState = 1;
+                                                    new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                                    isDone = false;
+                                                    break;
+                                                }
+                                                else if (item.ToolReadyState == 0)
+                                                {
+                                                    isDone = false;
+                                                    break;
+                                                }
+                                            }
+                                            if (isDone)
+                                            {
+                                                DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
+                                                planorder.OrderReadyState = 2;
+                                                new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                            }
                                         }
                                     }
                                     else if (rec_byte[3] == 0x00)//门开着，不能打开
@@ -168,10 +202,45 @@ namespace SmartShelfUI.ChildForm
         {
             if (dgvCamList.SelectedRows != null && dgvCamList.SelectedRows.Count > 0)
             {
-                if (MessageBox.Show("确认申请：%%%？", "请确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                string id = dgvCamList.SelectedRows[0].Cells[0].Value.ToString();
+                DTcms.Model.temp_camlist cam = new DTcms.BLL.temp_camlist().GetModel(int.Parse(id));
+                if (cam != null)
                 {
-
+                    if (MessageBox.Show("确认申请刀具：" + cam.ToolName + "？", "请确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        DTcms.Model.w_approvelist approve = new DTcms.Model.w_approvelist();
+                        approve.ApproveNum = DateTime.Now.ToString("yyyyMMddHHmmss" + globalField.Manager.id.ToString());
+                        approve.CreateDate = DateTime.Now;
+                        approve.CreateById = globalField.Manager.id;
+                        approve.CreateByName = globalField.Manager.real_name;
+                        approve.ApplyRemark = "";
+                        approve.IsPlanApprove = 1;
+                        approve.ApproveState = 0;
+                        approve.ApplyPartNum = cam.PartNum;
+                        approve.ApplyCamId = cam.Id;
+                        approve.ApplyToolName = cam.ToolName;
+                        approve.ApplyWorkTime = cam.WorkTime;
+                        approve.ApplyToolLevel = cam.ToolLevel;
+                        approve.ApplyOldToolBarCode = cam.ToolBarCode;
+                        approve.ApproveById = null;
+                        approve.ApproveByName = null;
+                        approve.ApproveDate = null;
+                        approve.ApproveNewToolBarCode = null;
+                        approve.ApproveRemark = null;
+                        approve.Texture = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0].MaterialTexture;
+                        if (new DTcms.BLL.w_approvelist().Add(approve))
+                        {
+                            MessageBox.Show("申请成功！");
+                            txtPartNum.Text = "";
+                            dgvCamList.DataSource = null;
+                        }
+                        else
+                        {
+                            MessageBox.Show("申请失败！");
+                        }
+                    }
                 }
+                GetApproveList();
             }
             else
             {
@@ -183,7 +252,6 @@ namespace SmartShelfUI.ChildForm
         {
             GetApproveList();
         }
-
 
         private IPEndPoint serverFullAddr;
         private Socket sock;
@@ -257,6 +325,20 @@ namespace SmartShelfUI.ChildForm
                 return false;
             }
             return true;
+        }
+
+        private void btnQueryPart_Click(object sender, EventArgs e)
+        {
+            string sql = "select * from temp_camlist where PartNum = '" + txtPartNum.Text + "'";
+            DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                dgvCamList.DataSource = dt;
+            }
+            else
+            {
+                MessageBox.Show("没有符合条件的零件号！");
+            }
         }
     }
 }

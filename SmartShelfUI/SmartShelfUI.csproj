@@ -66,6 +66,12 @@
     <Compile Include="ChildForm\CellsLocationForGeneral.Designer.cs">
       <DependentUpon>CellsLocationForGeneral.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChildForm\ComfirmDelayTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChildForm\ComfirmDelayTime.Designer.cs">
+      <DependentUpon>ComfirmDelayTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChildForm\DisPick_Plan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildForm\CellsLocationForGeneral.resx">
       <DependentUpon>CellsLocationForGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildForm\ComfirmDelayTime.resx">
+      <DependentUpon>ComfirmDelayTime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildForm\DisPick_Plan.resx">
       <DependentUpon>DisPick_Plan.cs</DependentUpon>

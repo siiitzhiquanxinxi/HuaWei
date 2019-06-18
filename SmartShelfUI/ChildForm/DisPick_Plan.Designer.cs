@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -46,11 +46,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel_order = new System.Windows.Forms.Panel();
             this.dgvCamList = new System.Windows.Forms.DataGridView();
-            this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToolLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.ApproveNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,6 +54,12 @@
             this.ApplyToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApplyPartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApproveState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToolLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2.SuspendLayout();
             this.panel_ApproveList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ApproveList)).BeginInit();
@@ -133,6 +134,8 @@
             // 
             // dgv_ApproveList
             // 
+            this.dgv_ApproveList.AllowUserToAddRows = false;
+            this.dgv_ApproveList.AllowUserToDeleteRows = false;
             this.dgv_ApproveList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_ApproveList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ApproveNum,
@@ -144,6 +147,7 @@
             this.dgv_ApproveList.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgv_ApproveList.Location = new System.Drawing.Point(0, 33);
             this.dgv_ApproveList.Name = "dgv_ApproveList";
+            this.dgv_ApproveList.ReadOnly = true;
             this.dgv_ApproveList.RowTemplate.Height = 23;
             this.dgv_ApproveList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_ApproveList.Size = new System.Drawing.Size(645, 576);
@@ -193,6 +197,7 @@
             this.btnQueryPart.TabIndex = 3;
             this.btnQueryPart.Text = "查  询";
             this.btnQueryPart.UseVisualStyleBackColor = true;
+            this.btnQueryPart.Click += new System.EventHandler(this.btnQueryPart_Click);
             // 
             // txtPartNum
             // 
@@ -229,6 +234,7 @@
             this.dgvCamList.AllowUserToDeleteRows = false;
             this.dgvCamList.ColumnHeadersHeight = 40;
             this.dgvCamList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Id,
             this.PartNum,
             this.ToolName,
             this.WorkTime,
@@ -239,55 +245,9 @@
             this.dgvCamList.Name = "dgvCamList";
             this.dgvCamList.ReadOnly = true;
             this.dgvCamList.RowTemplate.Height = 40;
+            this.dgvCamList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCamList.Size = new System.Drawing.Size(556, 581);
             this.dgvCamList.TabIndex = 1;
-            // 
-            // PartNum
-            // 
-            this.PartNum.DataPropertyName = "PartNum";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.PartNum.DefaultCellStyle = dataGridViewCellStyle1;
-            this.PartNum.HeaderText = "零件号";
-            this.PartNum.Name = "PartNum";
-            this.PartNum.ReadOnly = true;
-            // 
-            // ToolName
-            // 
-            this.ToolName.DataPropertyName = "ToolName";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ToolName.DefaultCellStyle = dataGridViewCellStyle2;
-            this.ToolName.HeaderText = "刀具名称";
-            this.ToolName.Name = "ToolName";
-            this.ToolName.ReadOnly = true;
-            // 
-            // WorkTime
-            // 
-            this.WorkTime.DataPropertyName = "WorkTime";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.WorkTime.DefaultCellStyle = dataGridViewCellStyle3;
-            this.WorkTime.HeaderText = "加工时间";
-            this.WorkTime.Name = "WorkTime";
-            this.WorkTime.ReadOnly = true;
-            this.WorkTime.Width = 80;
-            // 
-            // ToolLevel
-            // 
-            this.ToolLevel.DataPropertyName = "ToolLevel";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.ToolLevel.DefaultCellStyle = dataGridViewCellStyle4;
-            this.ToolLevel.HeaderText = "刀具等级";
-            this.ToolLevel.Name = "ToolLevel";
-            this.ToolLevel.ReadOnly = true;
-            this.ToolLevel.Width = 90;
-            // 
-            // ToolReadyState
-            // 
-            this.ToolReadyState.DataPropertyName = "ToolReadyState";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.ToolReadyState.DefaultCellStyle = dataGridViewCellStyle5;
-            this.ToolReadyState.HeaderText = "备料状态";
-            this.ToolReadyState.Name = "ToolReadyState";
-            this.ToolReadyState.ReadOnly = true;
             // 
             // label3
             // 
@@ -347,6 +307,61 @@
             this.ApproveState.Name = "ApproveState";
             this.ApproveState.ReadOnly = true;
             // 
+            // Id
+            // 
+            this.Id.DataPropertyName = "Id";
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            this.Id.Visible = false;
+            // 
+            // PartNum
+            // 
+            this.PartNum.DataPropertyName = "PartNum";
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.PartNum.DefaultCellStyle = dataGridViewCellStyle11;
+            this.PartNum.HeaderText = "零件号";
+            this.PartNum.Name = "PartNum";
+            this.PartNum.ReadOnly = true;
+            // 
+            // ToolName
+            // 
+            this.ToolName.DataPropertyName = "ToolName";
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ToolName.DefaultCellStyle = dataGridViewCellStyle12;
+            this.ToolName.HeaderText = "刀具名称";
+            this.ToolName.Name = "ToolName";
+            this.ToolName.ReadOnly = true;
+            // 
+            // WorkTime
+            // 
+            this.WorkTime.DataPropertyName = "WorkTime";
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.WorkTime.DefaultCellStyle = dataGridViewCellStyle13;
+            this.WorkTime.HeaderText = "加工时间";
+            this.WorkTime.Name = "WorkTime";
+            this.WorkTime.ReadOnly = true;
+            this.WorkTime.Width = 80;
+            // 
+            // ToolLevel
+            // 
+            this.ToolLevel.DataPropertyName = "ToolLevel";
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.ToolLevel.DefaultCellStyle = dataGridViewCellStyle14;
+            this.ToolLevel.HeaderText = "刀具等级";
+            this.ToolLevel.Name = "ToolLevel";
+            this.ToolLevel.ReadOnly = true;
+            this.ToolLevel.Width = 90;
+            // 
+            // ToolReadyState
+            // 
+            this.ToolReadyState.DataPropertyName = "ToolReadyState";
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.ToolReadyState.DefaultCellStyle = dataGridViewCellStyle15;
+            this.ToolReadyState.HeaderText = "备料状态";
+            this.ToolReadyState.Name = "ToolReadyState";
+            this.ToolReadyState.ReadOnly = true;
+            // 
             // DisPick_Plan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -386,11 +401,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnQueryPart;
         private System.Windows.Forms.DataGridView dgvCamList;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PartNum;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ToolName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WorkTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ToolLevel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ToolReadyState;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnRefresh;
@@ -401,5 +411,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ApplyToolName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApplyPartNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApproveState;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PartNum;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ToolName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WorkTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ToolLevel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ToolReadyState;
     }
 }
