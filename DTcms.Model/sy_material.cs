@@ -32,6 +32,7 @@ namespace DTcms.Model
         private byte[] _pic;
         private decimal? _minimum;
         private int? _totaltime;
+        private int? _iscanrepair;
         /// <summary>
         /// 
         /// </summary>
@@ -175,6 +176,14 @@ namespace DTcms.Model
         {
             set { _totaltime = value; }
             get { return _totaltime; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public int? IsCanRepair
+        {
+            set { _iscanrepair = value; }
+            get { return _iscanrepair; }
         }
         #endregion Model
 
