@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace DTcms.Model
 {
     /// <summary>
-	/// w_barcode:实体类(属性说明自动提取数据库字段的描述信息)
-	/// </summary>
-	[Serializable]
+    /// w_barcode:实体类(属性说明自动提取数据库字段的描述信息)
+    /// </summary>
+    [Serializable]
     public partial class w_barcode
     {
         public w_barcode()
@@ -28,7 +24,7 @@ namespace DTcms.Model
         private int? _fk_shelfid;
         private int? _x;
         private int? _y;
-        private int? _remaintime;
+        private decimal? _remaintime;
         private string _toollevel;
         private int? _state;
         /// <summary>
@@ -146,7 +142,7 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public int? RemainTime
+        public decimal? RemainTime
         {
             set { _remaintime = value; }
             get { return _remaintime; }
@@ -171,3 +167,4 @@ namespace DTcms.Model
 
     }
 }
+

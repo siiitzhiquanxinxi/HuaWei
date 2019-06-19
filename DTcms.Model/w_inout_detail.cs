@@ -30,7 +30,7 @@ namespace DTcms.Model
         private int? _fk_shelfid;
         private int? _x;
         private int? _y;
-        private int? _worktime;
+        private decimal? _worktime;
         private string _operatorname;
         private DateTime? _operatortime;
         private string _inoutremark;
@@ -197,7 +197,7 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public int? WorkTime
+        public decimal? WorkTime
         {
             set { _worktime = value; }
             get { return _worktime; }

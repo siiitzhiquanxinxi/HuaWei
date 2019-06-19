@@ -53,7 +53,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?ApplyPartNum", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApplyCamId", MySqlDbType.Int32,11),
                     new MySqlParameter("?ApplyToolName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyWorkTime", MySqlDbType.Int32,11),
+                    new MySqlParameter("?ApplyWorkTime", MySqlDbType.Decimal,10),
                     new MySqlParameter("?ApplyToolLevel", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApplyOldToolBarCode", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApproveById", MySqlDbType.Int32,11),
@@ -128,7 +128,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?ApplyPartNum", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApplyCamId", MySqlDbType.Int32,11),
                     new MySqlParameter("?ApplyToolName", MySqlDbType.VarChar,255),
-                    new MySqlParameter("?ApplyWorkTime", MySqlDbType.Int32,11),
+                    new MySqlParameter("?ApplyWorkTime", MySqlDbType.Decimal,10),
                     new MySqlParameter("?ApplyToolLevel", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApplyOldToolBarCode", MySqlDbType.VarChar,255),
                     new MySqlParameter("?ApproveById", MySqlDbType.Int32,11),
@@ -288,7 +288,7 @@ namespace DTcms.DAL
                 }
                 if (row["ApplyWorkTime"] != null && row["ApplyWorkTime"].ToString() != "")
                 {
-                    model.ApplyWorkTime = int.Parse(row["ApplyWorkTime"].ToString());
+                    model.ApplyWorkTime = decimal.Parse(row["ApplyWorkTime"].ToString());
                 }
                 if (row["ApplyToolLevel"] != null)
                 {

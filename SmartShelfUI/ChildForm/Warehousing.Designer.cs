@@ -49,6 +49,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
+            this.btnReScan = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbxToolPic)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -59,6 +60,7 @@
             // spCom
             // 
             this.spCom.BaudRate = 115200;
+            this.spCom.Parity = System.IO.Ports.Parity.Even;
             this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
             // pbxToolPic
@@ -90,6 +92,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnReScan);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
@@ -264,6 +267,22 @@
             this.panel_order.Size = new System.Drawing.Size(556, 581);
             this.panel_order.TabIndex = 1;
             // 
+            // btnReScan
+            // 
+            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReScan.FlatAppearance.BorderSize = 0;
+            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReScan.Location = new System.Drawing.Point(159, 500);
+            this.btnReScan.Name = "btnReScan";
+            this.btnReScan.Size = new System.Drawing.Size(200, 60);
+            this.btnReScan.TabIndex = 7;
+            this.btnReScan.Text = "重新扫描";
+            this.btnReScan.UseVisualStyleBackColor = true;
+            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
+            // 
             // Warehousing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -310,5 +329,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_order;
+        private System.Windows.Forms.Button btnReScan;
     }
 }

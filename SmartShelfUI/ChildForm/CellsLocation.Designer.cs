@@ -57,7 +57,7 @@
             // 
             this.lblToolBarcode.AutoSize = true;
             this.lblToolBarcode.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblToolBarcode.Location = new System.Drawing.Point(762, 129);
+            this.lblToolBarcode.Location = new System.Drawing.Point(730, 134);
             this.lblToolBarcode.Name = "lblToolBarcode";
             this.lblToolBarcode.Size = new System.Drawing.Size(0, 27);
             this.lblToolBarcode.TabIndex = 1;
@@ -66,7 +66,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(762, 102);
+            this.label3.Location = new System.Drawing.Point(719, 102);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(112, 27);
             this.label3.TabIndex = 1;
@@ -76,7 +76,7 @@
             // 
             this.lblToolName.AutoSize = true;
             this.lblToolName.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblToolName.Location = new System.Drawing.Point(762, 48);
+            this.lblToolName.Location = new System.Drawing.Point(727, 53);
             this.lblToolName.Name = "lblToolName";
             this.lblToolName.Size = new System.Drawing.Size(0, 27);
             this.lblToolName.TabIndex = 1;
@@ -85,7 +85,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(762, 21);
+            this.label1.Location = new System.Drawing.Point(719, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 27);
             this.label1.TabIndex = 1;
@@ -111,6 +111,7 @@
             // spCom
             // 
             this.spCom.BaudRate = 115200;
+            this.spCom.Parity = System.IO.Ports.Parity.Even;
             this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
             // label2

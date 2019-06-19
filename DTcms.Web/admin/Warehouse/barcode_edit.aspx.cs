@@ -77,7 +77,6 @@ namespace DTcms.Web.admin.Warehouse
                     {
                         for (int a = 1; a <= x; a++)
                         {
-
                             string sqlbox = "select * from w_barcode where FK_ShelfID='" + dtshelf.Rows[i]["ID"].ToString() + "' and X='" + a.ToString() + "' and Y='" + b.ToString() + "' and state<>-1";
                             DataTable dtbox = DbHelperMySql.Query(sqlbox).Tables[0];
                             if (dtbox.Rows.Count == 0)

@@ -51,9 +51,6 @@ namespace SmartShelfUI.ChildForm
                 List<DTcms.Model.temp_camlist> lstcam = new DTcms.BLL.temp_camlist().GetModelList("PartNum = '" + plan.PartNum + "'");
                 foreach (DTcms.Model.temp_camlist item in lstcam)
                 {
-                    item.ToolReadyState = 0;
-                    item.ToolBarCode = "";
-                    new DTcms.BLL.temp_camlist().Update(item);
                     if (!string.IsNullOrEmpty(item.ToolBarCode))
                     {
                         DTcms.Model.w_barcode tool = new DTcms.BLL.w_barcode().GetModel(item.ToolBarCode);
@@ -64,6 +61,9 @@ namespace SmartShelfUI.ChildForm
                         }
                     }
 
+                    item.ToolReadyState = 0;
+                    item.ToolBarCode = "";
+                    new DTcms.BLL.temp_camlist().Update(item);
                 }
                 this.DialogResult = DialogResult.OK;
                 this.Close();

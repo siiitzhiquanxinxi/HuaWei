@@ -48,7 +48,7 @@
             this.lblSoftwareTitle.Name = "lblSoftwareTitle";
             this.lblSoftwareTitle.Size = new System.Drawing.Size(1920, 117);
             this.lblSoftwareTitle.TabIndex = 0;
-            this.lblSoftwareTitle.Text = "航瑞成智能柜刀具领用系统";
+            this.lblSoftwareTitle.Text = "智能柜刀具柜领用系统";
             this.lblSoftwareTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // lblVersion
@@ -122,7 +122,7 @@
             this.Controls.Add(this.lblSoftwareTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main";
-            this.Text = "航瑞成智能柜刀具领用系统";
+            this.Text = "智能柜刀具柜领用系统";
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pxb_loginface)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnBack)).EndInit();

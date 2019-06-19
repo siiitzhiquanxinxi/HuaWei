@@ -60,6 +60,7 @@
             this.spCom = new System.IO.Ports.SerialPort(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
+            this.btnReScan = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxToolPic)).BeginInit();
@@ -81,6 +82,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnReScan);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
@@ -105,7 +107,7 @@
             this.groupBox1.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(485, 581);
+            this.groupBox1.Size = new System.Drawing.Size(485, 617);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "刀具信息";
@@ -390,6 +392,7 @@
             // spCom
             // 
             this.spCom.BaudRate = 115200;
+            this.spCom.Parity = System.IO.Ports.Parity.Even;
             this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
             // panel1
@@ -409,8 +412,24 @@
             this.panel_order.Controls.Add(this.groupBox1);
             this.panel_order.Location = new System.Drawing.Point(39, 85);
             this.panel_order.Name = "panel_order";
-            this.panel_order.Size = new System.Drawing.Size(485, 581);
+            this.panel_order.Size = new System.Drawing.Size(485, 617);
             this.panel_order.TabIndex = 1;
+            // 
+            // btnReScan
+            // 
+            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReScan.FlatAppearance.BorderSize = 0;
+            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReScan.Location = new System.Drawing.Point(136, 559);
+            this.btnReScan.Name = "btnReScan";
+            this.btnReScan.Size = new System.Drawing.Size(200, 52);
+            this.btnReScan.TabIndex = 6;
+            this.btnReScan.Text = "重新扫描";
+            this.btnReScan.UseVisualStyleBackColor = true;
+            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
             // Return
             // 
@@ -472,5 +491,6 @@
         private System.Windows.Forms.Label lblToolState;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_order;
+        private System.Windows.Forms.Button btnReScan;
     }
 }

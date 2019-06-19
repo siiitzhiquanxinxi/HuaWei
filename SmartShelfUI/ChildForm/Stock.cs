@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,14 +119,21 @@ namespace SmartShelfUI.ChildForm
             try
             {
                 string receive_str = "";
-                byte[] result = new byte[128];
+                byte[] result = new byte[16];
                 int rLength = spCom.Read(result, 0, result.Length);
                 if (rLength >= 8)
                 {
-                    //string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
                     foreach (byte item in result)
                     {
-                        receive_str += Convert.ToChar(item);
+                        char c = Convert.ToChar(item);
+                        if (c == '\r')
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            receive_str += Convert.ToChar(item);
+                        }
                     }
                     string barcode = receive_str.Trim();
                     if (barcode == BarCode)
@@ -146,6 +155,42 @@ namespace SmartShelfUI.ChildForm
                                 if (MessageBox.Show("该物料为盘亏状态，是否重新分配单元格？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
                                 {
                                     //分配新的物理位置
+                                    DTcms.Model.sy_material mmodel = new DTcms.BLL.sy_material().GetModel(tool.MaterialID);
+                                    string sqlshelf = "select * from sy_shelf where Deep>='" + mmodel.Deep + "' and High>='" + mmodel.High + "' order by High,Deep";
+                                    DataTable dtshelf = DbHelperMySql.Query(sqlshelf).Tables[0];
+                                    if (dtshelf.Rows.Count == 0)
+                                    {
+                                        MessageBox.Show("没有大小相匹配的单元格！");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < dtshelf.Rows.Count; i++)
+                                        {
+                                            int x = Convert.ToInt32(dtshelf.Rows[i]["X"]);
+                                            int y = Convert.ToInt32(dtshelf.Rows[i]["Y"]);
+                                            for (int b = 1; b <= y; b++)
+                                            {
+                                                for (int a = 1; a <= x; a++)
+                                                {
+                                                    string sqlbox = "select * from w_barcode where FK_ShelfID='" + dtshelf.Rows[i]["ID"].ToString() + "' and X='" + a.ToString() + "' and Y='" + b.ToString() + "' and state<>-1";
+                                                    DataTable dtbox = DbHelperMySql.Query(sqlbox).Tables[0];
+                                                    if (dtbox.Rows.Count == 0)
+                                                    {
+                                                        tool.X = a;
+                                                        tool.Y = b;
+                                                        tool.State = 1;
+                                                        new DTcms.BLL.w_barcode().Update(tool);
+                                                        DTcms.Model.sy_cabinet cabinet = new DTcms.BLL.sy_cabinet().GetModel(dtshelf.Rows[i]["FK_CabinetNo"].ToString());
+                                                        string shelfNo = dtshelf.Rows[i]["BoxNo"].ToString();
+                                                        string unitNo = ((b - 1) * x + a).ToString();
+                                                        MessageBox.Show("分配成功，新的物理位置为：" + cabinet.CabinetNo + "号柜，" + shelfNo + "号抽屉，" + unitNo + "号格；物料已默认入库，请放入指定的单元格中！");
+                                                        return;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             });
                         }
@@ -229,6 +274,133 @@ namespace SmartShelfUI.ChildForm
                     new DTcms.BLL.w_barcode().Update(lstmodel[0]);
                 }
             }
+        }
+
+        private void btnOpenDoor_Click(object sender, EventArgs e)
+        {
+            string IP = "";
+            string Port = "";
+            if (shelf != null)
+            {
+                cabinet = new DTcms.BLL.sy_cabinet().GetModelList("CabinetNo = '" + shelf.FK_CabinetNo + "'")[0];
+                IP = cabinet.IP;
+                Port = cabinet.Port;
+            }
+            if (connect(IP, Port))
+            {
+                byte[] rec_byte = null;
+                byte[] code_byte = new byte[6];
+                code_byte[0] = 0xFF;
+                code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
+                code_byte[2] = (byte)Convert.ToInt32(shelf.BoxAddr, 16);
+                code_byte[3] = 0x01;
+                code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
+                code_byte[5] = 0xFE;
+                rec_byte = sendtcpip(code_byte, IP, Port);
+                if (VerifyReceive(rec_byte))
+                {
+                    if (rec_byte[3] == 0x01)//门正常打开
+                    {
+
+                    }
+                    else if (rec_byte[3] == 0x00)//门开着，不能打开
+                    {
+                        MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
+                    }
+                    else
+                    {
+                        MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("网络通讯返回错误！");
+                }
+            }
+            else
+            {
+                MessageBox.Show("网络通信失败！");
+            }
+        }
+
+
+        private IPEndPoint serverFullAddr;
+        private Socket sock;
+        private bool connect(string IP, string Port)
+        {
+            IPAddress serverIP;
+            int port;
+            serverIP = IPAddress.Parse(IP);
+            port = int.Parse(Port);
+            try
+            {
+                serverFullAddr = new IPEndPoint(serverIP, port);//设置IP，端口  
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //指定本地主机地址和端口号  
+                sock.Connect(serverFullAddr);
+                sock.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        private byte[] sendtcpip(byte[] byteCode, string IP, string Port)
+        {
+            try
+            {
+                IPAddress serverIP;
+                int port;
+                serverIP = IPAddress.Parse(IP);
+                port = int.Parse(Port);
+                serverFullAddr = new IPEndPoint(serverIP, port);//设置IP，端口  
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //指定本地主机地址和端口号  
+                sock.Connect(serverFullAddr);
+                byte[] message = new byte[1024 * 64];
+                int bytes = 0;
+                //发送数据
+                sock.Send(byteCode);
+                bytes = sock.Receive(message);//接收数据 
+                byte[] returnreceive = new byte[bytes];
+                Array.Copy(message, 0, returnreceive, 0, bytes);
+                sock.Close();
+                return returnreceive;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            finally
+            {
+                sock.Close();
+            }
+        }
+        private bool VerifyReceive(byte[] receive)
+        {
+            if (receive.Length != 6)
+            {
+                return false;
+            }
+            if (receive[0] != 0xFE)
+            {
+                return false;
+            }
+            if (receive[5] != 0xFF)
+            {
+                return false;
+            }
+            if (receive[4] != Convert.ToByte(receive[1] ^ receive[2] ^ receive[3]))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void btnReScan_Click(object sender, EventArgs e)
+        {
+            this.BarCode = "";
         }
     }
 }
