@@ -35,8 +35,11 @@
             this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnOpenDoor = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvShelf = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel_Cells = new System.Windows.Forms.Panel();
@@ -56,8 +59,7 @@
             this.lblToolLevel = new System.Windows.Forms.Label();
             this.lblToolName = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnReScan = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinet)).BeginInit();
@@ -129,11 +131,28 @@
             // 
             this.panel1.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.btnOpenDoor);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Location = new System.Drawing.Point(333, 24);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(315, 755);
             this.panel1.TabIndex = 2;
+            // 
+            // btnOpenDoor
+            // 
+            this.btnOpenDoor.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+            this.btnOpenDoor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnOpenDoor.FlatAppearance.BorderSize = 0;
+            this.btnOpenDoor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenDoor.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnOpenDoor.ForeColor = System.Drawing.Color.Transparent;
+            this.btnOpenDoor.Location = new System.Drawing.Point(78, 674);
+            this.btnOpenDoor.Name = "btnOpenDoor";
+            this.btnOpenDoor.Size = new System.Drawing.Size(149, 47);
+            this.btnOpenDoor.TabIndex = 4;
+            this.btnOpenDoor.Text = "开  锁";
+            this.btnOpenDoor.UseVisualStyleBackColor = true;
+            this.btnOpenDoor.Click += new System.EventHandler(this.btnOpenDoor_Click);
             // 
             // panel3
             // 
@@ -161,6 +180,21 @@
             this.dgvShelf.Size = new System.Drawing.Size(225, 584);
             this.dgvShelf.TabIndex = 3;
             this.dgvShelf.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvShelf_CellClick);
+            // 
+            // ID
+            // 
+            this.ID.DataPropertyName = "ID";
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // BoxNo
+            // 
+            this.BoxNo.DataPropertyName = "BoxNo";
+            this.BoxNo.HeaderText = "抽屉号";
+            this.BoxNo.Name = "BoxNo";
+            this.BoxNo.ReadOnly = true;
             // 
             // label1
             // 
@@ -196,6 +230,7 @@
             // spCom
             // 
             this.spCom.BaudRate = 115200;
+            this.spCom.Parity = System.IO.Ports.Parity.Even;
             this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
             // panel4
@@ -219,6 +254,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnReScan);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
@@ -362,20 +398,21 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "刀具名称：";
             // 
-            // ID
+            // btnReScan
             // 
-            this.ID.DataPropertyName = "ID";
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Visible = false;
-            // 
-            // BoxNo
-            // 
-            this.BoxNo.DataPropertyName = "BoxNo";
-            this.BoxNo.HeaderText = "抽屉号";
-            this.BoxNo.Name = "BoxNo";
-            this.BoxNo.ReadOnly = true;
+            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReScan.FlatAppearance.BorderSize = 0;
+            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReScan.Location = new System.Drawing.Point(159, 540);
+            this.btnReScan.Name = "btnReScan";
+            this.btnReScan.Size = new System.Drawing.Size(200, 60);
+            this.btnReScan.TabIndex = 6;
+            this.btnReScan.Text = "重新扫描";
+            this.btnReScan.UseVisualStyleBackColor = true;
+            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
             // Stock
             // 
@@ -439,5 +476,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CabinetNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn BoxNo;
+        private System.Windows.Forms.Button btnOpenDoor;
+        private System.Windows.Forms.Button btnReScan;
     }
 }

@@ -8,9 +8,9 @@ using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
-	/// 数据访问类:w_barcode
-	/// </summary>
-	public partial class w_barcode
+    /// 数据访问类:w_barcode
+    /// </summary>
+    public partial class w_barcode
     {
         public w_barcode()
         { }
@@ -57,7 +57,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
-                    new MySqlParameter("?RemainTime", MySqlDbType.Int32,10),
+                    new MySqlParameter("?RemainTime", MySqlDbType.Decimal,10),
                     new MySqlParameter("?ToolLevel", MySqlDbType.VarChar,255),
                     new MySqlParameter("?State", MySqlDbType.Int32,10)};
             parameters[0].Value = model.BarCode;
@@ -126,7 +126,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
-                    new MySqlParameter("?RemainTime", MySqlDbType.Int32,10),
+                    new MySqlParameter("?RemainTime", MySqlDbType.Decimal,10),
                     new MySqlParameter("?ToolLevel", MySqlDbType.VarChar,255),
                     new MySqlParameter("?State", MySqlDbType.Int32,10),
                     new MySqlParameter("?BarCode", MySqlDbType.VarChar,255)};
@@ -294,7 +294,7 @@ namespace DTcms.DAL
                 }
                 if (row["RemainTime"] != null && row["RemainTime"].ToString() != "")
                 {
-                    model.RemainTime = int.Parse(row["RemainTime"].ToString());
+                    model.RemainTime = decimal.Parse(row["RemainTime"].ToString());
                 }
                 if (row["ToolLevel"] != null)
                 {
@@ -322,20 +322,7 @@ namespace DTcms.DAL
             }
             return DbHelperMySql.Query(strSql.ToString());
         }
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public DataSet GetListWithCabinetNo(string strWhere)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select w_barcode.*,sy_shelf.FK_CabinetNo,sy_shelf.BoxNo,sy_shelf.BoxAddr,sy_shelf.Deep,sy_shelf.Wide,sy_shelf.High,sy_shelf.X as XAll,sy_shelf.Y as Yall,sy_shelf.type from w_barcode,sy_shelf ");
-            strSql.Append(" where w_barcode.FK_ShelfID=sy_shelf.ID ");
-            if (strWhere.Trim() != "")
-            {
-                strSql.Append(" and " + strWhere);
-            }
-            return DbHelperMySql.Query(strSql.ToString());
-        }
+
         /// <summary>
         /// 获取记录总数
         /// </summary>
@@ -383,6 +370,20 @@ namespace DTcms.DAL
             return DbHelperMySql.Query(strSql.ToString());
         }
 
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetListWithCabinetNo(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select w_barcode.*,sy_shelf.FK_CabinetNo,sy_shelf.BoxNo,sy_shelf.BoxAddr,sy_shelf.Deep,sy_shelf.Wide,sy_shelf.High,sy_shelf.X as XAll,sy_shelf.Y as Yall,sy_shelf.type from w_barcode,sy_shelf ");
+            strSql.Append(" where w_barcode.FK_ShelfID=sy_shelf.ID ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+            }
+            return DbHelperMySql.Query(strSql.ToString());
+        }
         /*
 		/// <summary>
 		/// 分页获取数据列表

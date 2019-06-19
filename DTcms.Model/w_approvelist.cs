@@ -20,7 +20,7 @@ namespace DTcms.Model
         private string _applypartnum;
         private int? _applycamid;
         private string _applytoolname;
-        private int? _applyworktime;
+        private decimal? _applyworktime;
         private string _applytoollevel;
         private string _applyoldtoolbarcode;
         private int? _approvebyid;
@@ -112,7 +112,7 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public int? ApplyWorkTime
+        public decimal? ApplyWorkTime
         {
             set { _applyworktime = value; }
             get { return _applyworktime; }

@@ -94,53 +94,64 @@ namespace SmartShelfUI.ChildForm
                 rec_byte = sendtcpip(code_byte, IP, Port);
                 if (VerifyReceive(rec_byte))
                 {
-                    CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
-                    frmCells.tool = this.tool;
-                    frmCells.cabinet = this.cabinet;
-                    frmCells.shelf = this.shelf;
-                    if (this.tool.State != 2)
+                    if (rec_byte[3] == 0x01)//门正常打开
                     {
-                        MessageBox.Show("该刀具状态错误！(非出库状态中)");
-                        return;
+                        CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
+                        frmCells.tool = this.tool;
+                        frmCells.cabinet = this.cabinet;
+                        frmCells.shelf = this.shelf;
+                        if (this.tool.State != 2)
+                        {
+                            MessageBox.Show("该刀具状态错误！(非出库状态中)");
+                            return;
+                        }
+                        else
+                        {
+                            if (frmCells.ShowDialog() == DialogResult.OK)
+                            {
+                                //修改刀具状态
+                                tool.State = 1;
+                                new DTcms.BLL.w_barcode().Update(tool);
+                                //生成归还记录
+                                DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                                inout.FK_BillID = globalField.BillID;
+                                inout.BarCode = tool.BarCode;
+                                inout.BatchNumber = tool.BatchNumber;
+                                inout.MaterialID = tool.MaterialID;
+                                inout.MaterialName = tool.MaterialName;
+                                inout.MaterialTypeID = tool.MaterialTypeID;
+                                inout.MaterialType = tool.MaterialType;
+                                inout.SystemNo = tool.SystemNo;
+                                inout.Brand = tool.Brand;
+                                inout.Spec = tool.Spec;
+                                inout.Unit = tool.Unit;
+                                inout.Num = tool.Num;
+                                inout.IOFlag = 1;
+                                List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + tool.BarCode + "' and IOFlag = -1 order by OperatorTime desc");
+                                if (lstdetail != null && lstdetail.Count > 0)
+                                {
+                                    inout.FK_SendBillNum = lstdetail[0].FK_SendBillNum;
+                                    inout.FK_ApproveNum = lstdetail[0].FK_ApproveNum;
+                                    inout.InOutType = lstdetail[0].InOutType.Replace("领用", "归还");
+                                }
+                                inout.FK_ShelfID = shelf.ID;
+                                inout.X = shelf.X;
+                                inout.Y = shelf.Y;
+                                inout.WorkTime = 0;
+                                inout.OperatorName = globalField.Manager.real_name;
+                                inout.OperatorTime = DateTime.Now;
+                                inout.InOutRemark = "";
+                                new DTcms.BLL.w_inout_detail().Add(inout);
+                            }
+                        }
+                    }
+                    else if (rec_byte[3] == 0x00)//门开着，不能打开
+                    {
+                        MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
                     }
                     else
                     {
-                        if (frmCells.ShowDialog() == DialogResult.OK)
-                        {
-                            //修改刀具状态
-                            tool.State = 1;
-                            new DTcms.BLL.w_barcode().Update(tool);
-                            //生成归还记录
-                            DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
-                            inout.FK_BillID = globalField.BillID;
-                            inout.BarCode = tool.BarCode;
-                            inout.BatchNumber = tool.BatchNumber;
-                            inout.MaterialID = tool.MaterialID;
-                            inout.MaterialName = tool.MaterialName;
-                            inout.MaterialTypeID = tool.MaterialTypeID;
-                            inout.MaterialType = tool.MaterialType;
-                            inout.SystemNo = tool.SystemNo;
-                            inout.Brand = tool.Brand;
-                            inout.Spec = tool.Spec;
-                            inout.Unit = tool.Unit;
-                            inout.Num = tool.Num;
-                            inout.IOFlag = 1;
-                            List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + tool.BarCode + "' and IOFlag = -1 order by OperatorTime desc");
-                            if (lstdetail != null && lstdetail.Count > 0)
-                            {
-                                inout.FK_SendBillNum = lstdetail[0].FK_SendBillNum;
-                                inout.FK_ApproveNum = lstdetail[0].FK_ApproveNum;
-                                inout.InOutType = lstdetail[0].InOutType.Replace("领用", "归还");
-                            }
-                            inout.FK_ShelfID = shelf.ID;
-                            inout.X = shelf.X;
-                            inout.Y = shelf.Y;
-                            inout.WorkTime = 0;
-                            inout.OperatorName = globalField.Manager.real_name;
-                            inout.OperatorTime = DateTime.Now;
-                            inout.InOutRemark = "";
-                            new DTcms.BLL.w_inout_detail().Add(inout);
-                        }
+                        MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
                     }
 
                 }
@@ -214,8 +225,15 @@ namespace SmartShelfUI.ChildForm
             if (this.tool.State != 2)
             {
                 MessageBox.Show("该刀具状态错误！(非出库状态中)");
+                return;
             }
-            else if (MessageBox.Show("确认去修磨？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            DTcms.Model.sy_material material = new DTcms.BLL.sy_material().GetModel(tool.MaterialID);
+            if (material != null && material.IsCanRepair == 0)
+            {
+                MessageBox.Show("该刀具不可修磨！");
+                return;
+            }
+            if (MessageBox.Show("确认去修磨？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 //修改刀具状态
                 tool.State = 3;
@@ -263,17 +281,25 @@ namespace SmartShelfUI.ChildForm
         string BarCode = "";
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
+            Thread.Sleep(300);
             try
             {
                 string receive_str = "";
-                byte[] result = new byte[64];
+                byte[] result = new byte[16];
                 int rLength = spCom.Read(result, 0, result.Length);
                 if (rLength >= 8)
                 {
-                    //string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
                     foreach (byte item in result)
                     {
-                        receive_str += Convert.ToChar(item);
+                        char c = Convert.ToChar(item);
+                        if (c == '\r')
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            receive_str += Convert.ToChar(item);
+                        }
                     }
                     string barcode = receive_str.Trim();
                     if (barcode == BarCode)
@@ -442,6 +468,11 @@ namespace SmartShelfUI.ChildForm
                 return false;
             }
             return true;
+        }
+
+        private void btnReScan_Click(object sender, EventArgs e)
+        {
+            this.BarCode = "";
         }
     }
 }

@@ -13,7 +13,8 @@ namespace DTcms.Model
         private int _id;
         private string _partnum;
         private string _toolname;
-        private int? _worktime;
+        private string _toolnum;
+        private decimal? _worktime;
         private string _toollevel;
         private int? _toolreadystate;
         private string _toolbarcode;
@@ -48,7 +49,15 @@ namespace DTcms.Model
         /// <summary>
         /// 
         /// </summary>
-        public int? WorkTime
+        public string ToolNum
+        {
+            set { _toolnum = value; }
+            get { return _toolnum; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal? WorkTime
         {
             set { _worktime = value; }
             get { return _worktime; }

@@ -24,7 +24,7 @@ namespace SmartShelfUI.ChildForm
         string BarCode = "";
         public List<string> lstSelected;
 
-        private string inoutID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+        //private string inoutID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
 
         private void CellsLocation_Load(object sender, EventArgs e)
         {
@@ -86,14 +86,21 @@ namespace SmartShelfUI.ChildForm
             try
             {
                 string receive_str = "";
-                byte[] result = new byte[8];
+                byte[] result = new byte[16];
                 int rLength = spCom.Read(result, 0, result.Length);
                 if (rLength >= 8)
                 {
-                    //string barcode = result[0].ToString("x2") + result[1].ToString("x2") + result[2].ToString("x2") + result[3].ToString("x2") + result[4].ToString("x2") + result[5].ToString("x2") + result[6].ToString("x2") + result[7].ToString("x2");
                     foreach (byte item in result)
                     {
-                        receive_str += Convert.ToChar(item);
+                        char c = Convert.ToChar(item);
+                        if (c == '\r')
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            receive_str += Convert.ToChar(item);
+                        }
                     }
                     string barcode = receive_str.Trim();
                     if (barcode == BarCode)
@@ -107,6 +114,11 @@ namespace SmartShelfUI.ChildForm
                     List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "' and FK_ShelfID = " + ShelfID);
                     if (lstmodel != null && lstmodel.Count > 0)
                     {
+                        this.BeginInvoke((MethodInvoker)delegate
+                        {
+                            lblToolBarcode.Text = lstmodel[0].BarCode;
+                            lblToolName.Text = lstmodel[0].MaterialName;
+                        });
                         //变颜色
                         foreach (Control item in panel_Cells.Controls)
                         {
@@ -119,8 +131,6 @@ namespace SmartShelfUI.ChildForm
                                     {
                                         b.BackColor = Color.Green;
                                         b.ForeColor = Color.White;
-                                        lblToolBarcode.Text = lstmodel[0].BarCode;
-                                        lblToolName.Text = lstmodel[0].MaterialName;
                                     });
                                     break;
                                 }
@@ -221,7 +231,6 @@ namespace SmartShelfUI.ChildForm
                                     return;
                                 }
                             }
-
                         }
                         else
                         {
@@ -236,7 +245,7 @@ namespace SmartShelfUI.ChildForm
                     {
                         this.BeginInvoke((MethodInvoker)delegate
                         {
-                            MessageBox.Show("物料不存在于该抽屉中！");
+                            MessageBox.Show("物料不存在于该抽屉中！物料编码：" + receive_str);
                         });
                         return;
                     }

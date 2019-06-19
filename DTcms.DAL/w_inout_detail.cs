@@ -8,9 +8,9 @@ using System.Data;
 namespace DTcms.DAL
 {
     /// <summary>
-	/// 数据访问类:w_inout_detail
-	/// </summary>
-	public partial class w_inout_detail
+    /// 数据访问类:w_inout_detail
+    /// </summary>
+    public partial class w_inout_detail
     {
         public w_inout_detail()
         { }
@@ -62,7 +62,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
-                    new MySqlParameter("?WorkTime", MySqlDbType.Int32,10),
+                    new MySqlParameter("?WorkTime", MySqlDbType.Decimal,10),
                     new MySqlParameter("?OperatorName", MySqlDbType.VarChar,255),
                     new MySqlParameter("?OperatorTime", MySqlDbType.Datetime),
                     new MySqlParameter("?InOutRemark", MySqlDbType.VarChar,255)};
@@ -151,7 +151,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?FK_ShelfID", MySqlDbType.Int32,50),
                     new MySqlParameter("?X", MySqlDbType.Int32,10),
                     new MySqlParameter("?Y", MySqlDbType.Int32,10),
-                    new MySqlParameter("?WorkTime", MySqlDbType.Int32,10),
+                    new MySqlParameter("?WorkTime", MySqlDbType.Decimal,10),
                     new MySqlParameter("?OperatorName", MySqlDbType.VarChar,255),
                     new MySqlParameter("?OperatorTime", MySqlDbType.Datetime),
                     new MySqlParameter("?InOutRemark", MySqlDbType.VarChar,255),
@@ -353,7 +353,7 @@ namespace DTcms.DAL
                 }
                 if (row["WorkTime"] != null && row["WorkTime"].ToString() != "")
                 {
-                    model.WorkTime = int.Parse(row["WorkTime"].ToString());
+                    model.WorkTime = decimal.Parse(row["WorkTime"].ToString());
                 }
                 if (row["OperatorName"] != null)
                 {
