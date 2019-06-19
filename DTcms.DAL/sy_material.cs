@@ -40,9 +40,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sy_material(");
-            strSql.Append("MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime,IsCanRepair)");
+            strSql.Append("MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime,IsCanRepair,Appearance)");
             strSql.Append(" values (");
-            strSql.Append("?MaterialID,?Code,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Deep,?Wide,?High,?Unit,?Supplier,?State,?Remark,?Pic,?Minimum,?TotalTime,?IsCanRepair)");
+            strSql.Append("?MaterialID,?Code,?MaterialName,?MaterialTypeID,?MaterialType,?SystemNo,?Brand,?Spec,?Deep,?Wide,?High,?Unit,?Supplier,?State,?Remark,?Pic,?Minimum,?TotalTime,?IsCanRepair,?Appearance)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50),
                     new MySqlParameter("?Code", MySqlDbType.VarChar,50),
@@ -62,7 +62,8 @@ namespace DTcms.DAL
                     new MySqlParameter("?Pic", MySqlDbType.MediumBlob),
                     new MySqlParameter("?Minimum", MySqlDbType.Decimal,10),
                     new MySqlParameter("?TotalTime", MySqlDbType.Int32,10),
-                    new MySqlParameter("?IsCanRepair", MySqlDbType.Int32,10)};
+                    new MySqlParameter("?IsCanRepair", MySqlDbType.Int32,10),
+                    new MySqlParameter("?Appearance", MySqlDbType.Int32,10)};
             parameters[0].Value = model.MaterialID;
             parameters[1].Value = model.Code;
             parameters[2].Value = model.MaterialName;
@@ -82,6 +83,7 @@ namespace DTcms.DAL
             parameters[16].Value = model.Minimum;
             parameters[17].Value = model.TotalTime;
             parameters[18].Value = model.IsCanRepair;
+            parameters[19].Value = model.Appearance;
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {
@@ -115,8 +117,9 @@ namespace DTcms.DAL
             strSql.Append("Remark=?Remark,");
             strSql.Append("Pic=?Pic,");
             strSql.Append("Minimum=?Minimum,");
-            strSql.Append("TotalTime=?TotalTime");
-            strSql.Append("IsCanRepair=?IsCanRepair");
+            strSql.Append("TotalTime=?TotalTime,");
+            strSql.Append("IsCanRepair=?IsCanRepair,");
+            strSql.Append("Appearance=?Appearance");
             strSql.Append(" where MaterialID=?MaterialID ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?Code", MySqlDbType.VarChar,50),
@@ -137,6 +140,7 @@ namespace DTcms.DAL
                     new MySqlParameter("?Minimum", MySqlDbType.Decimal,10),
                     new MySqlParameter("?TotalTime", MySqlDbType.Int32,10),
                     new MySqlParameter("?IsCanRepair", MySqlDbType.Int32,10),
+                    new MySqlParameter("?Appearance", MySqlDbType.Int32,10),
                     new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50)};
             parameters[0].Value = model.Code;
             parameters[1].Value = model.MaterialName;
@@ -156,7 +160,8 @@ namespace DTcms.DAL
             parameters[15].Value = model.Minimum;
             parameters[16].Value = model.TotalTime;
             parameters[17].Value = model.IsCanRepair;
-            parameters[18].Value = model.MaterialID;
+            parameters[18].Value = model.Appearance;
+            parameters[19].Value = model.MaterialID;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -219,7 +224,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime,IsCanRepair from sy_material ");
+            strSql.Append("select MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime,IsCanRepair,Appearance from sy_material ");
             strSql.Append(" where MaterialID=?MaterialID ");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?MaterialID", MySqlDbType.VarChar,50)           };
@@ -320,6 +325,10 @@ namespace DTcms.DAL
                 {
                     model.IsCanRepair = int.Parse(row["IsCanRepair"].ToString());
                 }
+                if (row["Appearance"] != null && row["Appearance"].ToString() != "")
+                {
+                    model.Appearance = int.Parse(row["Appearance"].ToString());
+                }
             }
             return model;
         }
@@ -330,7 +339,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime,IsCanRepair ");
+            strSql.Append("select MaterialID,Code,MaterialName,MaterialTypeID,MaterialType,SystemNo,Brand,Spec,Deep,Wide,High,Unit,Supplier,State,Remark,Pic,Minimum,TotalTime,IsCanRepair,Appearance ");
             strSql.Append(" FROM sy_material ");
             if (strWhere.Trim() != "")
             {

@@ -33,6 +33,7 @@ namespace DTcms.Model
         private decimal? _minimum;
         private int? _totaltime;
         private int? _iscanrepair;
+        private int? _appearance;
         /// <summary>
         /// 
         /// </summary>
@@ -184,6 +185,14 @@ namespace DTcms.Model
         {
             set { _iscanrepair = value; }
             get { return _iscanrepair; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public int? Appearance
+        {
+            set { _appearance = value; }
+            get { return _appearance; }
         }
         #endregion Model
 
