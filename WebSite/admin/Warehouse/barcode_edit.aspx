@@ -22,7 +22,7 @@
     <script type="text/javascript">
         function ChooseMaterial() {
             $.dialog({ title: '选择刀具', width: '800px', heght: '600px',
-                content: 'url:Warehouse/choosematerial.aspx?txtTarget=txtMaterialName&txtTarget1=txtMaterialType&txtTarget2=hdfMaterialTypeID&txtTarget3=txtBrand&txtTarget4=txtSpec&txtTarget5=txtDeep&txtTarget6=txtHigh&txtTarget7=txtUnit&txtTarget8=txtTotalTime&idTarget=txtMaterialID',
+                content: 'url:Warehouse/choosematerial.aspx?txtTarget=txtMaterialName&txtTarget1=txtMaterialType&txtTarget2=hdfMaterialTypeID&txtTarget3=txtBrand&txtTarget4=txtSpec&txtTarget5=txtDeep&txtTarget6=txtHigh&txtTarget7=txtUnit&txtTarget8=txtTotalTime&txtTarget9=txtCode&idTarget=txtMaterialID',
                 lock: true
             });
         }
@@ -85,6 +85,10 @@
             onclick="ChooseMaterial()" />
     </dd>
   </dl> 
+    <dl>
+    <dt>条码前缀</dt>
+    <dd><asp:TextBox ID="txtCode" runat="server" CssClass="input normal" sucmsg=" "></asp:TextBox> <span class="Validform_checktip">*</span></dd>
+  </dl>
   <dl>
     <dt>刀具名称</dt>
     <dd><asp:TextBox ID="txtMaterialName" runat="server" CssClass="input normal" sucmsg=" "></asp:TextBox> <span class="Validform_checktip">*</span></dd>

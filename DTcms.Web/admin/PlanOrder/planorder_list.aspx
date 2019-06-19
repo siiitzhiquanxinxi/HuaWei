@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="approve_list.aspx.cs" Inherits="DTcms.Web.admin.Warehouse.approve_list" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planorder_list.aspx.cs" Inherits="DTcms.Web.admin.PlanOrder.planorder_list" %>
 <%@ Register Assembly="AspNetPager" Namespace="Wuqi.Webdiyer" TagPrefix="webdiyer" %>
 <%@ Import namespace="DTcms.Common" %>
 <!DOCTYPE html>
@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<title>零星领料查询列表</title>
+<title>排产计划查询列表</title>
 <link href="../../scripts/artdialog/ui-dialog.css" rel="stylesheet" type="text/css" />
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
@@ -25,7 +25,7 @@
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>零星领料查询列表</span>
+  <span>排产计划查询列表</span>
 </div>
 <!--/导航栏-->
 
@@ -36,9 +36,6 @@
       <a class="menu-btn"></a>
       <div class="l-list">
         <ul class="icon-list">
-          <%--<li><a class="add" href="barcode_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>"><i></i><span>新增</span></a></li>--%>
-          <%--<li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>--%>
-          <%--<li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>--%>
         </ul>
       </div>
       <div class="r-list">
@@ -57,12 +54,14 @@
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
     <tr>
       <%--<th width="8%">选择</th>--%>
-      <th align="center" width="15%">申请单号</th>
-      <th align="center" width="10%">提出申请时间</th>
-      <th align="center" width="10%">申请人姓名</th>
-      <th align="center">申请备注</th>
-      <th align="center" width="10%">申请类型</th> 
-      <th align="center" width="5%">状态</th> 
+      <th align="center" width="10%">零件号</th>
+      <th align="center" width="10%">零件名称</th>
+      <th align="center" width="10%">材质</th>
+      <th align="center" width="10%">计划开工时间</th>
+      <th align="center" width="10%">备刀时间延期至</th>
+      <th align="center" width="10%">机台</th> 
+      <th align="center" width="10%">创建日期</th> 
+      <th align="center" width="5%">备刀状态</th> 
       <th width="8%">操作</th>
     </tr>
   </HeaderTemplate>
@@ -72,14 +71,16 @@
         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
         <asp:HiddenField ID="hidId" Value='<%#Eval("BatchNumber")%>' runat="server" />
       </td>--%>
-      <td align="center"><%# Eval("ApproveNum") %></td>
+      <td align="center"><%# Eval("PartNum") %></td>
+      <td align="center"><%# Eval("PartName") %></td>
+      <td align="center"><%# Eval("MaterialTexture") %></td>
+      <td align="center"><%# Eval("PlanWorkTime") %></td>
+        <td align="center"><%# Eval("DelayWorkTime") %></td>
+        <td align="center"><%# Eval("MachineLathe") %></td>
       <td align="center"><%# Eval("CreateDate") %></td>
-      <td align="center"><%# Eval("CreateByName") %></td>
-      <td align="center"><%# Eval("ApplyRemark") %></td>
-      <td align="center"><%# Eval("IsPlanApprove").ToString()=="0"?"非计划零星领料":"计划零星领料" %></td>
-      <td align="center"><%# Eval("ApproveState").ToString()=="0"?"待审核" : Eval("ApproveState").ToString()=="1"?"审核通过" : Eval("ApproveState").ToString()=="2"?"已领料": "审核不通过" %></td>
+      <td align="center"><%# Eval("OrderReadyState").ToString()=="0"?"待备刀" : Eval("OrderReadyState").ToString()=="1"?"备刀中" : Eval("OrderReadyState").ToString()=="2"?"已完成": "异常" %></td>
       <td align="center">
-          <a href="approve_view.aspx?action=<%#DTEnums.ActionEnum.Edit %>&ApproveNum=<%#Eval("ApproveNum")%>">查看</a>
+          <a href="planorder_view.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>">查看</a>
               <%--<asp:LinkButton ID="lbtnExport" runat="server" CommandArgument='<%#Eval("BatchNumber") %>' OnClick="lbtnExport_Click">导出</asp:LinkButton>
               <asp:LinkButton ID="lbtnDel" runat="server" CommandArgument='<%#Eval("BatchNumber") %>' OnClick="lbtnDel_Click">删除</asp:LinkButton>--%>
       </td>
@@ -87,7 +88,7 @@
     </tr>
   </ItemTemplate>
   <FooterTemplate>
-    <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"10\">暂无记录</td></tr>" : ""%>
+    <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"8\">暂无记录</td></tr>" : ""%>
   </table>
   </FooterTemplate>
   </asp:Repeater>

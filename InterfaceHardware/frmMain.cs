@@ -316,17 +316,17 @@ namespace InterfaceHardware
             sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + log + "," + tag);
             sw.Close();
         }
-        private void TextBoxLog(string log, string tag, bool clear)
-        {
-            if (clear)
-            {
-                this.textBox1.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + log + "," + tag + "\r\n";
-            }
-            else
-            {
-                this.textBox1.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + log + "," + tag + "\r\n" + this.textBox1.Text;
-            }
-        }
+        //private void TextBoxLog(string log, string tag, bool clear)
+        //{
+        //    if (clear)
+        //    {
+        //        this.textBox1.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + log + "," + tag + "\r\n";
+        //    }
+        //    else
+        //    {
+        //        this.textBox1.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + log + "," + tag + "\r\n" + this.textBox1.Text;
+        //    }
+        //}
         private string ByteToString(byte[] arr)
         {
             StringBuilder strB1 = new StringBuilder();

@@ -109,9 +109,14 @@ namespace DTcms.Web.admin.Material
                 RadioButton1.Checked = true;
             else
                 RadioButton2.Checked = true;
+            if (model.IsCanRepair == 0)
+                RadioButton4.Checked = true;
+            else
+                RadioButton3.Checked = true;
             pic = model.Pic;
             if(pic!=null)
             imgbeginPic.ImageUrl="photo.ashx?ID="+ model.MaterialID;
+            ddlAppearance.SelectedValue = model.Appearance.ToString();
         }
         //参数是图片的路径
         public byte[] GetPictureData(string imagePath)
@@ -229,10 +234,15 @@ namespace DTcms.Web.admin.Material
             model.Remark = txtRemark.Text.Trim();
             model.Minimum = Convert.ToDecimal(txtMinimum.Text.Trim());
             model.TotalTime = Convert.ToInt32(txtTotalTime.Text.Trim());
+            model.Appearance = Convert.ToInt32(ddlAppearance.SelectedValue);
             if (RadioButton1.Checked)
                 model.State = 0;
             else
                 model.State = 1;
+            if (RadioButton4.Checked)
+                model.IsCanRepair = 0;
+            else
+                model.IsCanRepair = 1;
             model.Supplier = txtSupplier.Text.Trim();
             if (this.txtImgUrl.Text.Trim() != "")
                 model.Pic = GetPictureData(this.txtImgUrl.Text.Trim());

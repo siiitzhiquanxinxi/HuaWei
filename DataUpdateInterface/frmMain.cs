@@ -13,6 +13,8 @@ using DTcms.BLL;
 using DTcms.DBUtility;
 using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Office.Interop.Excel;
+using System.Reflection;
 
 namespace DataUpdateInterface
 {
@@ -38,13 +40,20 @@ namespace DataUpdateInterface
         {
             try
             {
-                string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.PartNum=b.PartNum where  ToolReadyState=0 and (PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL) order by a.PartNum";
-                DataTable podt = DbHelperMySql.Query(where).Tables[0];
-                string PartNum = "";
+                string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.PartNum=b.PartNum where  ToolReadyState=0 and ((PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL)) order by a.PartNum";
+                System.Data.DataTable podt = DbHelperMySql.Query(where).Tables[0];
+
+                DTcms.BLL.temp_planorderlist bll = new temp_planorderlist();
+                System.Data.DataTable dtpo = bll.GetList("OrderReadyState=0").Tables[0];
+
                 for (int j = 0; j < podt.Rows.Count; j++)
                 {
-                    string sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='" + podt.Rows[j]["ToolLevel"].ToString() + "' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString();
-                    DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                    string sql = "";
+                    if(podt.Rows[j]["ToolLevel"].ToString()=="")
+                       sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and (a.ToolLevel='R' or a.ToolLevel='F') and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString();
+                    else
+                        sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='" + podt.Rows[j]["ToolLevel"].ToString() + "' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString();
+                    System.Data.DataTable dt = DbHelperMySql.Query(sql).Tables[0];
                     if (dt.Rows.Count > 0)
                     {
                         string updatewbacode = "update w_barcode set State=4 where BarCode='" + dt.Rows[0]["BarCode"].ToString() + "'";
@@ -52,124 +61,25 @@ namespace DataUpdateInterface
                         DbHelperMySql.ExecuteSql(updatewbacode);
                         DbHelperMySql.ExecuteSql(updatecam);
                     }
+                    else
+                    {
+                        string updatecam = "update temp_camlist set ToolReadyState=-1 where id='" + podt.Rows[j]["id"].ToString() + "'";
+                        DbHelperMySql.ExecuteSql(updatecam);
+                        string updatetemppo = "update temp_planorderlist set OrderReadyState=-1 where PartNum='" + podt.Rows[j]["PartNum"].ToString() + "'";
+                        DbHelperMySql.ExecuteSql(updatetemppo);
+                    }
                     string sqlcam = "select * from temp_camlist where ToolReadyState=0 and PartNum='" + podt.Rows[j]["PartNum"].ToString() + "'";
-                    DataTable dtcam = DbHelperMySql.Query(sqlcam).Tables[0];
+                    System.Data.DataTable dtcam = DbHelperMySql.Query(sqlcam).Tables[0];
                     if (dtcam.Rows.Count == 0)
                     {
-                        string updatetemppo = "update temp_planorderlist set OrderReadyState=1 where PartNum='" + podt.Rows[j]["PartNum"].ToString() + "'";
+                        string updatetemppo = "update temp_planorderlist set OrderReadyState=1 where PartNum='" + podt.Rows[j]["PartNum"].ToString() + "' and OrderReadyState=0";
                         DbHelperMySql.ExecuteSql(updatetemppo);
-
                     }
-                    if (podt.Rows[j]["PartNum"].ToString() != PartNum && PartNum != "")
-                    {
-                        string excel = "select PartNum,ToolName,WorkTime,ToolBarCode ,ToolLevel from temp_camlist where PartNum='" + podt.Rows[j]["PartNum"].ToString() + "'";
-                        DataTable dtexcel = DbHelperMySql.Query(excel).Tables[0];
-                        Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook();
-                        workbook.Open(AppDomain.CurrentDomain.BaseDirectory + "module.xlsx");
-                        Aspose.Cells.Worksheet worksheet = workbook.Worksheets[0];
-                        //worksheet.Name = podt.Rows[j]["PartNum"].ToString();
-                        Aspose.Cells.Cell cell;
-                        int rowIndex = 0;   //行的起始下标为 0
-                        int colIndex = 0;   //列的起始下标为 0
-                                            //设置列名
-                        #region #######
-                        //for (int i = 0; i < dtexcel.Columns.Count; i++)
-                        //{
-                        //    //获取第一行的每个单元格
-                        //    cell = worksheet.Cells[rowIndex, colIndex + i];
-                        //    //设置列名
-                        //    string name = "";
-                        //    switch(dtexcel.Columns[i].ColumnName)
-                        //    {
-                        //        case "PartNum":
-                        //            name= "零件号";
-                        //            break;
-                        //        case "ToolName":
-                        //            name = "刀具名称";
-                        //            break;
-                        //        case "WorkTime":
-                        //            name = "加工时间";
-                        //            break;
-                        //        case "ToolBarCode":
-                        //            name = "刀具号";
-                        //            break;
-                        //        case "ToolLevel":
-                        //            name = "刀具等级";
-                        //            break;
-                        //    }
-                        //    cell.PutValue(name);
-                        //    //设置字体
-                        //    cell.Style.Font.Name = "宋体";
-                        //    //设置字体加粗
-                        //    cell.Style.Font.IsBold = true;
-                        //    //设置字体大小
-                        //    cell.Style.Font.Size = 12;
-                        //    //设置字体颜色
-                        //    cell.Style.Font.Color = System.Drawing.Color.Black;
-                        //    ////单元格内容自动换行
-                        //    cell.Style.IsTextWrapped = true;
-
-                        //    //文本对齐方式
-                        //    cell.Style.VerticalAlignment = Aspose.Cells.TextAlignmentType.Center;
-                        //    ////设置背景色
-                        //    //cell.Style.BackgroundColor = System.Drawing.Color.LightGreen;
-                        //}
-                        #endregion
-                        //跳过第一行，第一行写入了列名
-                        rowIndex = rowIndex + 2;
-                        //写入数据
-                        for (int i = 0; i < dtexcel.Rows.Count; i++)
-                        {
-                            for (int k = 0; k < dtexcel.Columns.Count; k++)
-                            {
-                                cell = worksheet.Cells[rowIndex + i, colIndex + k];
-                                cell.PutValue(dtexcel.Rows[i][k]);
-                                //cell.Style.IsTextWrapped = true;
-                            }
-                        }
-
-                        //自动列宽
-                        //worksheet.AutoFitColumns();
-
-                        //设置导出文件路径
-                        //string path = Application.StartupPath;
-                        string path = AppDomain.CurrentDomain.BaseDirectory;
-                        //设置新建文件路径及名称
-                        string savePath = path + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
-
-                        //创建文件
-                        FileStream file = new FileStream(savePath, FileMode.CreateNew);
-
-                        //关闭释放流，不然没办法写入数据
-                        file.Close();
-                        file.Dispose();
-
-                        //保存至指定路径
-                        workbook.Save(savePath);
-                        //if (PrintCode.SendFileToPrinter("doPDF v7", savePath))
-                        //{
-                        //    System.Windows.Forms.MessageBox.Show("文件已成功发送至打印队列！", "提示信息");
-                        //}
-                        //调用打印机
-                        System.Diagnostics.Process p = new System.Diagnostics.Process();
-                        //不现实调用程序窗口,但是对于某些应用无效
-                        p.StartInfo.CreateNoWindow = true;
-                        p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                        //采用操作系统自动识别的模式
-                        p.StartInfo.UseShellExecute = true;
-                        //指定执行的动作，是打印，即print，打开是 open
-                        p.StartInfo.Verb = "print";
-
-                        p.StartInfo.FileName = savePath;
-                        p.Start();
-                        if (File.Exists(savePath))
-                        {
-                            File.Delete(savePath);
-                        }
-                        worksheet = null;
-                        workbook = null;
-                    }
-                    PartNum = podt.Rows[j]["PartNum"].ToString();
+                }
+                for(int k=0;k< dtpo.Rows.Count;k++)
+                {
+                    string filename = ExcelExport(dtpo.Rows[k]["PartNum"].ToString());
+                    PrintExcel(filename);
                 }
             }
             catch (Exception ex)
@@ -196,7 +106,22 @@ namespace DataUpdateInterface
             sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + log + "," + tag);
             sw.Close();
         }
+        private string FilePath()
+        {
+            string path = @"Excel/";
+            if (Directory.Exists(path) == false)//如果不存在就创建文件夹 
+            {
+                Directory.CreateDirectory(path);
 
+            }
+            path = AppDomain.CurrentDomain.BaseDirectory + path;
+            foreach (FileInfo file in (new DirectoryInfo(path)).GetFiles())
+            {
+                file.Attributes = FileAttributes.Normal;
+                file.Delete();
+            }
+            return path;
+        }
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public class DOCINFOA
         {
@@ -345,20 +270,139 @@ namespace DataUpdateInterface
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //调用打印机
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
-            //不现实调用程序窗口,但是对于某些应用无效
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            //采用操作系统自动识别的模式
-            p.StartInfo.UseShellExecute = true;
-            //指定执行的动作，是打印，即print，打开是 open
-            p.StartInfo.Verb = "print";
+            //FilePath();
+            string wordFile = AppDomain.CurrentDomain.BaseDirectory+ @"module.xlsx";
+            PrintExcel(wordFile);
 
-            p.StartInfo.FileName = @"D:\huawei\DataUpdateInterface\bin\Debug\module.xlsx";
-            p.Start();
+            //CommonCompute
         }
 
+        private void PrintExcel(string FileName)
+        {
+            object oMissing = Missing.Value;
+            Microsoft.Office.Interop.Excel.Application appxls = new Microsoft.Office.Interop.Excel.Application();
+            appxls.Visible = false;
+            appxls.DisplayAlerts = false;
+            //object oTrue = true;
+            //object oFalse = false;
+            _Workbook book = appxls.Workbooks.Open(FileName);
+            _Worksheet sheet = book.Worksheets[1];
+            sheet.Activate();
+            sheet.PageSetup.PrintGridlines = true;
+            sheet.PrintOutEx();
+            sheet = null;
+            book.Saved = false;
+            object saved = false;
+            book.Close(saved);
+            appxls.Quit();
+            book = null;
+            appxls = null;
+            GC.Collect();
+        }
+        private string ExcelExport(string PartNum)
+        {
+            string excel = "select ToolNum,PartNum,ToolName,WorkTime,ToolLevel,ToolDiam,ToolHandle,ToolLong,Remark,ToolReadyState from temp_camlist where PartNum='" + PartNum + "'";
+            System.Data.DataTable dtexcel = DbHelperMySql.Query(excel).Tables[0];
+            Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook();
+            workbook.Open(AppDomain.CurrentDomain.BaseDirectory + "module.xlsx");
+            Aspose.Cells.Worksheet worksheet = workbook.Worksheets[0];
+            //worksheet.Name = podt.Rows[j]["PartNum"].ToString();
+            Aspose.Cells.Cell cell;
+            int rowIndex = 0;   //行的起始下标为 0
+            int colIndex = 0;   //列的起始下标为 0
+                                //设置列名
+            #region #######
+            //for (int i = 0; i < dtexcel.Columns.Count; i++)
+            //{
+            //    //获取第一行的每个单元格
+            //    cell = worksheet.Cells[rowIndex, colIndex + i];
+            //    //设置列名
+            //    string name = "";
+            //    switch(dtexcel.Columns[i].ColumnName)
+            //    {
+            //        case "PartNum":
+            //            name= "零件号";
+            //            break;
+            //        case "ToolName":
+            //            name = "刀具名称";
+            //            break;
+            //        case "WorkTime":
+            //            name = "加工时间";
+            //            break;
+            //        case "ToolBarCode":
+            //            name = "刀具号";
+            //            break;
+            //        case "ToolLevel":
+            //            name = "刀具等级";
+            //            break;
+            //    }
+            //    cell.PutValue(name);
+            //    //设置字体
+            //    cell.Style.Font.Name = "宋体";
+            //    //设置字体加粗
+            //    cell.Style.Font.IsBold = true;
+            //    //设置字体大小
+            //    cell.Style.Font.Size = 12;
+            //    //设置字体颜色
+            //    cell.Style.Font.Color = System.Drawing.Color.Black;
+            //    ////单元格内容自动换行
+            //    cell.Style.IsTextWrapped = true;
+
+            //    //文本对齐方式
+            //    cell.Style.VerticalAlignment = Aspose.Cells.TextAlignmentType.Center;
+            //    ////设置背景色
+            //    //cell.Style.BackgroundColor = System.Drawing.Color.LightGreen;
+            //}
+            #endregion
+            //跳过第一行，第一行写入了列名
+            rowIndex = rowIndex + 2;
+            //写入数据
+            for (int i = 0; i < dtexcel.Rows.Count; i++)
+            {
+                for (int k = 0; k < dtexcel.Columns.Count; k++)
+                {
+                    cell = worksheet.Cells[rowIndex + i, colIndex + k];
+                    if (k == dtexcel.Columns.Count - 1)
+                    {
+                        if (dtexcel.Rows[i][k].ToString() == "1")
+                        {
+                            cell.PutValue("已备刀");
+                        }
+                        else
+                        {
+                            cell.PutValue("备刀异常");
+                        }
+                    }
+                    else
+                    {
+                        cell.PutValue(dtexcel.Rows[i][k]);
+                    }
+                    //cell.Style.IsTextWrapped = true;
+                }
+            }
+
+            //自动列宽
+            //worksheet.AutoFitColumns();
+
+            //设置导出文件路径
+            //string path = Application.StartupPath;
+            string path = FilePath();
+            //设置新建文件路径及名称
+            string savePath = path + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".xlsx";
+
+            //创建文件
+            FileStream file = new FileStream(savePath, FileMode.CreateNew);
+
+            //关闭释放流，不然没办法写入数据
+            file.Close();
+            file.Dispose();
+
+            //保存至指定路径
+            workbook.Save(savePath);
+            worksheet = null;
+            workbook = null;
+            return savePath;
+        }
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -381,5 +425,7 @@ namespace DataUpdateInterface
                 notifyIcon1.Visible = true;
             }
         }
+
+
     }
 }

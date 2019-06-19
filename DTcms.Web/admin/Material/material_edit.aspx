@@ -139,6 +139,19 @@
             </dd>
         </dl>
     <dl>
+   <dl>
+    <dt>是否可以修磨</dt>
+    <dd>
+        <asp:RadioButton ID="RadioButton3" runat="server" GroupName="CanRepair" Text="可修磨" Checked="True" /><asp:RadioButton ID="RadioButton4" runat="server" GroupName="CanRepair" Text="不可修磨" />
+        </dd>
+  </dl>
+   <dl>
+    <dt>外形</dt>
+    <dd><asp:DropDownList id="ddlAppearance" runat="server" >
+        <asp:ListItem Value="0">圆形</asp:ListItem>
+        <asp:ListItem Value="1">正方形</asp:ListItem>
+        </asp:DropDownList></dd>
+  </dl>
     <dt>状态</dt>
     <dd>
         <asp:RadioButton ID="RadioButton1" runat="server" GroupName="state" Text="启用" Checked="True" /><asp:RadioButton ID="RadioButton2" runat="server" GroupName="state" Text="关闭" />

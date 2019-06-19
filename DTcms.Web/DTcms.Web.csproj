@@ -110,6 +110,8 @@
     <Content Include="admin\manager\role_edit.aspx" />
     <Content Include="admin\manager\role_list.aspx" />
     <Content Include="admin\Material\materialtexture_edit.aspx" />
+    <Content Include="admin\Material\materialType_edit.aspx" />
+    <Content Include="admin\Material\materialType_list.aspx" />
     <Content Include="admin\Material\material_edit.aspx" />
     <Content Include="admin\Material\material_list.aspx" />
     <Content Include="admin\Material\texture_edit.aspx" />
@@ -122,6 +124,8 @@
     <Content Include="admin\order\order_list.aspx" />
     <Content Include="admin\order\payment_edit.aspx" />
     <Content Include="admin\order\payment_list.aspx" />
+    <Content Include="admin\PlanOrder\planorder_list.aspx" />
+    <Content Include="admin\PlanOrder\planorder_view.aspx" />
     <Content Include="admin\printlog\errorlogdetail.aspx" />
     <Content Include="admin\printlog\errorloglist.aspx" />
     <Content Include="admin\printlog\printlog_yinyezhizhao.aspx" />
@@ -183,11 +187,15 @@
     <Content Include="admin\Warehouse\approve_check.aspx" />
     <Content Include="admin\Warehouse\approve_chek_list.aspx" />
     <Content Include="admin\Warehouse\approve_list.aspx" />
+    <Content Include="admin\Warehouse\approve_view.aspx" />
     <Content Include="admin\Warehouse\barcode_edit.aspx" />
     <Content Include="admin\Warehouse\barcode_list.aspx" />
     <Content Include="admin\Warehouse\choosebarcode.aspx" />
     <Content Include="admin\Warehouse\choosematerial.aspx" />
     <Content Include="admin\Warehouse\warehousenum_query.aspx" />
+    <Content Include="admin\Warehouse\w_inout.aspx" />
+    <Content Include="admin\Warehouse\w_inout_detail.aspx" />
+    <Content Include="admin\Warehouse\w_inout_operate.aspx" />
     <Content Include="api\oauth\feixin\index.aspx" />
     <Content Include="api\oauth\feixin\result_json.aspx" />
     <Content Include="api\oauth\feixin\return_url.aspx" />
@@ -913,6 +921,20 @@
     <Compile Include="admin\Material\materialtexture_edit.aspx.designer.cs">
       <DependentUpon>materialtexture_edit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Material\materialType_edit.aspx.cs">
+      <DependentUpon>materialType_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\materialType_edit.aspx.designer.cs">
+      <DependentUpon>materialType_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Material\materialType_list.aspx.cs">
+      <DependentUpon>materialType_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Material\materialType_list.aspx.designer.cs">
+      <DependentUpon>materialType_list.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\Material\material_edit.aspx.cs">
       <DependentUpon>material_edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -999,6 +1021,20 @@
     </Compile>
     <Compile Include="admin\order\payment_list.aspx.designer.cs">
       <DependentUpon>payment_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\PlanOrder\planorder_list.aspx.cs">
+      <DependentUpon>planorder_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\PlanOrder\planorder_list.aspx.designer.cs">
+      <DependentUpon>planorder_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\PlanOrder\planorder_view.aspx.cs">
+      <DependentUpon>planorder_view.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\PlanOrder\planorder_view.aspx.designer.cs">
+      <DependentUpon>planorder_view.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\printlog\errorlogdetail.aspx.cs">
       <DependentUpon>errorlogdetail.aspx</DependentUpon>
@@ -1311,6 +1347,13 @@
     <Compile Include="admin\Warehouse\approve_list.aspx.designer.cs">
       <DependentUpon>approve_list.aspx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Warehouse\approve_view.aspx.cs">
+      <DependentUpon>approve_view.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\approve_view.aspx.designer.cs">
+      <DependentUpon>approve_view.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\Warehouse\barcode_edit.aspx.cs">
       <DependentUpon>barcode_edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1345,6 +1388,27 @@
     </Compile>
     <Compile Include="admin\Warehouse\warehousenum_query.aspx.designer.cs">
       <DependentUpon>warehousenum_query.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\w_inout.aspx.cs">
+      <DependentUpon>w_inout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\w_inout.aspx.designer.cs">
+      <DependentUpon>w_inout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\w_inout_detail.aspx.cs">
+      <DependentUpon>w_inout_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\w_inout_detail.aspx.designer.cs">
+      <DependentUpon>w_inout_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Warehouse\w_inout_operate.aspx.cs">
+      <DependentUpon>w_inout_operate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Warehouse\w_inout_operate.aspx.designer.cs">
+      <DependentUpon>w_inout_operate.aspx</DependentUpon>
     </Compile>
     <Compile Include="api\oauth\feixin\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

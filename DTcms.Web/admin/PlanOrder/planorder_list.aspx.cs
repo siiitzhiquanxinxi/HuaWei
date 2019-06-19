@@ -6,16 +6,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DTcms.Common;
 using System.Data;
-namespace DTcms.Web.admin.Warehouse
+namespace DTcms.Web.admin.PlanOrder
 {
-    public partial class approve_list : Web.UI.ManagePage
+    public partial class planorder_list : Web.UI.ManagePage
     {
-        BLL.w_approvelist bll = new BLL.w_approvelist();
+        BLL.temp_planorderlist bll = new BLL.temp_planorderlist();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("approve_list", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("planorder_list", DTEnums.ActionEnum.View.ToString()); //检查权限
                 RptBind();
             }
         }
@@ -24,8 +24,9 @@ namespace DTcms.Web.admin.Warehouse
             string where = "1=1";
             if (this.txtKeywords.Text.Trim() != "")
             {
-                where += " and (ApproveNum like  '%" + this.txtKeywords.Text.Trim() + "%' or CreateByName like '%" + this.txtKeywords.Text.Trim() + "%' or ApplyToolName like '%" + this.txtKeywords.Text.Trim() + "%' or ApproveByName like '%" + this.txtKeywords.Text.Trim() + "%')";
+                where += " and (PartNum like  '%" + this.txtKeywords.Text.Trim() + "%' or PartName like '%" + this.txtKeywords.Text.Trim() + "%' or MaterialTexture like '%" + this.txtKeywords.Text.Trim() + "%' or MachineLathe like '%" + this.txtKeywords.Text.Trim() + "%')";
             }
+            where += " order by PlanWorkTime desc";
             DataTable dt = bll.GetList(where).Tables[0];
             PagedDataSource pds = new PagedDataSource();
             pds.AllowPaging = true;

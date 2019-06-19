@@ -8,21 +8,20 @@ using System.Data;
 using DTcms.Common;
 namespace DTcms.Web.admin.Warehouse
 {
-    public partial class warehousenum_query : Web.UI.ManagePage
+    public partial class w_inout : Web.UI.ManagePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                ChkAdminLevel("warehousenum_query", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("w_inout", DTEnums.ActionEnum.View.ToString()); //检查权限
                 BindData();
-                
+
             }
         }
         private void BindData()
         {
-            BLL.w_barcode bll = new BLL.w_barcode();
-            string sql = "SELECT a.*,a.x+(a.y-1)*8 as XY,b.FK_CabinetNo,b.BoxNo from w_barcode a,sy_shelf b where a.FK_ShelfID=b.ID";
+            string sql = "SELECT a.BarCode,a.MaterialName,a.MaterialType,a.Spec,a.WorkTime*a.IOFlag as WorkTime,a.OperatorTime,a.InOutType,a.IOFlag,b.FK_CabinetNo,b.BoxNo,b.x+(b.y-1)*8 as XY from w_inout_detail a join sy_shelf b ON a.FK_ShelfID=b.ID ";
             if (txtBarCode.Text.Trim() != "")
             {
                 sql += " and a.BarCode like '%" + txtBarCode.Text.Trim() + "%'";
@@ -39,20 +38,19 @@ namespace DTcms.Web.admin.Warehouse
             {
                 sql += " and b.BoxNo like '%" + txtBoxNo.Text.Trim() + "%'";
             }
-            if (ddlToolLevel.SelectedValue != "")
+            if (ddlInOutType.SelectedValue != "")
             {
-                sql += " and a.ToolLevel like '%" + ddlToolLevel.SelectedValue + "%'";
+                sql += " and a.InOutType = '" + ddlInOutType.SelectedValue + "'";
             }
-            if (ddlState.SelectedValue != "")
+            if (ddlIOFlag.SelectedValue != "")
             {
-                sql += " and a.State like '%" + ddlState.SelectedValue + "%'";
+                sql += " and a.IOFlag = '" + ddlIOFlag.SelectedValue + "'";
             }
-            else
+            if (txtSDate.Text.Trim() != ""&& txtEDate.Text.Trim() != "")
             {
-                sql += " and a.State>0";
+                sql += " and a.OperatorTime BETWEEN '" + txtSDate.Text.Trim() + "' and '" + txtEDate.Text.Trim() + "'";
             }
-
-            sql += " order by b.FK_CabinetNo,b.BoxNo,XY";
+            sql += " order by a.OperatorTime";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             PagedDataSource pds = new PagedDataSource();
             pds.AllowPaging = true;
@@ -75,7 +73,5 @@ namespace DTcms.Web.admin.Warehouse
         {
             BindData();
         }
-
-
     }
 }

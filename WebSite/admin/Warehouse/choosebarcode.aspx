@@ -1,4 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="choosematerial.aspx.cs" Inherits="DTcms.Web.admin.Warehouse.choosematerial" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="choosebarcode.aspx.cs" Inherits="DTcms.Web.admin.Warehouse.choosebarcode" %>
+
+<!DOCTYPE html>
 
 <!DOCTYPE html>
 
@@ -13,30 +15,12 @@
     <script type="text/javascript" charset="utf-8" src="../js/laymain.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/common.js"></script>
     <script type="text/javascript">
-        function ok(txtMaterialName, txtMaterialType, hdfMaterialTypeID, txtBrand, txtSpec, txtDeep, txtHigh, txtUnit, txtTotalTime,txtCode, txtMaterialID) {
+        function ok(txtApproveNewToolBarCode) {
             var api = frameElement.api, W = api.opener;
             if (W.document.getElementById('<%=Request.QueryString["txtTarget"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget"] %>').value = txtMaterialName;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget1"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget1"] %>').value = txtMaterialType;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget2"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget2"] %>').value = hdfMaterialTypeID;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget3"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget3"] %>').value = txtBrand;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget4"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget4"] %>').value = txtSpec;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget5"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget5"] %>').value = txtDeep;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget6"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget6"] %>').value = txtHigh;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget7"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget7"] %>').value = txtUnit;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget8"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget8"] %>').value = txtTotalTime;
-            if (W.document.getElementById('<%=Request.QueryString["txtTarget9"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["txtTarget9"] %>').value = txtCode;
-            if (W.document.getElementById('<%=Request.QueryString["idTarget"] %>') || false)
-                W.document.getElementById('<%=Request.QueryString["idTarget"] %>').value = txtMaterialID;
+                W.document.getElementById('<%=Request.QueryString["txtTarget"] %>').value = txtApproveNewToolBarCode;
+          <%--  if (W.document.getElementById('<%=Request.QueryString["idTarget"] %>') || false)
+                W.document.getElementById('<%=Request.QueryString["idTarget"] %>').value = txtMaterialID;--%>
             api.close();
         }
     </script>
@@ -82,16 +66,13 @@
                             刀具名称
                         </th>
                         <th align="left" width="10%">
-                            品牌
+                            条码
                         </th>
                         <th align="left" width="10%">
-                            规格
+                            剩余使用寿命
                         </th>
                         <th align="left" width="10%">
-                            长度
-                        </th>
-                        <th align="left" width="10%">
-                            直径
+                            刀具等级
                         </th>
                     </tr>
             </HeaderTemplate>
@@ -100,7 +81,7 @@
                     <td align="center">
                         <%--<asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />--%>
                         <input type="radio" id="Radio1" name ="FlowCode" runat="server" onclick="selectSingleRadio(this,'FlowCode');" />
-                        <asp:HiddenField ID="hfdMaterialID" Value='<%#Eval("MaterialID")%>' runat="server" />
+                        <asp:HiddenField ID="hfdMaterialID" Value='<%#Eval("BarCode")%>' runat="server" />
                     </td>
                     <td>
                         <%# Eval("MaterialID")%>
@@ -109,22 +90,20 @@
                         <%# Eval("MaterialName")%>
                     </td>
                     <td>
-                        <%# Eval("Brand")%>
+                        <%# Eval("BarCode")%>
                     </td>
                     <td>
-                        <%# Eval("Spec")%>
+                        <%# Eval("RemainTime")%>
                     </td>
                     <td>
-                        <%# Eval("Deep")%>
+                        <%# Eval("ToolLevel")%>
                     </td>
-                    <td>
-                        <%# Eval("High")%>
-                    </td>
+                   
                     
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
-                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"7\">暂无记录</td></tr>" : ""%>
+                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"6\">暂无记录</td></tr>" : ""%>
                 </table>
             </FooterTemplate>
         </asp:Repeater>

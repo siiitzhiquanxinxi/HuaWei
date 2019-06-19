@@ -84,10 +84,10 @@
     <dd><asp:TextBox ID="txtY" runat="server" CssClass="input normal"></asp:TextBox></dd>
     </dl>
     <dl>
-    <dt>柜子类型</dt>
+    <dt>格子类型</dt>
     <dd><asp:DropDownList id="ddlType" runat="server" >
-        <asp:ListItem Value="0">九宫格</asp:ListItem>
-        <asp:ListItem Value="1">普通柜</asp:ListItem>
+        <asp:ListItem Value="0">圆形</asp:ListItem>
+        <asp:ListItem Value="1">正方形</asp:ListItem>
         </asp:DropDownList></dd>
   </dl>
 </div>

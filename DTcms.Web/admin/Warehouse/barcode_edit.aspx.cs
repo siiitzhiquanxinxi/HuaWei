@@ -53,7 +53,7 @@ namespace DTcms.Web.admin.Warehouse
             if(dt==null)dt= bll.GetListWithCabinetNo("1=2").Tables[0];
             this.txtBatchNumber.Text = DateTime.Now.ToString("yyyyMMddHHmmss");
             Model.sy_material mmodel = materialbll.GetModel(this.txtMaterialID.Text.Trim());
-            string sqlshelf = "select * from sy_shelf where Deep>='" + mmodel.Deep + "' and High>='"+ mmodel.High+ "' order by High,Deep";
+            string sqlshelf = "select * from sy_shelf where Deep>='" + mmodel.Deep + "' and High>='"+ mmodel.High+ "' and Type='"+mmodel.Appearance+"' order by High,Deep";
             DataTable dtshelf = DbHelperMySql.Query(sqlshelf).Tables[0];
             if (dtshelf.Rows.Count == 0)
             {
@@ -66,6 +66,20 @@ namespace DTcms.Web.admin.Warehouse
                 decimal BagNum = Convert.ToDecimal(this.txtMinimum.Text.Trim());
                 int bnum = Convert.ToInt32(TotalNum / BagNum);
                 if (TotalNum > BagNum * bnum) bnum++;
+                int remain = 0;
+                for (int i = 0; i < dtshelf.Rows.Count; i++)
+                {
+                    int x = Convert.ToInt32(dtshelf.Rows[i]["X"]);
+                    int y = Convert.ToInt32(dtshelf.Rows[i]["Y"]);
+                    string sqlremain = "select count(*) as num from w_barcode where FK_ShelfID='" + dtshelf.Rows[i]["ID"].ToString() + "' and state>-1";
+                    DataTable dtremain= DbHelperMySql.Query(sqlremain).Tables[0];
+                    remain += x * y - Convert.ToInt32(dtremain.Rows[0]["num"]);
+                }
+                if (remain < bnum)
+                {
+                    MessageBox.Show(this, "剩余"+ remain.ToString() + "匹配的格子,无法生成这么多条码");
+                    return;
+                }
                 string sqlcode = "select * from w_barcode where BarCode like '"+txtCode.Text.Trim()+ "%' order by BarCode desc";
                 DataTable dtcode= DbHelperMySql.Query(sqlcode).Tables[0];
                 int codenum = dtcode.Rows.Count;
@@ -78,7 +92,7 @@ namespace DTcms.Web.admin.Warehouse
                         for (int a = 1; a <= x; a++)
                         {
 
-                            string sqlbox = "select * from w_barcode where FK_ShelfID='" + dtshelf.Rows[i]["ID"].ToString() + "' and X='" + a.ToString() + "' and Y='" + b.ToString() + "' and state<>-1";
+                            string sqlbox = "select * from w_barcode where FK_ShelfID='" + dtshelf.Rows[i]["ID"].ToString() + "' and X='" + a.ToString() + "' and Y='" + b.ToString() + "' and state>-1";
                             DataTable dtbox = DbHelperMySql.Query(sqlbox).Tables[0];
                             if (dtbox.Rows.Count == 0)
                             {
@@ -152,7 +166,7 @@ namespace DTcms.Web.admin.Warehouse
                     model.FK_ShelfID = Convert.ToInt32(dt.Rows[i]["FK_ShelfID"]);
                     model.X = Convert.ToInt32(dt.Rows[i]["X"]);
                     model.Y = Convert.ToInt32(dt.Rows[i]["Y"]);
-                    model.RemainTime = Convert.ToInt32(this.txtTotalTime.Text.Trim());
+                    model.RemainTime = Convert.ToDecimal(this.txtTotalTime.Text.Trim());
                     model.ToolLevel = "X";
                     model.State = 0;
                     bll.Add(model);
@@ -165,12 +179,47 @@ namespace DTcms.Web.admin.Warehouse
                 int rowIndex = 0;   //行的起始下标为 0
                 int colIndex = 0;   //列的起始下标为 0
                 //设置列名
-                for (int i = 0; i < dtexcel.Columns.Count-6; i++)
+                for (int i = 0; i < dtexcel.Columns.Count-8; i++)
                 {
                     //获取第一行的每个单元格
                     cell = worksheet.Cells[rowIndex, colIndex + i];
                     //设置列名
-                    cell.PutValue(dtexcel.Columns[i].ColumnName);
+                    string name = "";
+                    switch (dtexcel.Columns[i].ColumnName)
+                    {
+                        case "BarCode":
+                            name = "刀具条码";
+                            break;
+                        case "BatchNumber":
+                            name = "批号";
+                            break;
+                        case "MaterialID":
+                            name = "物料编号";
+                            break;
+                        case "MaterialName":
+                            name = "物料名称";
+                            break;
+                        case "MaterialTypeID":
+                            name = "分类编号";
+                            break;
+                        case "MaterialType":
+                            name = "刀具分类";
+                            break;
+                        case "Brand":
+                            name = "品牌";
+                            break;
+                        case "Spec":
+                            name = "规格";
+                            break;
+                        case "Unit":
+                            name = "单位";
+                            break;
+                        case "Num":
+                            name = "数量";
+                            break;
+                    }
+                    cell.PutValue(name);
+                    //cell.PutValue(dtexcel.Columns[i].ColumnName);
                     //设置字体
                     cell.Style.Font.Name = "宋体";
                     //设置字体加粗
@@ -193,7 +242,7 @@ namespace DTcms.Web.admin.Warehouse
                 //写入数据
                 for (int i = 0; i < dtexcel.Rows.Count; i++)
                 {
-                    for (int j = 0; j < dtexcel.Columns.Count-6; j++)
+                    for (int j = 0; j < dtexcel.Columns.Count-8; j++)
                     {
                         cell = worksheet.Cells[rowIndex + i, colIndex + j];
 

@@ -10,7 +10,7 @@
 namespace DTcms.Web.admin.Warehouse {
     
     
-    public partial class warehousenum_query {
+    public partial class approve_view {
         
         /// <summary>
         /// form1 控件。
@@ -22,138 +22,138 @@ namespace DTcms.Web.admin.Warehouse {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Label1 控件。
+        /// txtApproveNum 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.TextBox txtApproveNum;
         
         /// <summary>
-        /// txtBarCode 控件。
+        /// txtCreateDate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBarCode;
+        protected global::System.Web.UI.WebControls.TextBox txtCreateDate;
         
         /// <summary>
-        /// Label2 控件。
+        /// txtCreateByName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.TextBox txtCreateByName;
         
         /// <summary>
-        /// txtMaterialName 控件。
+        /// hfdCreateById 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMaterialName;
+        protected global::System.Web.UI.WebControls.HiddenField hfdCreateById;
         
         /// <summary>
-        /// Label3 控件。
+        /// txtApplyPartNum 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.WebControls.TextBox txtApplyPartNum;
         
         /// <summary>
-        /// txtCabinetNo 控件。
+        /// txtTexture 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCabinetNo;
+        protected global::System.Web.UI.WebControls.TextBox txtTexture;
         
         /// <summary>
-        /// Label4 控件。
+        /// txtApplyToolName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label4;
+        protected global::System.Web.UI.WebControls.TextBox txtApplyToolName;
         
         /// <summary>
-        /// txtBoxNo 控件。
+        /// txtApplyWorkTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBoxNo;
+        protected global::System.Web.UI.WebControls.TextBox txtApplyWorkTime;
         
         /// <summary>
-        /// Label5 控件。
+        /// txtApplyToolLevel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label5;
+        protected global::System.Web.UI.WebControls.TextBox txtApplyToolLevel;
         
         /// <summary>
-        /// ddlToolLevel 控件。
+        /// txtApplyOldToolBarCode 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlToolLevel;
+        protected global::System.Web.UI.WebControls.TextBox txtApplyOldToolBarCode;
         
         /// <summary>
-        /// Label6 控件。
+        /// txtApplyRemark 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
+        protected global::System.Web.UI.WebControls.TextBox txtApplyRemark;
         
         /// <summary>
-        /// ddlState 控件。
+        /// txtApproveNewToolBarCode 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlState;
+        protected global::System.Web.UI.WebControls.TextBox txtApproveNewToolBarCode;
         
         /// <summary>
-        /// btnSearch 控件。
+        /// txtApproveByName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtApproveByName;
         
         /// <summary>
-        /// rptList1 控件。
+        /// txtApproveDate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptList1;
+        protected global::System.Web.UI.WebControls.TextBox txtApproveDate;
         
         /// <summary>
-        /// AspNetPager1 控件。
+        /// txtApproveRemark 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::Wuqi.Webdiyer.AspNetPager AspNetPager1;
+        protected global::System.Web.UI.WebControls.TextBox txtApproveRemark;
     }
 }

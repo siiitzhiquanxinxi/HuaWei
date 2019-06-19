@@ -8,14 +8,14 @@ using DTcms.Common;
 using System.Data;
 namespace DTcms.Web.admin.Warehouse
 {
-    public partial class approve_list : Web.UI.ManagePage
+    public partial class w_inout_operate : Web.UI.ManagePage
     {
-        BLL.w_approvelist bll = new BLL.w_approvelist();
+        BLL.w_inout_operate bll = new BLL.w_inout_operate();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("approve_list", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("w_inout_operate", DTEnums.ActionEnum.View.ToString()); //检查权限
                 RptBind();
             }
         }
@@ -24,8 +24,9 @@ namespace DTcms.Web.admin.Warehouse
             string where = "1=1";
             if (this.txtKeywords.Text.Trim() != "")
             {
-                where += " and (ApproveNum like  '%" + this.txtKeywords.Text.Trim() + "%' or CreateByName like '%" + this.txtKeywords.Text.Trim() + "%' or ApplyToolName like '%" + this.txtKeywords.Text.Trim() + "%' or ApproveByName like '%" + this.txtKeywords.Text.Trim() + "%')";
+                where += " and (BillID like  '%" + this.txtKeywords.Text.Trim() + "%' or OperatorName like '%" + this.txtKeywords.Text.Trim() + "%' or Remark like '%" + this.txtKeywords.Text.Trim() + "%')";
             }
+            where += " order by BillDate desc";
             DataTable dt = bll.GetList(where).Tables[0];
             PagedDataSource pds = new PagedDataSource();
             pds.AllowPaging = true;
