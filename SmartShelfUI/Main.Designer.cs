@@ -42,13 +42,13 @@
             // 
             this.lblSoftwareTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblSoftwareTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblSoftwareTitle.Font = new System.Drawing.Font("微软雅黑", 42F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblSoftwareTitle.ForeColor = System.Drawing.Color.White;
+            this.lblSoftwareTitle.Font = new System.Drawing.Font("华文琥珀", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblSoftwareTitle.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblSoftwareTitle.Location = new System.Drawing.Point(0, 0);
             this.lblSoftwareTitle.Name = "lblSoftwareTitle";
             this.lblSoftwareTitle.Size = new System.Drawing.Size(1920, 117);
             this.lblSoftwareTitle.TabIndex = 0;
-            this.lblSoftwareTitle.Text = "智能柜刀具柜领用系统";
+            this.lblSoftwareTitle.Text = "智能柜刀具领用系统";
             this.lblSoftwareTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // lblVersion

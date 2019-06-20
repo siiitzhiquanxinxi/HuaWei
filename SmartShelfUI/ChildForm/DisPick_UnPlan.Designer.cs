@@ -42,23 +42,23 @@
             this.ApproveState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cbxToolLevel = new System.Windows.Forms.ComboBox();
-            this.btnApply = new System.Windows.Forms.Button();
-            this.txtWorkTime = new System.Windows.Forms.TextBox();
-            this.txtToolName = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.btnQueryTool = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.dgvTool = new System.Windows.Forms.DataGridView();
             this.MaterialID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaterialName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Brand = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Spec = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label8 = new System.Windows.Forms.Label();
             this.cbxTexture = new System.Windows.Forms.ComboBox();
+            this.cbxToolLevel = new System.Windows.Forms.ComboBox();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.txtWorkTime = new System.Windows.Forms.TextBox();
+            this.txtToolName = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel_ApproveList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ApproveList)).BeginInit();
@@ -164,30 +164,35 @@
             // 
             // ApproveNum
             // 
+            this.ApproveNum.DataPropertyName = "ApproveNum";
             this.ApproveNum.HeaderText = "申请单号";
             this.ApproveNum.Name = "ApproveNum";
             this.ApproveNum.ReadOnly = true;
             // 
             // CreateDate
             // 
+            this.CreateDate.DataPropertyName = "CreateDate";
             this.CreateDate.HeaderText = "申请时间";
             this.CreateDate.Name = "CreateDate";
             this.CreateDate.ReadOnly = true;
             // 
             // CreateByName
             // 
+            this.CreateByName.DataPropertyName = "CreateByName";
             this.CreateByName.HeaderText = "申请人";
             this.CreateByName.Name = "CreateByName";
             this.CreateByName.ReadOnly = true;
             // 
             // ApplyToolName
             // 
+            this.ApplyToolName.DataPropertyName = "ApplyToolName";
             this.ApplyToolName.HeaderText = "申请刀具";
             this.ApplyToolName.Name = "ApplyToolName";
             this.ApplyToolName.ReadOnly = true;
             // 
             // ApproveState
             // 
+            this.ApproveState.DataPropertyName = "State";
             this.ApproveState.HeaderText = "申请状态";
             this.ApproveState.Name = "ApproveState";
             this.ApproveState.ReadOnly = true;
@@ -223,6 +228,92 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(674, 755);
             this.panel1.TabIndex = 7;
+            // 
+            // btnQueryTool
+            // 
+            this.btnQueryTool.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
+            this.btnQueryTool.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnQueryTool.FlatAppearance.BorderSize = 0;
+            this.btnQueryTool.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnQueryTool.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnQueryTool.ForeColor = System.Drawing.Color.White;
+            this.btnQueryTool.Location = new System.Drawing.Point(498, 35);
+            this.btnQueryTool.Name = "btnQueryTool";
+            this.btnQueryTool.Size = new System.Drawing.Size(92, 29);
+            this.btnQueryTool.TabIndex = 3;
+            this.btnQueryTool.Text = "筛 选";
+            this.btnQueryTool.UseVisualStyleBackColor = true;
+            this.btnQueryTool.Click += new System.EventHandler(this.btnQueryTool_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.dgvTool);
+            this.panel3.Location = new System.Drawing.Point(58, 224);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(563, 398);
+            this.panel3.TabIndex = 5;
+            // 
+            // dgvTool
+            // 
+            this.dgvTool.AllowUserToAddRows = false;
+            this.dgvTool.AllowUserToDeleteRows = false;
+            this.dgvTool.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTool.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.MaterialID,
+            this.MaterialName,
+            this.Brand,
+            this.Spec});
+            this.dgvTool.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTool.Location = new System.Drawing.Point(0, 0);
+            this.dgvTool.Name = "dgvTool";
+            this.dgvTool.ReadOnly = true;
+            this.dgvTool.RowTemplate.Height = 23;
+            this.dgvTool.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTool.Size = new System.Drawing.Size(563, 398);
+            this.dgvTool.TabIndex = 0;
+            // 
+            // MaterialID
+            // 
+            this.MaterialID.DataPropertyName = "MaterialID";
+            this.MaterialID.HeaderText = "MaterialID";
+            this.MaterialID.Name = "MaterialID";
+            this.MaterialID.ReadOnly = true;
+            this.MaterialID.Visible = false;
+            // 
+            // MaterialName
+            // 
+            this.MaterialName.DataPropertyName = "MaterialName";
+            this.MaterialName.HeaderText = "物料名称";
+            this.MaterialName.Name = "MaterialName";
+            this.MaterialName.ReadOnly = true;
+            // 
+            // Brand
+            // 
+            this.Brand.DataPropertyName = "Brand";
+            this.Brand.HeaderText = "品牌";
+            this.Brand.Name = "Brand";
+            this.Brand.ReadOnly = true;
+            // 
+            // Spec
+            // 
+            this.Spec.DataPropertyName = "Spec";
+            this.Spec.HeaderText = "规格";
+            this.Spec.Name = "Spec";
+            this.Spec.ReadOnly = true;
+            // 
+            // cbxTexture
+            // 
+            this.cbxTexture.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxTexture.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbxTexture.FormattingEnabled = true;
+            this.cbxTexture.Items.AddRange(new object[] {
+            "旧刀（F）",
+            "新刀（X）",
+            "返磨（R）"});
+            this.cbxTexture.Location = new System.Drawing.Point(271, 173);
+            this.cbxTexture.Name = "cbxTexture";
+            this.cbxTexture.Size = new System.Drawing.Size(319, 29);
+            this.cbxTexture.TabIndex = 4;
             // 
             // cbxToolLevel
             // 
@@ -269,6 +360,18 @@
             this.txtToolName.Name = "txtToolName";
             this.txtToolName.Size = new System.Drawing.Size(209, 29);
             this.txtToolName.TabIndex = 3;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.Transparent;
+            this.label8.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(119, 176);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(122, 22);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "选择加工材质：";
             // 
             // label6
             // 
@@ -318,103 +421,6 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "输入刀具名称：";
             // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.dgvTool);
-            this.panel3.Location = new System.Drawing.Point(58, 224);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(563, 398);
-            this.panel3.TabIndex = 5;
-            // 
-            // btnQueryTool
-            // 
-            this.btnQueryTool.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
-            this.btnQueryTool.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnQueryTool.FlatAppearance.BorderSize = 0;
-            this.btnQueryTool.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQueryTool.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnQueryTool.ForeColor = System.Drawing.Color.White;
-            this.btnQueryTool.Location = new System.Drawing.Point(498, 35);
-            this.btnQueryTool.Name = "btnQueryTool";
-            this.btnQueryTool.Size = new System.Drawing.Size(92, 29);
-            this.btnQueryTool.TabIndex = 3;
-            this.btnQueryTool.Text = "筛 选";
-            this.btnQueryTool.UseVisualStyleBackColor = true;
-            this.btnQueryTool.Click += new System.EventHandler(this.btnQueryTool_Click);
-            // 
-            // dgvTool
-            // 
-            this.dgvTool.AllowUserToAddRows = false;
-            this.dgvTool.AllowUserToDeleteRows = false;
-            this.dgvTool.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTool.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.MaterialID,
-            this.MaterialName,
-            this.Brand,
-            this.Spec});
-            this.dgvTool.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTool.Location = new System.Drawing.Point(0, 0);
-            this.dgvTool.Name = "dgvTool";
-            this.dgvTool.ReadOnly = true;
-            this.dgvTool.RowTemplate.Height = 23;
-            this.dgvTool.Size = new System.Drawing.Size(563, 398);
-            this.dgvTool.TabIndex = 0;
-            // 
-            // MaterialID
-            // 
-            this.MaterialID.DataPropertyName = "MaterialID";
-            this.MaterialID.HeaderText = "MaterialID";
-            this.MaterialID.Name = "MaterialID";
-            this.MaterialID.ReadOnly = true;
-            this.MaterialID.Visible = false;
-            // 
-            // MaterialName
-            // 
-            this.MaterialName.DataPropertyName = "MaterialName";
-            this.MaterialName.HeaderText = "物料名称";
-            this.MaterialName.Name = "MaterialName";
-            this.MaterialName.ReadOnly = true;
-            // 
-            // Brand
-            // 
-            this.Brand.DataPropertyName = "Brand";
-            this.Brand.HeaderText = "品牌";
-            this.Brand.Name = "Brand";
-            this.Brand.ReadOnly = true;
-            // 
-            // Spec
-            // 
-            this.Spec.DataPropertyName = "Spec";
-            this.Spec.HeaderText = "规格";
-            this.Spec.Name = "Spec";
-            this.Spec.ReadOnly = true;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(119, 176);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(122, 22);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "选择加工材质：";
-            // 
-            // cbxTexture
-            // 
-            this.cbxTexture.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTexture.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbxTexture.FormattingEnabled = true;
-            this.cbxTexture.Items.AddRange(new object[] {
-            "旧刀（F）",
-            "新刀（X）",
-            "返磨（R）"});
-            this.cbxTexture.Location = new System.Drawing.Point(271, 173);
-            this.cbxTexture.Name = "cbxTexture";
-            this.cbxTexture.Size = new System.Drawing.Size(319, 29);
-            this.cbxTexture.TabIndex = 4;
-            // 
             // DisPick_UnPlan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -460,11 +466,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ApproveNum;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CreateDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CreateByName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ApplyToolName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ApproveState;
         private System.Windows.Forms.Button btnQueryTool;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dgvTool;
@@ -474,5 +475,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Spec;
         private System.Windows.Forms.ComboBox cbxTexture;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApproveNum;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CreateDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CreateByName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApplyToolName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApproveState;
     }
 }

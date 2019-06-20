@@ -153,7 +153,6 @@ namespace SmartShelfUI.ChildForm
                     {
                         MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
                     }
-
                 }
                 else
                 {

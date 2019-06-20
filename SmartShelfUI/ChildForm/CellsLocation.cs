@@ -24,8 +24,6 @@ namespace SmartShelfUI.ChildForm
         string BarCode = "";
         public List<string> lstSelected;
 
-        //private string inoutID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-
         private void CellsLocation_Load(object sender, EventArgs e)
         {
             this.spCom.PortName = ConfigurationManager.AppSettings["qrcom"].Trim();
@@ -177,7 +175,7 @@ namespace SmartShelfUI.ChildForm
                                         ReduceWorkTime = Convert.ToDecimal(dt.Rows[0]["Coefficient"]) * ReduceWorkTime;
                                     }
                                 }
-                                inout.WorkTime = Convert.ToInt32(ReduceWorkTime);
+                                inout.WorkTime = ReduceWorkTime;
                                 inout.OperatorName = globalField.Manager.real_name;
                                 inout.OperatorTime = DateTime.Now;
                                 inout.InOutRemark = "";

@@ -181,7 +181,8 @@ namespace SmartShelfUI.ChildForm
                                                 {
                                                     //修改刀具状态
                                                     tool.State = 1;
-                                                    tool.RemainTime = int.Parse(txtWorkTime.Text);
+                                                    tool.ToolLevel = "R";
+                                                    tool.RemainTime = decimal.Parse(txtWorkTime.Text);
                                                     new DTcms.BLL.w_barcode().Update(tool);
                                                     //生成修磨入库记录
                                                     DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
@@ -339,7 +340,7 @@ namespace SmartShelfUI.ChildForm
         public static bool IsNumber(string s)
         {
             if (string.IsNullOrWhiteSpace(s)) return false;
-            const string pattern = "^[0-9]*$";
+            const string pattern = "^-?\\d+$|^(-?\\d+)(\\.\\d+)?$";
             Regex rx = new Regex(pattern);
             return rx.IsMatch(s);
         }

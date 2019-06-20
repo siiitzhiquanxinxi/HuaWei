@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,11 +19,33 @@ namespace SmartShelfUI.ChildForm
             InitializeComponent();
         }
 
+        public CellsLocationForGeneral(bool isCOM)
+        {
+            InitializeComponent();
+            if (isCOM)
+            {
+                IsCom = true;
+            }
+        }
+        private bool IsCom = false;
         public DTcms.Model.w_barcode tool = null;
         public DTcms.Model.sy_shelf shelf = null;
         public DTcms.Model.sy_cabinet cabinet = null;
         private void CellsLocationForGeneral_Load(object sender, EventArgs e)
         {
+            if (IsCom)
+            {
+                try
+                {
+                    this.spCom.PortName = ConfigurationManager.AppSettings["qrcom"].Trim();
+                    spCom.Open();
+                    spCom.Write("LON\r\n");
+                }
+                catch
+                {
+                    MessageBox.Show("串口打开失败！");
+                }
+            }
             if (shelf != null)
             {
                 int x = Convert.ToInt16(shelf.X);
@@ -61,6 +85,79 @@ namespace SmartShelfUI.ChildForm
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void CellsLocationForGeneral_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (IsCom)
+            {
+                if (this.spCom.IsOpen)
+                {
+                    try
+                    {
+                        spCom.Write("LOFF\r\n");
+                        spCom.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("关闭串口失败：" + ex.ToString());
+                    }
+                }
+            }
+        }
+
+        string BarCode = "";
+        private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            Thread.Sleep(300);
+            string receive_str = "";
+            byte[] result = new byte[16];
+            int rLength = spCom.Read(result, 0, result.Length);
+            if (rLength >= 8)
+            {
+                foreach (byte item in result)
+                {
+                    char c = Convert.ToChar(item);
+                    if (c == '\r')
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        receive_str += Convert.ToChar(item);
+                    }
+                }
+                string barcode = receive_str.Trim();
+                if (barcode == BarCode)
+                {
+                    return;
+                }
+                else
+                {
+                    BarCode = barcode;
+                }
+                List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "' and FK_ShelfID = " + shelf.ID);
+                if (lstmodel != null && lstmodel.Count > 0)
+                {
+                    //变颜色
+                    foreach (Control item in panel_Cells.Controls)
+                    {
+                        if (item is Button)
+                        {
+                            Button b = item as Button;
+                            if (b.Tag.ToString() == lstmodel[0].X + "-" + lstmodel[0].Y)
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    b.BackColor = Color.Green;
+                                    b.ForeColor = Color.White;
+                                });
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

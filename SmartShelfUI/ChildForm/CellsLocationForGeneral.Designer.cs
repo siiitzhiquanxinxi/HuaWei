@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel_Cells = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.spCom = new System.IO.Ports.SerialPort(this.components);
             this.SuspendLayout();
             // 
             // panel_Cells
@@ -96,6 +98,12 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "取消本次操作，不生成操作记录";
             // 
+            // spCom
+            // 
+            this.spCom.BaudRate = 115200;
+            this.spCom.Parity = System.IO.Ports.Parity.Even;
+            this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
+            // 
             // CellsLocationForGeneral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -110,6 +118,7 @@
             this.Name = "CellsLocationForGeneral";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CellsLocationForGeneral";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CellsLocationForGeneral_FormClosing);
             this.Load += new System.EventHandler(this.CellsLocationForGeneral_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -123,5 +132,6 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.IO.Ports.SerialPort spCom;
     }
 }

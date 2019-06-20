@@ -29,17 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel_CAM = new System.Windows.Forms.Panel();
             this.dgvCabinet = new System.Windows.Forms.DataGridView();
-            this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOpenDoor = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvShelf = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel_Cells = new System.Windows.Forms.Panel();
@@ -47,6 +46,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnReScan = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -59,7 +59,9 @@
             this.lblToolLevel = new System.Windows.Forms.Label();
             this.lblToolName = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnReScan = new System.Windows.Forms.Button();
+            this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinet)).BeginInit();
@@ -103,17 +105,10 @@
             this.dgvCabinet.Location = new System.Drawing.Point(0, 37);
             this.dgvCabinet.Name = "dgvCabinet";
             this.dgvCabinet.ReadOnly = true;
-            this.dgvCabinet.RowTemplate.Height = 23;
+            this.dgvCabinet.RowTemplate.Height = 45;
             this.dgvCabinet.Size = new System.Drawing.Size(225, 584);
             this.dgvCabinet.TabIndex = 2;
             this.dgvCabinet.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCabinet_CellMouseClick);
-            // 
-            // CabinetNo
-            // 
-            this.CabinetNo.DataPropertyName = "CabinetNo";
-            this.CabinetNo.HeaderText = "柜号";
-            this.CabinetNo.Name = "CabinetNo";
-            this.CabinetNo.ReadOnly = true;
             // 
             // label13
             // 
@@ -176,25 +171,10 @@
             this.dgvShelf.Location = new System.Drawing.Point(0, 37);
             this.dgvShelf.Name = "dgvShelf";
             this.dgvShelf.ReadOnly = true;
-            this.dgvShelf.RowTemplate.Height = 23;
+            this.dgvShelf.RowTemplate.Height = 30;
             this.dgvShelf.Size = new System.Drawing.Size(225, 584);
             this.dgvShelf.TabIndex = 3;
             this.dgvShelf.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvShelf_CellClick);
-            // 
-            // ID
-            // 
-            this.ID.DataPropertyName = "ID";
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Visible = false;
-            // 
-            // BoxNo
-            // 
-            this.BoxNo.DataPropertyName = "BoxNo";
-            this.BoxNo.HeaderText = "抽屉号";
-            this.BoxNo.Name = "BoxNo";
-            this.BoxNo.ReadOnly = true;
             // 
             // label1
             // 
@@ -275,6 +255,22 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "刀具信息";
+            // 
+            // btnReScan
+            // 
+            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReScan.FlatAppearance.BorderSize = 0;
+            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReScan.Location = new System.Drawing.Point(159, 540);
+            this.btnReScan.Name = "btnReScan";
+            this.btnReScan.Size = new System.Drawing.Size(200, 60);
+            this.btnReScan.TabIndex = 6;
+            this.btnReScan.Text = "重新扫描";
+            this.btnReScan.UseVisualStyleBackColor = true;
+            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
             // label11
             // 
@@ -398,21 +394,31 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "刀具名称：";
             // 
-            // btnReScan
+            // CabinetNo
             // 
-            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
-            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnReScan.FlatAppearance.BorderSize = 0;
-            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
-            this.btnReScan.Location = new System.Drawing.Point(159, 540);
-            this.btnReScan.Name = "btnReScan";
-            this.btnReScan.Size = new System.Drawing.Size(200, 60);
-            this.btnReScan.TabIndex = 6;
-            this.btnReScan.Text = "重新扫描";
-            this.btnReScan.UseVisualStyleBackColor = true;
-            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
+            this.CabinetNo.DataPropertyName = "CabinetNo";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle1;
+            this.CabinetNo.HeaderText = "柜号";
+            this.CabinetNo.Name = "CabinetNo";
+            this.CabinetNo.ReadOnly = true;
+            // 
+            // ID
+            // 
+            this.ID.DataPropertyName = "ID";
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // BoxNo
+            // 
+            this.BoxNo.DataPropertyName = "BoxNo";
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle2;
+            this.BoxNo.HeaderText = "抽屉号";
+            this.BoxNo.Name = "BoxNo";
+            this.BoxNo.ReadOnly = true;
             // 
             // Stock
             // 
@@ -473,10 +479,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dgvCabinet;
         private System.Windows.Forms.DataGridView dgvShelf;
+        private System.Windows.Forms.Button btnOpenDoor;
+        private System.Windows.Forms.Button btnReScan;
         private System.Windows.Forms.DataGridViewTextBoxColumn CabinetNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn BoxNo;
-        private System.Windows.Forms.Button btnOpenDoor;
-        private System.Windows.Forms.Button btnReScan;
     }
 }

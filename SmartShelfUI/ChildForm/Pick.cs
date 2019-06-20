@@ -42,7 +42,7 @@ namespace SmartShelfUI.ChildForm
         private void GetOrderList()
         {
             panel_order.Controls.Clear();
-            string sql = "select * from temp_planorderlist where OrderReadyState = 1 order by PlanWorkTime asc";
+            string sql = "select * from temp_planorderlist where OrderReadyState = 1 or OrderReadyState = -1 order by PlanWorkTime asc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -53,16 +53,17 @@ namespace SmartShelfUI.ChildForm
                     btnOrder.BackgroundImageLayout = ImageLayout.Stretch;
                     btnOrder.FlatAppearance.BorderSize = 0;
                     btnOrder.FlatStyle = FlatStyle.Flat;
-                    btnOrder.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(134)));
+                    btnOrder.Font = new Font("微软雅黑", 11F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(134)));
                     btnOrder.ForeColor = Color.White;
                     btnOrder.Location = new Point(3, 3 + 55 * i);
                     btnOrder.Size = new Size(540, 55);
+                    string partState = dt.Rows[i]["OrderReadyState"].ToString() == "1" ? "备刀中" : dt.Rows[i]["OrderReadyState"].ToString() == "-1" ? "异常" : dt.Rows[i]["OrderReadyState"].ToString();
                     btnOrder.Text = dt.Rows[i]["PartNum"].ToString() + "    "
                         + dt.Rows[i]["PartName"].ToString() + "    "
                         + dt.Rows[i]["MaterialTexture"].ToString() + "    "
-                        + Convert.ToDateTime(dt.Rows[i]["PlanWorkTime"]).ToString("yyyy-MM-dd HH:mm") + "    "
+                        + Convert.ToDateTime(dt.Rows[i]["PlanWorkTime"]).ToString("MM-dd HH:mm") + "    "
                         + dt.Rows[i]["MachineLathe"].ToString() + "    "
-                        + dt.Rows[i]["OrderReadyState"].ToString();
+                        + partState;
                     //btnOrder.Text = "M123-0909      金属外壳     铝合金     2019-05-10 10:10    3号机台     备料中";
                     btnOrder.Tag = dt.Rows[i]["PartNum"].ToString();
                     btnOrder.UseVisualStyleBackColor = true;
@@ -177,17 +178,17 @@ namespace SmartShelfUI.ChildForm
                             }
                             else if (item.ToolReadyState == -1)//有一把异常，主表状态就为异常
                             {
-                                DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
-                                planorder.OrderReadyState = -1;
-                                new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
+                                //planorder.OrderReadyState = -1;
+                                //new DTcms.BLL.temp_planorderlist().Update(planorder);
                                 isDone = false;
                                 break;
                             }
                             else if (item.ToolReadyState == 1)//有一把未领，主表状态就为未领
                             {
-                                DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
-                                planorder.OrderReadyState = 1;
-                                new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
+                                //planorder.OrderReadyState = 1;
+                                //new DTcms.BLL.temp_planorderlist().Update(planorder);
                                 isDone = false;
                                 break;
                             }
@@ -413,7 +414,7 @@ namespace SmartShelfUI.ChildForm
                 {
                     dgvCamList.DataSource = dt;
 
-                    sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "' and (c.ToolReadyState = 1 or ToolReadyState = 2)";
+                    sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "' and (c.ToolReadyState = 1 or ToolReadyState = 2) order by s.FK_CabinetNo,BoxNo";
                     DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
                     if (dtShelf != null && dtShelf.Rows.Count > 0)
                     {

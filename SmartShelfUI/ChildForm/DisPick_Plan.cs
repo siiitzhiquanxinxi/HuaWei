@@ -26,13 +26,8 @@ namespace SmartShelfUI.ChildForm
 
         private void GetApproveList()
         {
-            dgv_ApproveList.DataSource = null;
-            string sql = "select * from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 1 order by ApproveState desc,CreateDate desc";
+            string sql = "select ApproveNum,CreateDate,CreateByName,ApplyToolName,ApplyPartNum,(CASE ApproveState WHEN 0 THEN '待审核' ELSE '已审核' END) as state from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 1 order by ApproveState desc,CreateDate desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                dt.Rows[i]["ApproveState"] = dt.Rows[i]["ApproveState"].ToString() == "0" ? "待审核" : "已审核";
-            }
             dgv_ApproveList.DataSource = dt;
         }
 
@@ -55,7 +50,7 @@ namespace SmartShelfUI.ChildForm
                         {
                             DTcms.Model.sy_shelf shelf = new DTcms.BLL.sy_shelf().GetModel(Convert.ToInt32(tool.FK_ShelfID));
                             DTcms.Model.sy_cabinet cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
-                            CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
+                            CellsLocationForGeneral frmCells = new CellsLocationForGeneral(true);
                             frmCells.tool = tool;
                             frmCells.cabinet = cabinet;
                             frmCells.shelf = shelf;
@@ -108,7 +103,7 @@ namespace SmartShelfUI.ChildForm
                                             {
                                                 ReduceWorkTime = Convert.ToDecimal(dt.Rows[0]["Coefficient"]) * ReduceWorkTime;
                                             }
-                                            inout.WorkTime = Convert.ToInt32(ReduceWorkTime);
+                                            inout.WorkTime = ReduceWorkTime;
                                             inout.OperatorName = globalField.Manager.real_name;
                                             inout.OperatorTime = DateTime.Now;
                                             inout.InOutRemark = "";
@@ -139,17 +134,17 @@ namespace SmartShelfUI.ChildForm
                                                 }
                                                 else if (item.ToolReadyState == -1)//有一把异常，主表状态就为异常
                                                 {
-                                                    DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
-                                                    planorder.OrderReadyState = -1;
-                                                    new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                                    //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
+                                                    //planorder.OrderReadyState = -1;
+                                                    //new DTcms.BLL.temp_planorderlist().Update(planorder);
                                                     isDone = false;
                                                     break;
                                                 }
                                                 else if (item.ToolReadyState == 1)//有一把未领，主表状态就为未领
                                                 {
-                                                    DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
-                                                    planorder.OrderReadyState = 1;
-                                                    new DTcms.BLL.temp_planorderlist().Update(planorder);
+                                                    //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + approve.ApplyPartNum + "'")[0];
+                                                    //planorder.OrderReadyState = 1;
+                                                    //new DTcms.BLL.temp_planorderlist().Update(planorder);
                                                     isDone = false;
                                                     break;
                                                 }
@@ -232,7 +227,9 @@ namespace SmartShelfUI.ChildForm
                         {
                             MessageBox.Show("申请成功！");
                             txtPartNum.Text = "";
-                            dgvCamList.DataSource = null;
+                            string sql = "select Id,PartNum,ToolName,WorkTime,ToolLevel,(CASE ToolReadyState WHEN 0 THEN '待备刀' WHEN 1 THEN '备刀中' WHEN 2 THEN '已领刀' WHEN -1 THEN '异常' WHEN -1 THEN '已取消' ELSE '其他' END) as ToolState from temp_camlist where 1=2";
+                            DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                            dgvCamList.DataSource = dt;
                         }
                         else
                         {
@@ -329,7 +326,7 @@ namespace SmartShelfUI.ChildForm
 
         private void btnQueryPart_Click(object sender, EventArgs e)
         {
-            string sql = "select * from temp_camlist where PartNum = '" + txtPartNum.Text + "'";
+            string sql = "select Id,PartNum,ToolName,WorkTime,ToolLevel,(CASE ToolReadyState WHEN 0 THEN '待备刀' WHEN 1 THEN '备刀中' WHEN 2 THEN '已领刀' WHEN -1 THEN '异常' WHEN -1 THEN '已取消' ELSE '其他' END) as ToolState from temp_camlist where PartNum = '" + txtPartNum.Text + "'";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {

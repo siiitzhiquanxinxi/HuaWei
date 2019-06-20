@@ -45,7 +45,11 @@ namespace SmartShelfUI.ChildForm
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             dgvCabinet.DataSource = dt;
         }
-
+        /// <summary>
+        /// 显示9宫格
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgvShelf_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvShelf.SelectedRows != null && dgvShelf.SelectedRows.Count > 0)
@@ -70,10 +74,10 @@ namespace SmartShelfUI.ChildForm
                             //b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
                             b.Text = (j * x + i + 1).ToString();
                             b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-                            List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("FK_ShelfID = " + shelf.ID + " and X = " + i + " and Y = " + j + "");
+                            List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("FK_ShelfID = " + shelf.ID + " and X = " + (i + 1).ToString() + " and Y = " + (j + 1).ToString() + "");
                             if (lstmodel != null && lstmodel.Count > 0)
                             {
-                                if (lstmodel[0].State == 2 || lstmodel[0].State == 4)
+                                if (lstmodel[0].State == 1 || lstmodel[0].State == 4)
                                 {
                                     b.BackColor = SystemColors.ControlDark;
                                     b.Click += btnCell_Click;
@@ -88,7 +92,6 @@ namespace SmartShelfUI.ChildForm
                                 b.BackColor = Color.WhiteSmoke;
                             }
 
-
                             b.UseVisualStyleBackColor = true;
                             panel_Cells.Controls.Add(b);
                         }
@@ -97,12 +100,17 @@ namespace SmartShelfUI.ChildForm
             }
         }
 
+        /// <summary>
+        /// 显示抽屉列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgvCabinet_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (dgvCabinet.SelectedRows != null && dgvCabinet.SelectedRows.Count > 0)
             {
                 string CabinetNo = dgvCabinet.SelectedRows[0].Cells[0].Value.ToString();
-                string sql = "select ID,BoxNo from sy_shelf where FK_CabinetNo = '" + CabinetNo + "' order by BoxNo";
+                string sql = "select ID,BoxNo from sy_shelf where FK_CabinetNo = '" + CabinetNo + "' order by CONVERT(BoxNo,SIGNED)";
                 DataTable dt = DbHelperMySql.Query(sql).Tables[0];
                 dgvShelf.DataSource = dt;
                 cabinet = new DTcms.BLL.sy_cabinet().GetModel(CabinetNo);
@@ -264,7 +272,7 @@ namespace SmartShelfUI.ChildForm
 
         private void btnCell_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("是否确认将该物料盘亏？") == DialogResult.OK)
+            if (MessageBox.Show("是否确认将该物料盘亏？", "确认盘亏", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 Button btn = sender as Button;
                 List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("FK_ShelfID = " + shelf.ID + " and X = " + btn.Tag.ToString().Split('-')[0] + " and Y = " + btn.Tag.ToString().Split('-')[1] + "");
@@ -278,6 +286,11 @@ namespace SmartShelfUI.ChildForm
 
         private void btnOpenDoor_Click(object sender, EventArgs e)
         {
+            if (this.shelf == null)
+            {
+                MessageBox.Show("请选择抽屉！");
+                return;
+            }
             string IP = "";
             string Port = "";
             if (shelf != null)

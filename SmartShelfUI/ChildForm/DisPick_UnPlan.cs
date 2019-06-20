@@ -31,13 +31,8 @@ namespace SmartShelfUI.ChildForm
 
         private void GetApproveList()
         {
-            dgv_ApproveList.DataSource = null;
-            string sql = "select * from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 0 order by ApproveState desc,CreateDate desc";
+            string sql = "select ApproveNum,CreateDate,CreateByName,ApplyToolName,(CASE ApproveState WHEN 0 THEN '待审核' ELSE '已审核' END) as State from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 0 order by ApproveState desc,CreateDate desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                dt.Rows[i]["ApproveState"] = dt.Rows[i]["ApproveState"].ToString() == "0" ? "待审核" : "已审核";
-            }
             dgv_ApproveList.DataSource = dt;
         }
 
@@ -107,7 +102,10 @@ namespace SmartShelfUI.ChildForm
             {
                 MessageBox.Show("申请成功！");
                 txtToolName.Text = txtWorkTime.Text = cbxToolLevel.Text = "";
-                dgvTool.DataSource = null;
+
+                string sql = "select MaterialID,MaterialName,Brand,Spec from sy_material where 1=2";
+                DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                dgvTool.DataSource = dt;
             }
             else
             {
@@ -135,7 +133,7 @@ namespace SmartShelfUI.ChildForm
                         {
                             DTcms.Model.sy_shelf shelf = new DTcms.BLL.sy_shelf().GetModel(Convert.ToInt32(tool.FK_ShelfID));
                             DTcms.Model.sy_cabinet cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
-                            CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
+                            CellsLocationForGeneral frmCells = new CellsLocationForGeneral(true);
                             frmCells.tool = tool;
                             frmCells.cabinet = cabinet;
                             frmCells.shelf = shelf;
@@ -221,8 +219,6 @@ namespace SmartShelfUI.ChildForm
                                 {
                                     MessageBox.Show("网络通讯返回错误！");
                                 }
-
-
                             }
                             else
                             {
@@ -250,7 +246,7 @@ namespace SmartShelfUI.ChildForm
         public static bool IsNumber(string s)
         {
             if (string.IsNullOrWhiteSpace(s)) return false;
-            const string pattern = "^[0-9]*$";
+            const string pattern = "^-?\\d+$|^(-?\\d+)(\\.\\d+)?$";
             Regex rx = new Regex(pattern);
             return rx.IsMatch(s);
         }
@@ -262,7 +258,7 @@ namespace SmartShelfUI.ChildForm
                 MessageBox.Show("请输入刀具名称！");
                 return;
             }
-            string sql = "select * from sy_material where State = 0 and MaterialName like '%" + txtToolName.Text.Trim() + "%'";
+            string sql = "select MaterialID,MaterialName,Brand,Spec from sy_material where State = 0 and MaterialName like '%" + txtToolName.Text.Trim() + "%'";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             dgvTool.DataSource = dt;
 
