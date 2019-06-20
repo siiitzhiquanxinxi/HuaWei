@@ -51,7 +51,7 @@ namespace DTcms.Web.admin.Material
             _keywords = _keywords.Replace("'", "");
             if (!string.IsNullOrEmpty(_keywords))
             {
-                strTemp.Append(" and (Texture like  '%" + _keywords + "%')");
+                strTemp.Append(" Texture like  '%" + _keywords + "%'");
             }
 
             return strTemp.ToString();

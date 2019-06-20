@@ -161,7 +161,7 @@
                         <tr>
                             <th align="center"width="8%">刀具条码</th>
                             <th align="center"width="8%">批号</th>
-                            <th align="center" width="8%">刀具编号</th>
+                            <%--<th align="center" width="8%">刀具编号</th>--%>
                             <th align="center" width="8%">刀具名称</th>
                             <th align="center" width="8%">刀具分类</th>
                             <th align="center" width="5%">品牌</th>
@@ -178,14 +178,14 @@
                         </tr>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <tr height="80">
+                    <tr >
                         <%--<td align="center">
                             <asp:HiddenField ID="hfdId" runat="server" Value='<%#Eval("ID") %>' />
                             <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         </td>--%>
                         <td  align="center"><%#Eval("BarCode") %></td>
                         <td  align="center"><%#Eval("BatchNumber") %></td>
-                        <td  align="center"><%# Eval("MaterialID") %></td>
+                        <%--<td  align="center"><%# Eval("MaterialID") %></td>--%>
                         <td  align="center"><%# Eval("MaterialName") %></td>
                         <td  align="center"><%# Eval("MaterialType") %></td>
                         <td  align="center"><%# Eval("Brand") %></td>
@@ -197,14 +197,14 @@
                         <td  align="center"><%# Eval("XY") %></td>
                         <td  align="center"><%# Eval("RemainTime") %></td>
                         <td  align="center"><%# Eval("ToolLevel") %></td>
-                        <td  align="center"><%#Eval("State").ToString() == "0" ? "待入库" : Eval("State").ToString() == "1"?"在库":Eval("State").ToString() == "2"?"出库":"修磨中"%></td>
+                        <td  align="center"><%#Eval("State").ToString() == "0" ? "待入库" : Eval("State").ToString() == "1"?"在库":Eval("State").ToString() == "2"?"出库":Eval("State").ToString() == "3"?"修磨中":Eval("State").ToString() == "4"?"工单锁定":Eval("State").ToString() == "-2"?"盘亏":"报废"%></td>
                         <%--<td align="center">
                             <a href='MaterialEdit.aspx?action=Edit&id=<%#Eval("ID") %>'>编辑</a>
                         </td>--%>
                     </tr>
                 </ItemTemplate>
                 <FooterTemplate>
-                    <%#rptList1.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"17\">暂无记录</td></tr>" : ""%>
+                    <%#rptList1.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"14\">暂无记录</td></tr>" : ""%>
   </table>
                 </FooterTemplate>
             </asp:Repeater>

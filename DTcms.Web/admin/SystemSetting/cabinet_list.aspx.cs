@@ -50,7 +50,7 @@ namespace DTcms.Web.admin.SystemSetting
             _keywords = _keywords.Replace("'", "");
             if (!string.IsNullOrEmpty(_keywords))
             {
-                strTemp.Append(" and (CabinetNo like  '%" + _keywords + "%' or Location like '%" + _keywords + "%' or Manager like '%" + _keywords + "%')");
+                strTemp.Append(" CabinetNo like  '%" + _keywords + "%' or Location like '%" + _keywords + "%' or Manager like '%" + _keywords + "%'");
             }
 
             return strTemp.ToString();

@@ -88,7 +88,7 @@
     </tr>
   </ItemTemplate>
   <FooterTemplate>
-    <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"8\">暂无记录</td></tr>" : ""%>
+    <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"9\">暂无记录</td></tr>" : ""%>
   </table>
   </FooterTemplate>
   </asp:Repeater>

@@ -17,7 +17,8 @@ namespace DTcms.Web.admin.Warehouse
             this.BatchNumber = DTRequest.GetQueryString("BatchNumber");
             if (!Page.IsPostBack)
             {
-                ShowInfo(this.BatchNumber);
+                if(BatchNumber!="")
+                  ShowInfo(this.BatchNumber);
             }
         }
         BLL.w_barcode bll = new BLL.w_barcode();

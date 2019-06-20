@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="choosematerial.aspx.cs" Inherits="DTcms.Web.admin.Warehouse.choosematerial" %>
-
+<%@ Register Assembly="AspNetPager" Namespace="Wuqi.Webdiyer" TagPrefix="webdiyer" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -75,9 +75,9 @@
                         <th width="5%">
                             选择
                         </th>
-                        <th align="left" width="20%">
+                        <%--<th align="left" width="20%">
                             刀具编号
-                        </th>
+                        </th>--%>
                         <th align="left" width="20%">
                             刀具名称
                         </th>
@@ -102,9 +102,9 @@
                         <input type="radio" id="Radio1" name ="FlowCode" runat="server" onclick="selectSingleRadio(this,'FlowCode');" />
                         <asp:HiddenField ID="hfdMaterialID" Value='<%#Eval("MaterialID")%>' runat="server" />
                     </td>
-                    <td>
+                    <%--<td>
                         <%# Eval("MaterialID")%>
-                    </td>
+                    </td>--%>
                     <td>
                         <%# Eval("MaterialName")%>
                     </td>
@@ -124,7 +124,7 @@
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
-                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"7\">暂无记录</td></tr>" : ""%>
+                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"6\">暂无记录</td></tr>" : ""%>
                 </table>
             </FooterTemplate>
         </asp:Repeater>
@@ -133,14 +133,12 @@
     <!--内容底部-->
     <div class="line20">
     </div>
-    <div class="pagelist" style="display: none;">
-        <div class="l-btns">
-            <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);"
-                AutoPostBack="True"></asp:TextBox><span>条/页</span>
-        </div>
-        <div id="PageContent" runat="server" class="default">
-        </div>
-    </div>
+    <webdiyer:AspNetPager ID="AspNetPager1" runat="server" CustomInfoHTML="当前页:%CurrentPageIndex%/%PageCount% 共有%RecordCount%条记录 %PageCount%/页"
+            FirstPageText="首页" HorizontalAlign="Center" InvalidPageIndexErrorMessage="页索引不是有效的数值！"
+            LastPageText="末页" NextPageText="下一页" PageIndexOutOfRangeErrorMessage="页索引超出范围！"
+            PageSize="10" PrevPageText="上一页" ShowCustomInfoSection="Left" ShowInputBox="Always"
+            Width="100%" OnPageChanged="AspNetPager1_PageChanged" NumericButtonCount="5">
+        </webdiyer:AspNetPager>
     <div>
         <asp:Button ID="btnSubmit" runat="server" Text="确认" CssClass="btn" OnClick="btnSubmit_Click" />
     </div>

@@ -50,7 +50,7 @@ namespace DTcms.Web.admin.Material
             _keywords = _keywords.Replace("'", "");
             if (!string.IsNullOrEmpty(_keywords))
             {
-                strTemp.Append(" and (MaterialTypeName like  '%" + _keywords + "%')");
+                strTemp.Append(" MaterialTypeName like  '%" + _keywords + "%'");
             }
 
             return strTemp.ToString();

@@ -54,9 +54,9 @@
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
     <tr>
       <%--<th width="8%">选择</th>--%>
-      <th align="center" width="10%">操作编号</th>
-      <th align="center" width="10%">登录时间</th>
-      <th align="center" width="10%">操作人</th>
+      <th align="center" width="20%">操作编号</th>
+      <th align="center" width="20%">登录时间</th>
+      <th align="center" width="20%">操作人</th>
       <th align="center" >备注</th>
       <th width="8%">操作</th>
     </tr>

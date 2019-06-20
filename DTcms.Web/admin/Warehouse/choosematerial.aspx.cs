@@ -20,11 +20,25 @@ namespace DTcms.Web.admin.Warehouse
         }
         private void BindData()
         {
-            DTcms.BLL.sy_material bll = new DTcms.BLL.sy_material();
             string sql = "state=0";
+            if (txtKeywords.Text.Trim() != "")
+            {
+                 sql += " and MaterialName like '%" + txtKeywords.Text.Trim() + "%'";
+            }
+            DTcms.BLL.sy_material bll = new DTcms.BLL.sy_material();
             DataTable dt = bll.GetList(sql).Tables[0];
-            rptList.DataSource = dt;
+
+            PagedDataSource pds = new PagedDataSource();
+            pds.AllowPaging = true;
+            pds.PageSize = AspNetPager1.PageSize;
+
+            pds.CurrentPageIndex = AspNetPager1.CurrentPageIndex - 1;
+            pds.DataSource = dt.DefaultView;
+
+            rptList.DataSource = pds;
             rptList.DataBind();
+
+            AspNetPager1.RecordCount = dt.Rows.Count;
 
         }
 
@@ -51,14 +65,11 @@ namespace DTcms.Web.admin.Warehouse
 
         protected void lbtnSearch_Click(object sender, EventArgs e)
         {
-            if (txtKeywords.Text.Trim() != "")
-            {
-                DTcms.BLL.sy_material bll = new DTcms.BLL.sy_material();
-                string sql = " MaterialName like '%" + txtKeywords.Text.Trim() + "%'";
-                DataTable dt = bll.GetList(sql).Tables[0];
-                rptList.DataSource = dt;
-                rptList.DataBind();
-            }
+            BindData();
+        }
+        protected void AspNetPager1_PageChanged(object sender, EventArgs e)
+        {
+            BindData();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace DTcms.Web.admin.Material
             _keywords = _keywords.Replace("'", "");
             if (!string.IsNullOrEmpty(_keywords))
             {
-                strTemp.Append(" and (MaterialID like  '%" + _keywords + "%' or MaterialName like '%" + _keywords + "%' or Brand like '%" + _keywords + "%' or Spec like '%" + _keywords + "%')");
+                strTemp.Append(" MaterialID like  '%" + _keywords + "%' or MaterialName like '%" + _keywords + "%' or Brand like '%" + _keywords + "%' or Spec like '%" + _keywords + "%'");
             }
 
             return strTemp.ToString();

@@ -42,17 +42,36 @@ namespace DataUpdateInterface
             {
                 string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.PartNum=b.PartNum where  ToolReadyState=0 and ((PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL)) order by a.PartNum";
                 System.Data.DataTable podt = DbHelperMySql.Query(where).Tables[0];
-
+                
                 DTcms.BLL.temp_planorderlist bll = new temp_planorderlist();
-                System.Data.DataTable dtpo = bll.GetList("OrderReadyState=0").Tables[0];
+                System.Data.DataTable dtpo = bll.GetList("OrderReadyState=0 and ((PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL))").Tables[0];
 
                 for (int j = 0; j < podt.Rows.Count; j++)
                 {
                     string sql = "";
-                    if(podt.Rows[j]["ToolLevel"].ToString()=="")
-                       sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and (a.ToolLevel='R' or a.ToolLevel='F') and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString();
-                    else
+                    if (podt.Rows[j]["ToolLevel"].ToString() == "")
+                    {
+                        sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and  a.ToolLevel='F' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString() + " order by a.RemainTime";
+                        System.Data.DataTable dttemp = DbHelperMySql.Query(sql).Tables[0];
+                        if (dttemp.Rows.Count == 0)
+                        {
+                            sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='R' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString() + " order by a.RemainTime";
+                            System.Data.DataTable dttemp1 = DbHelperMySql.Query(sql).Tables[0];
+                            if (dttemp1.Rows.Count == 0)
+                                sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='X' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString() + " order by a.RemainTime";
+                        }
+                    }
+                    else if (podt.Rows[j]["ToolLevel"].ToString() == "X")
+                    {
                         sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='" + podt.Rows[j]["ToolLevel"].ToString() + "' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString();
+                    }
+                    else if (podt.Rows[j]["ToolLevel"].ToString() == "F")
+                    {
+                        sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='" + podt.Rows[j]["ToolLevel"].ToString() + "' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString() + " order by a.RemainTime";
+                        System.Data.DataTable dttemp = DbHelperMySql.Query(sql).Tables[0];
+                        if (dttemp.Rows.Count == 0)
+                            sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and a.ToolLevel='X' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString() + " order by a.RemainTime";
+                    }
                     System.Data.DataTable dt = DbHelperMySql.Query(sql).Tables[0];
                     if (dt.Rows.Count > 0)
                     {
@@ -377,7 +396,7 @@ namespace DataUpdateInterface
                     {
                         cell.PutValue(dtexcel.Rows[i][k]);
                     }
-                    //cell.Style.IsTextWrapped = true;
+                    //cell.Style.IsTextWrapped = true;//单元格内容自动换行
                 }
             }
 

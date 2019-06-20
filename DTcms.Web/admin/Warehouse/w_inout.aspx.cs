@@ -50,7 +50,7 @@ namespace DTcms.Web.admin.Warehouse
             {
                 sql += " and a.OperatorTime BETWEEN '" + txtSDate.Text.Trim() + "' and '" + txtEDate.Text.Trim() + "'";
             }
-            sql += " order by a.OperatorTime";
+            sql += " order by a.OperatorTime desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             PagedDataSource pds = new PagedDataSource();
             pds.AllowPaging = true;

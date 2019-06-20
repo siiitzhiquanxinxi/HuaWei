@@ -33,7 +33,7 @@
             var ApplyToolLevel = document.getElementById("txtApplyToolLevel").value;
             var Texture = document.getElementById("txtTexture").value;
             $.dialog({ title: '选择刀具条码', width: '800px', heght: '600px',
-                content: 'url:Warehouse/choosebarcode.aspx?txtTarget=txtApproveNewToolBarCode&MaterialName=' + MaterialName + '&ApplyWorkTime=' + ApplyWorkTime + '&ApplyToolLevel=' + ApplyToolLevel + '&Texture=' + Texture,
+                content: 'url:Warehouse/choosebarcode.aspx?txtTarget=txtApproveNewToolBarCode&ApplyWorkTime=' + ApplyWorkTime + '&ApplyToolLevel=' + ApplyToolLevel + '&Texture=' + Texture,
                 lock: true
             });
         }

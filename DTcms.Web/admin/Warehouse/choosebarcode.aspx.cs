@@ -17,7 +17,7 @@ namespace DTcms.Web.admin.Warehouse
         string Texture = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            MaterialName = DTRequest.GetQueryString("MaterialName");
+            //MaterialName = DTRequest.GetQueryString("MaterialName");
             ApplyWorkTime = DTRequest.GetQueryString("ApplyWorkTime");
             ApplyToolLevel = DTRequest.GetQueryString("ApplyToolLevel");
             Texture = DTRequest.GetQueryString("Texture");
@@ -31,11 +31,29 @@ namespace DTcms.Web.admin.Warehouse
         {
             //DTcms.BLL.w_barcode bll = new DTcms.BLL.w_barcode();
             //DTcms.BLL.sy_material_texture tbll = new BLL.sy_material_texture();
-            
-            string sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and b.Texture='" + Texture + "' and a.ToolLevel='"+ ApplyToolLevel + "' and a.RemainTime*b.Coefficient>="+ ApplyWorkTime;
+            string sql = "";
+            if(ApplyToolLevel=="")
+                sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and b.Texture='" + Texture + "' and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
+            //sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1  and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
+            else
+                sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and b.Texture='" + Texture + "' and a.ToolLevel='" + ApplyToolLevel + "' and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
+            //sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1  and a.ToolLevel='" + ApplyToolLevel + "' and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
+            if (txtKeywords.Text.Trim() != "")
+            {
+                 sql += " and MaterialName like '%" + txtKeywords.Text.Trim() + "%'";
+            }
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-            rptList.DataSource = dt;
+            PagedDataSource pds = new PagedDataSource();
+            pds.AllowPaging = true;
+            pds.PageSize = AspNetPager1.PageSize;
+
+            pds.CurrentPageIndex = AspNetPager1.CurrentPageIndex - 1;
+            pds.DataSource = dt.DefaultView;
+
+            rptList.DataSource = pds;
             rptList.DataBind();
+
+            AspNetPager1.RecordCount = dt.Rows.Count;
 
         }
 
@@ -61,14 +79,19 @@ namespace DTcms.Web.admin.Warehouse
 
         protected void lbtnSearch_Click(object sender, EventArgs e)
         {
-            if (txtKeywords.Text.Trim() != "")
-            {
-                DTcms.BLL.w_barcode bll = new DTcms.BLL.w_barcode();
-                string sql = " MaterialName like '%" + txtKeywords.Text.Trim() + "%'";
-                DataTable dt = bll.GetList(sql).Tables[0];
-                rptList.DataSource = dt;
-                rptList.DataBind();
-            }
+            //if (txtKeywords.Text.Trim() != "")
+            //{
+            //    DTcms.BLL.w_barcode bll = new DTcms.BLL.w_barcode();
+            //    string sql = " MaterialName like '%" + txtKeywords.Text.Trim() + "%'";
+            //    DataTable dt = bll.GetList(sql).Tables[0];
+            //    rptList.DataSource = dt;
+            //    rptList.DataBind();
+            //}
+            BindData();
+        }
+        protected void AspNetPager1_PageChanged(object sender, EventArgs e)
+        {
+            BindData();
         }
     }
 }

@@ -163,7 +163,7 @@
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                         <tr>
                             <th align="center"width="10%">刀具条码</th>
-                            <th align="center" >刀具名称</th>
+                            <th align="center" width="20%">刀具名称</th>
                             <th align="center" width="8%">刀具分类</th>
                             <th align="center" width="10%">规格</th>
                             <th align="center" width="5%">所在柜子</th>
@@ -177,7 +177,7 @@
                         </tr>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <tr height="80">
+                    <tr>
                         <%--<td align="center">
                             <asp:HiddenField ID="hfdId" runat="server" Value='<%#Eval("ID") %>' />
                             <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
