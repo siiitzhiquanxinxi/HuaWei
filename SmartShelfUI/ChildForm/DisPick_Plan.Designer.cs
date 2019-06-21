@@ -39,6 +39,12 @@
             this.panel_ApproveList = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.dgv_ApproveList = new System.Windows.Forms.DataGridView();
+            this.ApproveNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreateByName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ApplyToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ApplyPartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ApproveState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnQueryPart = new System.Windows.Forms.Button();
@@ -46,20 +52,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel_order = new System.Windows.Forms.Panel();
             this.dgvCamList = new System.Windows.Forms.DataGridView();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.ApproveNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CreateDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CreateByName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ApplyToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ApplyPartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ApproveState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PartNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WorkTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel_ApproveList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ApproveList)).BeginInit();
@@ -148,10 +148,52 @@
             this.dgv_ApproveList.Location = new System.Drawing.Point(0, 33);
             this.dgv_ApproveList.Name = "dgv_ApproveList";
             this.dgv_ApproveList.ReadOnly = true;
-            this.dgv_ApproveList.RowTemplate.Height = 23;
+            this.dgv_ApproveList.RowTemplate.Height = 30;
             this.dgv_ApproveList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_ApproveList.Size = new System.Drawing.Size(645, 576);
             this.dgv_ApproveList.TabIndex = 0;
+            // 
+            // ApproveNum
+            // 
+            this.ApproveNum.DataPropertyName = "ApproveNum";
+            this.ApproveNum.HeaderText = "申请单号";
+            this.ApproveNum.Name = "ApproveNum";
+            this.ApproveNum.ReadOnly = true;
+            // 
+            // CreateDate
+            // 
+            this.CreateDate.DataPropertyName = "CreateDate";
+            this.CreateDate.HeaderText = "申请时间";
+            this.CreateDate.Name = "CreateDate";
+            this.CreateDate.ReadOnly = true;
+            // 
+            // CreateByName
+            // 
+            this.CreateByName.DataPropertyName = "CreateByName";
+            this.CreateByName.HeaderText = "申请人";
+            this.CreateByName.Name = "CreateByName";
+            this.CreateByName.ReadOnly = true;
+            // 
+            // ApplyToolName
+            // 
+            this.ApplyToolName.DataPropertyName = "ApplyToolName";
+            this.ApplyToolName.HeaderText = "申请刀具";
+            this.ApplyToolName.Name = "ApplyToolName";
+            this.ApplyToolName.ReadOnly = true;
+            // 
+            // ApplyPartNum
+            // 
+            this.ApplyPartNum.DataPropertyName = "ApplyPartNum";
+            this.ApplyPartNum.HeaderText = "零件号";
+            this.ApplyPartNum.Name = "ApplyPartNum";
+            this.ApplyPartNum.ReadOnly = true;
+            // 
+            // ApproveState
+            // 
+            this.ApproveState.DataPropertyName = "state";
+            this.ApproveState.HeaderText = "审核状态";
+            this.ApproveState.Name = "ApproveState";
+            this.ApproveState.ReadOnly = true;
             // 
             // panel1
             // 
@@ -249,70 +291,6 @@
             this.dgvCamList.Size = new System.Drawing.Size(556, 581);
             this.dgvCamList.TabIndex = 1;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label3.Location = new System.Drawing.Point(1045, 13);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(128, 28);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "提交申请>>";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label4.Location = new System.Drawing.Point(11, 13);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 28);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "取料>>";
-            // 
-            // ApproveNum
-            // 
-            this.ApproveNum.DataPropertyName = "ApproveNum";
-            this.ApproveNum.HeaderText = "申请单号";
-            this.ApproveNum.Name = "ApproveNum";
-            this.ApproveNum.ReadOnly = true;
-            // 
-            // CreateDate
-            // 
-            this.CreateDate.DataPropertyName = "CreateDate";
-            this.CreateDate.HeaderText = "申请时间";
-            this.CreateDate.Name = "CreateDate";
-            this.CreateDate.ReadOnly = true;
-            // 
-            // CreateByName
-            // 
-            this.CreateByName.DataPropertyName = "CreateByName";
-            this.CreateByName.HeaderText = "申请人";
-            this.CreateByName.Name = "CreateByName";
-            this.CreateByName.ReadOnly = true;
-            // 
-            // ApplyToolName
-            // 
-            this.ApplyToolName.DataPropertyName = "ApplyToolName";
-            this.ApplyToolName.HeaderText = "申请刀具";
-            this.ApplyToolName.Name = "ApplyToolName";
-            this.ApplyToolName.ReadOnly = true;
-            // 
-            // ApplyPartNum
-            // 
-            this.ApplyPartNum.DataPropertyName = "ApplyPartNum";
-            this.ApplyPartNum.HeaderText = "零件号";
-            this.ApplyPartNum.Name = "ApplyPartNum";
-            this.ApplyPartNum.ReadOnly = true;
-            // 
-            // ApproveState
-            // 
-            this.ApproveState.DataPropertyName = "state";
-            this.ApproveState.HeaderText = "审核状态";
-            this.ApproveState.Name = "ApproveState";
-            this.ApproveState.ReadOnly = true;
-            // 
             // Id
             // 
             this.Id.DataPropertyName = "Id";
@@ -367,6 +345,28 @@
             this.ToolReadyState.HeaderText = "备料状态";
             this.ToolReadyState.Name = "ToolReadyState";
             this.ToolReadyState.ReadOnly = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label3.Location = new System.Drawing.Point(1045, 13);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(128, 28);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "提交申请>>";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label4.Location = new System.Drawing.Point(11, 13);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(86, 28);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "取料>>";
             // 
             // DisPick_Plan
             // 

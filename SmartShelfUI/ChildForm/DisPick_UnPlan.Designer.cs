@@ -157,7 +157,7 @@
             this.dgv_ApproveList.Location = new System.Drawing.Point(0, 33);
             this.dgv_ApproveList.Name = "dgv_ApproveList";
             this.dgv_ApproveList.ReadOnly = true;
-            this.dgv_ApproveList.RowTemplate.Height = 23;
+            this.dgv_ApproveList.RowTemplate.Height = 30;
             this.dgv_ApproveList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_ApproveList.Size = new System.Drawing.Size(645, 576);
             this.dgv_ApproveList.TabIndex = 0;
@@ -267,7 +267,7 @@
             this.dgvTool.Location = new System.Drawing.Point(0, 0);
             this.dgvTool.Name = "dgvTool";
             this.dgvTool.ReadOnly = true;
-            this.dgvTool.RowTemplate.Height = 23;
+            this.dgvTool.RowTemplate.Height = 30;
             this.dgvTool.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTool.Size = new System.Drawing.Size(563, 398);
             this.dgvTool.TabIndex = 0;

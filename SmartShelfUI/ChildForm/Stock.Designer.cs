@@ -34,11 +34,14 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel_CAM = new System.Windows.Forms.Panel();
             this.dgvCabinet = new System.Windows.Forms.DataGridView();
+            this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOpenDoor = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvShelf = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel_Cells = new System.Windows.Forms.Panel();
@@ -59,9 +62,6 @@
             this.lblToolLevel = new System.Windows.Forms.Label();
             this.lblToolName = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinet)).BeginInit();
@@ -110,6 +110,15 @@
             this.dgvCabinet.TabIndex = 2;
             this.dgvCabinet.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCabinet_CellMouseClick);
             // 
+            // CabinetNo
+            // 
+            this.CabinetNo.DataPropertyName = "CabinetNo";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle1;
+            this.CabinetNo.HeaderText = "柜号";
+            this.CabinetNo.Name = "CabinetNo";
+            this.CabinetNo.ReadOnly = true;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -141,7 +150,7 @@
             this.btnOpenDoor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenDoor.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnOpenDoor.ForeColor = System.Drawing.Color.Transparent;
-            this.btnOpenDoor.Location = new System.Drawing.Point(78, 674);
+            this.btnOpenDoor.Location = new System.Drawing.Point(80, 672);
             this.btnOpenDoor.Name = "btnOpenDoor";
             this.btnOpenDoor.Size = new System.Drawing.Size(149, 47);
             this.btnOpenDoor.TabIndex = 4;
@@ -175,6 +184,23 @@
             this.dgvShelf.Size = new System.Drawing.Size(225, 584);
             this.dgvShelf.TabIndex = 3;
             this.dgvShelf.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvShelf_CellClick);
+            // 
+            // ID
+            // 
+            this.ID.DataPropertyName = "ID";
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // BoxNo
+            // 
+            this.BoxNo.DataPropertyName = "BoxNo";
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle2;
+            this.BoxNo.HeaderText = "抽屉号";
+            this.BoxNo.Name = "BoxNo";
+            this.BoxNo.ReadOnly = true;
             // 
             // label1
             // 
@@ -393,32 +419,6 @@
             this.label2.Size = new System.Drawing.Size(90, 21);
             this.label2.TabIndex = 0;
             this.label2.Text = "刀具名称：";
-            // 
-            // CabinetNo
-            // 
-            this.CabinetNo.DataPropertyName = "CabinetNo";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle1;
-            this.CabinetNo.HeaderText = "柜号";
-            this.CabinetNo.Name = "CabinetNo";
-            this.CabinetNo.ReadOnly = true;
-            // 
-            // ID
-            // 
-            this.ID.DataPropertyName = "ID";
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Visible = false;
-            // 
-            // BoxNo
-            // 
-            this.BoxNo.DataPropertyName = "BoxNo";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle2;
-            this.BoxNo.HeaderText = "抽屉号";
-            this.BoxNo.Name = "BoxNo";
-            this.BoxNo.ReadOnly = true;
             // 
             // Stock
             // 

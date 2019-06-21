@@ -21,6 +21,8 @@ namespace DTcms.Model
         private string _tooldiam;
         private string _toolhandle;
         private string _toollong;
+        private string _toolradius;
+        private string _toolbladelength;
         private string _remark;
         /// <summary>
         /// auto_increment
@@ -109,6 +111,22 @@ namespace DTcms.Model
         {
             set { _toollong = value; }
             get { return _toollong; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ToolRadius
+        {
+            set { _toolradius = value; }
+            get { return _toolradius; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ToolBladeLength
+        {
+            set { _toolbladelength = value; }
+            get { return _toolbladelength; }
         }
         /// <summary>
         /// 
