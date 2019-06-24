@@ -40,6 +40,7 @@ namespace DataUpdateInterface
         {
             try
             {
+                
                 string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.PartNum=b.PartNum where  ToolReadyState=0 and ((PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL)) order by a.PartNum";
                 System.Data.DataTable podt = DbHelperMySql.Query(where).Tables[0];
                 
@@ -316,11 +317,12 @@ namespace DataUpdateInterface
             appxls.Quit();
             book = null;
             appxls = null;
+            ExcelInstances.Kill(appxls);
             GC.Collect();
         }
         private string ExcelExport(string PartNum)
         {
-            string excel = "select ToolNum,PartNum,ToolName,WorkTime,ToolLevel,ToolDiam,ToolHandle,ToolLong,Remark,ToolReadyState from temp_camlist where PartNum='" + PartNum + "'";
+            string excel = "select PartNum,ToolNum,ToolName,ToolDiam,ToolRadius,ToolBladeLength,ToolHandle,ToolLong,ToolLevel,Remark,ToolReadyState from temp_camlist where PartNum='" + PartNum + "'";
             System.Data.DataTable dtexcel = DbHelperMySql.Query(excel).Tables[0];
             Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook();
             workbook.Open(AppDomain.CurrentDomain.BaseDirectory + "module.xlsx");
@@ -375,12 +377,18 @@ namespace DataUpdateInterface
             #endregion
             //跳过第一行，第一行写入了列名
             rowIndex = rowIndex + 2;
+            if(dtexcel.Rows.Count>0)
+            {
+                cell = worksheet.Cells[0, 0];
+                cell.PutValue("零件号:"+dtexcel.Rows[0]["PartNum"].ToString());
+            }
+                
             //写入数据
             for (int i = 0; i < dtexcel.Rows.Count; i++)
             {
-                for (int k = 0; k < dtexcel.Columns.Count; k++)
+                for (int k = 1; k < dtexcel.Columns.Count; k++)
                 {
-                    cell = worksheet.Cells[rowIndex + i, colIndex + k];
+                    cell = worksheet.Cells[rowIndex + i, colIndex + k-1];
                     if (k == dtexcel.Columns.Count - 1)
                     {
                         if (dtexcel.Rows[i][k].ToString() == "1")
@@ -389,7 +397,7 @@ namespace DataUpdateInterface
                         }
                         else
                         {
-                            cell.PutValue("备刀异常");
+                            cell.PutValue("异常");
                         }
                     }
                     else

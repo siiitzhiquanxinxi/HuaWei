@@ -29,7 +29,7 @@ namespace DTcms.Web.admin.Warehouse
         }
         private void RptBind()
         {
-            string where = "SELECT a.*,b.FK_CabinetNo,b.BoxNo,b.x+(b.y-1)*8 as XY from w_inout_detail a join sy_shelf b ON a.FK_ShelfID=b.ID where a.FK_BillID='" + BillID + "'";
+            string where = "SELECT a.*,b.FK_CabinetNo,b.BoxNo,a.x+(a.y-1)*b.x as XY from w_inout_detail a join sy_shelf b ON a.FK_ShelfID=b.ID where a.FK_BillID='" + BillID + "'";
             DataTable dt = DbHelperMySql.Query(where).Tables[0];
             rptList.DataSource = dt;
             rptList.DataBind();

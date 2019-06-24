@@ -60,6 +60,24 @@ namespace InterfaceHardware
             public byte Command;                         //命令
             public byte CardAddr;                        //板地址
         }
+        public struct RevBoxData
+        {
+            public byte Box;                             //柜子(抽屉)
+            public byte CardAddr;                        //板地址
+        }
+        public class EqualityComparer : IEqualityComparer<RevBoxData>
+        {
+
+            public bool Equals(RevBoxData x, RevBoxData y)
+            {
+                return x.Box == y.Box && x.CardAddr == y.CardAddr;
+            }
+
+            public int GetHashCode(RevBoxData obj)
+            {
+                return obj.Box ^ obj.CardAddr;
+            }
+        }
         /// <summary>
         /// 反馈校验及反馈状态
         /// </summary>

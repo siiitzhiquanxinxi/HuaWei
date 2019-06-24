@@ -22,7 +22,7 @@ namespace DTcms.Web.admin.Warehouse
         private void BindData()
         {
             BLL.w_barcode bll = new BLL.w_barcode();
-            string sql = "SELECT a.*,a.x+(a.y-1)*8 as XY,b.FK_CabinetNo,b.BoxNo from w_barcode a,sy_shelf b where a.FK_ShelfID=b.ID";
+            string sql = "SELECT a.*,a.x+(a.y-1)*b.x as XY,b.FK_CabinetNo,b.BoxNo from w_barcode a,sy_shelf b where a.FK_ShelfID=b.ID";
             if (txtBarCode.Text.Trim() != "")
             {
                 sql += " and a.BarCode like '%" + txtBarCode.Text.Trim() + "%'";

@@ -21,7 +21,7 @@ namespace DTcms.Web.admin.Warehouse
         }
         private void BindData()
         {
-            string sql = "SELECT a.BarCode,a.MaterialName,a.MaterialType,a.Spec,a.WorkTime*a.IOFlag as WorkTime,a.OperatorTime,a.InOutType,a.IOFlag,b.FK_CabinetNo,b.BoxNo,b.x+(b.y-1)*8 as XY from w_inout_detail a join sy_shelf b ON a.FK_ShelfID=b.ID ";
+            string sql = "SELECT a.BarCode,a.MaterialName,a.MaterialType,a.Spec,a.WorkTime*a.IOFlag as WorkTime,a.OperatorTime,a.InOutType,a.IOFlag,b.FK_CabinetNo,b.BoxNo,a.x+(a.y-1)*b.x as XY from w_inout_detail a join sy_shelf b ON a.FK_ShelfID=b.ID ";
             if (txtBarCode.Text.Trim() != "")
             {
                 sql += " and a.BarCode like '%" + txtBarCode.Text.Trim() + "%'";

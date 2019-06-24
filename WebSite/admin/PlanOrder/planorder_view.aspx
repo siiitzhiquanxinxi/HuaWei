@@ -96,51 +96,57 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th align="left">
+                        <th align="left" width="5%">
+                            刀具号
+                        </th>
+                        <th align="center">
                             刀具名称
                         </th>
-                        <th align="left" >
-                            加工时间
-                        </th>
-                        <th align="left">
-                            刀具等级
-                        </th>
-                        <th align="left">
-                            所备刀条码
-                        </th>
-                        <th align="left">
+                        <th align="left" width="5%">
                             刀具直径
                         </th>
-                        <th align="left">
+                        <th align="left" width="5%">
+                            半径
+                        </th>
+                        <th align="left"  width="5%">
+                            刃长
+                        </th>
+                        <th align="left"  width="15%">
                             刀柄
                         </th>
-                        <th align="left">
+                        <th align="left"  width="5%">
                             装刀长
                         </th>
-                        <th align="left">
+                        <th align="left"  width="2%">
+                            刀具等级
+                        </th>
+                        <th align="center"  width="15%">
                             备注
                         </th>
-                        <th align="left">
+                        <th align="left" width="10%">
+                            所备刀条码
+                        </th>
+                        <th align="left"  width="5%">
                             备刀状态
                         </th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
+                     <td>
+                        <%# Eval("ToolNum")%>
+                    </td>
                     <td>
                         <%# Eval("ToolName")%>
                     </td>
                     <td>
-                        <%# Eval("WorkTime")%>
-                    </td>
-                    <td>
-                        <%# Eval("ToolLevel")%>
-                    </td>
-                    <td>
-                        <%# Eval("ToolBarCode")%>
-                    </td>
-                    <td>
                         <%# Eval("ToolDiam")%>
+                    </td>
+                    <td>
+                        <%# Eval("ToolRadius")%>
+                    </td>
+                    <td>
+                        <%# Eval("ToolBladeLength")%>
                     </td>
                     <td>
                         <%# Eval("ToolHandle")%>
@@ -149,7 +155,13 @@
                         <%# Eval("ToolLong")%>
                     </td>
                     <td>
+                        <%# Eval("ToolLevel")%>
+                    </td>
+                    <td>
                         <%# Eval("Remark")%>
+                    </td>
+                    <td>
+                        <%# Eval("ToolBarCode")%>
                     </td>
                     <td>
                         <%# Eval("ToolReadyState").ToString()=="0"?"待备刀" : Eval("ToolReadyState").ToString()=="1"?"备刀中" : Eval("ToolReadyState").ToString()=="2"?"已完成": "异常" %>
@@ -163,7 +175,7 @@
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
-                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"4\">暂无记录</td></tr>" : ""%>
+                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"11\">暂无记录</td></tr>" : ""%>
                 </table>
             </FooterTemplate>
         </asp:Repeater>
