@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DTcms.Common;
 using System.Data;
+using HtmlAgilityPack;
 namespace DTcms.Web.admin.PlanOrder
 {
     public partial class planorder_view : Web.UI.ManagePage
@@ -46,6 +47,7 @@ namespace DTcms.Web.admin.PlanOrder
             txtPlanWorkTime.Text = model.PlanWorkTime.ToString();
             txtDelayWorkTime.Text = model.DelayWorkTime.ToString();
             txtMachineLathe.Text = model.MachineLathe;
+            txtWorkProcedure.Text = model.WorkProcedure;
             switch (model.OrderReadyState)
             {
                 case 0:
@@ -67,6 +69,31 @@ namespace DTcms.Web.admin.PlanOrder
 
 
 
+        }
+
+        protected void btnImport_Click(object sender, EventArgs e)
+        {
+            if (fulImport.HasFile)
+            {
+                string fileExt = System.IO.Path.GetExtension(fulImport.FileName);//获取文件名的后缀
+                if ( fileExt.ToLower() == ".html")//判断文件后缀名是否是xls
+                {
+                    string path = Server.MapPath("../../upload/" + DateTime.Now.ToString("yyyyMMddHHmms"));
+                    fulImport.SaveAs(path);
+                    HtmlDocument htmlDoc = new HtmlDocument();
+                    htmlDoc.Load(path);
+                    HtmlNodeCollection trlist = htmlDoc.DocumentNode.SelectNodes("//tr[contains(@style,'word-wrap')]");
+                    foreach (HtmlNode itemtr in trlist)
+                    {
+                        string b = itemtr.InnerText;
+                        HtmlNodeCollection tdlist = itemtr.SelectNodes("//td[contains(@class,'xl77')]");
+                        foreach (HtmlNode item in tdlist)
+                        {
+                            string a = item.InnerText;
+                        }
+                    }
+                }
+            }
         }
     }
 }

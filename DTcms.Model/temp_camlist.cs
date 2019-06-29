@@ -11,6 +11,7 @@ namespace DTcms.Model
         { }
         #region Model
         private int _id;
+        private int _fk_id;
         private string _partnum;
         private string _toolname;
         private string _toolnum;
@@ -31,6 +32,14 @@ namespace DTcms.Model
         {
             set { _id = value; }
             get { return _id; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int FK_Id
+        {
+            set { _fk_id = value; }
+            get { return _fk_id; }
         }
         /// <summary>
         /// 

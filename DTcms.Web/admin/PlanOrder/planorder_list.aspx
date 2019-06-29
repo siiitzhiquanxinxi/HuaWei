@@ -60,6 +60,7 @@
       <th align="center" width="10%">计划开工时间</th>
       <th align="center" width="10%">备刀时间延期至</th>
       <th align="center" width="10%">机台</th> 
+      <th align="center" width="10%">加工夹位</th>
       <th align="center" width="10%">创建日期</th> 
       <th align="center" width="5%">备刀状态</th> 
       <th width="8%">操作</th>
@@ -77,6 +78,7 @@
       <td align="center"><%# Eval("PlanWorkTime") %></td>
         <td align="center"><%# Eval("DelayWorkTime") %></td>
         <td align="center"><%# Eval("MachineLathe") %></td>
+        <td align="center"><%# Eval("WorkProcedure") %></td>
       <td align="center"><%# Eval("CreateDate") %></td>
       <td align="center"><%# Eval("OrderReadyState").ToString()=="0"?"待备刀" : Eval("OrderReadyState").ToString()=="1"?"备刀中" : Eval("OrderReadyState").ToString()=="2"?"已完成": "异常" %></td>
       <td align="center">
