@@ -85,6 +85,7 @@ namespace SmartShelfUI
             frmPick.nextForm_menu += new ChildForm.Pick.FormHandle(showFormMenu);
             frmPick.nextForm_exit += new ChildForm.Pick.FormHandle(showFormLogin);
             frmPick.nextForm_dispick_plan += new ChildForm.Pick.FormHandle(showFormDisPick_Plan);
+            frmPick.nextForm_dispick_plan_partnum += new ChildForm.Pick.FormHandle2(showFormDisPick_Plan_partnum);
             frmPick.nextForm_dispick_unplan += new ChildForm.Pick.FormHandle(showFormDisPick_UnPlan);
 
             frmPick.TopLevel = false;
@@ -94,7 +95,7 @@ namespace SmartShelfUI
             {
                 pxb_loginface.Visible = true;
                 lblUserName.Visible = true;
-                lblUserName.Text = "欢迎使用，\r\n" + globalField.Manager.real_name;
+                lblUserName.Text = "欢迎使用\r\n" + globalField.Manager.real_name;
             }
         }
         void showFormMenu()
@@ -166,6 +167,19 @@ namespace SmartShelfUI
                 frmPick = null;
             }
             frmDisPick_Plan = new ChildForm.DisPick_Plan();
+            frmDisPick_Plan.TopLevel = false;
+            panel_content.Controls.Add(frmDisPick_Plan);
+            frmDisPick_Plan.Show();
+            btnBack.Visible = true;
+        }
+        void showFormDisPick_Plan_partnum(string partnum)
+        {
+            if (frmPick != null)
+            {
+                frmPick.Close();
+                frmPick = null;
+            }
+            frmDisPick_Plan = new ChildForm.DisPick_Plan(partnum);
             frmDisPick_Plan.TopLevel = false;
             panel_content.Controls.Add(frmDisPick_Plan);
             frmDisPick_Plan.Show();

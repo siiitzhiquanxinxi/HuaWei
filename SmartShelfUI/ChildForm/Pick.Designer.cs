@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pick));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel_shelf = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
@@ -56,6 +56,7 @@
             this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnRefreshOrder = new System.Windows.Forms.Button();
             this.panel_order = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -63,7 +64,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnRefreshOrder = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
@@ -73,6 +73,7 @@
             // 
             // panel3
             // 
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
             this.panel3.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel3.Controls.Add(this.panel_shelf);
@@ -95,7 +96,7 @@
             this.label13.AutoSize = true;
             this.label13.BackColor = System.Drawing.Color.Transparent;
             this.label13.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label13.ForeColor = System.Drawing.Color.White;
             this.label13.Location = new System.Drawing.Point(23, 45);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(74, 22);
@@ -104,6 +105,7 @@
             // 
             // btnMenu
             // 
+            this.btnMenu.BackColor = System.Drawing.Color.Transparent;
             this.btnMenu.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
             this.btnMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnMenu.FlatAppearance.BorderSize = 0;
@@ -115,11 +117,12 @@
             this.btnMenu.Size = new System.Drawing.Size(258, 103);
             this.btnMenu.TabIndex = 2;
             this.btnMenu.Text = "主菜单";
-            this.btnMenu.UseVisualStyleBackColor = true;
+            this.btnMenu.UseVisualStyleBackColor = false;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
             // 
             // btnDone
             // 
+            this.btnDone.BackColor = System.Drawing.Color.Transparent;
             this.btnDone.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDone.BackgroundImage")));
             this.btnDone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDone.FlatAppearance.BorderSize = 0;
@@ -131,11 +134,12 @@
             this.btnDone.Size = new System.Drawing.Size(258, 103);
             this.btnDone.TabIndex = 2;
             this.btnDone.Text = "领用完成，退出";
-            this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.UseVisualStyleBackColor = false;
             this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
             // btnDisPick2
             // 
+            this.btnDisPick2.BackColor = System.Drawing.Color.Transparent;
             this.btnDisPick2.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnDisPick2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDisPick2.FlatAppearance.BorderSize = 0;
@@ -147,11 +151,12 @@
             this.btnDisPick2.Size = new System.Drawing.Size(258, 103);
             this.btnDisPick2.TabIndex = 2;
             this.btnDisPick2.Text = "零星领用（非任务令）刀具";
-            this.btnDisPick2.UseVisualStyleBackColor = true;
+            this.btnDisPick2.UseVisualStyleBackColor = false;
             this.btnDisPick2.Click += new System.EventHandler(this.btnDisPick2_Click);
             // 
             // btnDisPick1
             // 
+            this.btnDisPick1.BackColor = System.Drawing.Color.Transparent;
             this.btnDisPick1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnDisPick1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDisPick1.FlatAppearance.BorderSize = 0;
@@ -163,11 +168,12 @@
             this.btnDisPick1.Size = new System.Drawing.Size(258, 103);
             this.btnDisPick1.TabIndex = 2;
             this.btnDisPick1.Text = "零星领用（任务令）刀具";
-            this.btnDisPick1.UseVisualStyleBackColor = true;
+            this.btnDisPick1.UseVisualStyleBackColor = false;
             this.btnDisPick1.Click += new System.EventHandler(this.btnDisPick1_Click);
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel2.Controls.Add(this.btnCancelCAM);
@@ -179,6 +185,7 @@
             // 
             // btnCancelCAM
             // 
+            this.btnCancelCAM.BackColor = System.Drawing.Color.Transparent;
             this.btnCancelCAM.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
             this.btnCancelCAM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnCancelCAM.FlatAppearance.BorderSize = 0;
@@ -190,7 +197,7 @@
             this.btnCancelCAM.Size = new System.Drawing.Size(200, 48);
             this.btnCancelCAM.TabIndex = 5;
             this.btnCancelCAM.Text = "取消CAM";
-            this.btnCancelCAM.UseVisualStyleBackColor = true;
+            this.btnCancelCAM.UseVisualStyleBackColor = false;
             this.btnCancelCAM.Click += new System.EventHandler(this.btnCancelCAM_Click);
             // 
             // panel_CAM
@@ -224,6 +231,7 @@
             this.dgvCamList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCamList.Size = new System.Drawing.Size(622, 621);
             this.dgvCamList.TabIndex = 0;
+            this.dgvCamList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvCamList_DataBindingComplete);
             // 
             // ID
             // 
@@ -236,8 +244,8 @@
             // PartNum
             // 
             this.PartNum.DataPropertyName = "PartNum";
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.PartNum.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.PartNum.DefaultCellStyle = dataGridViewCellStyle1;
             this.PartNum.HeaderText = "零件号";
             this.PartNum.Name = "PartNum";
             this.PartNum.ReadOnly = true;
@@ -245,8 +253,8 @@
             // ToolName
             // 
             this.ToolName.DataPropertyName = "ToolName";
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ToolName.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ToolName.DefaultCellStyle = dataGridViewCellStyle2;
             this.ToolName.HeaderText = "刀具名称";
             this.ToolName.Name = "ToolName";
             this.ToolName.ReadOnly = true;
@@ -254,8 +262,8 @@
             // WorkTime
             // 
             this.WorkTime.DataPropertyName = "WorkTime";
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.WorkTime.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.WorkTime.DefaultCellStyle = dataGridViewCellStyle3;
             this.WorkTime.HeaderText = "加工时间";
             this.WorkTime.Name = "WorkTime";
             this.WorkTime.ReadOnly = true;
@@ -264,8 +272,8 @@
             // ToolLevel
             // 
             this.ToolLevel.DataPropertyName = "ToolLevel";
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.ToolLevel.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.ToolLevel.DefaultCellStyle = dataGridViewCellStyle4;
             this.ToolLevel.HeaderText = "刀具等级";
             this.ToolLevel.Name = "ToolLevel";
             this.ToolLevel.ReadOnly = true;
@@ -274,8 +282,8 @@
             // CabinetNo
             // 
             this.CabinetNo.DataPropertyName = "FK_CabinetNo";
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle5;
             this.CabinetNo.HeaderText = "柜号";
             this.CabinetNo.Name = "CabinetNo";
             this.CabinetNo.ReadOnly = true;
@@ -284,8 +292,8 @@
             // BoxNo
             // 
             this.BoxNo.DataPropertyName = "BoxNo";
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle6;
             this.BoxNo.HeaderText = "抽屉号";
             this.BoxNo.Name = "BoxNo";
             this.BoxNo.ReadOnly = true;
@@ -294,14 +302,15 @@
             // ToolReadyState
             // 
             this.ToolReadyState.DataPropertyName = "ToolReadyState";
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.ToolReadyState.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.ToolReadyState.DefaultCellStyle = dataGridViewCellStyle7;
             this.ToolReadyState.HeaderText = "备料状态";
             this.ToolReadyState.Name = "ToolReadyState";
             this.ToolReadyState.ReadOnly = true;
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel1.Controls.Add(this.btnRefreshOrder);
@@ -317,6 +326,23 @@
             this.panel1.Size = new System.Drawing.Size(674, 755);
             this.panel1.TabIndex = 0;
             // 
+            // btnRefreshOrder
+            // 
+            this.btnRefreshOrder.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefreshOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+            this.btnRefreshOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefreshOrder.FlatAppearance.BorderSize = 0;
+            this.btnRefreshOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshOrder.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRefreshOrder.ForeColor = System.Drawing.Color.Transparent;
+            this.btnRefreshOrder.Location = new System.Drawing.Point(213, 675);
+            this.btnRefreshOrder.Name = "btnRefreshOrder";
+            this.btnRefreshOrder.Size = new System.Drawing.Size(200, 39);
+            this.btnRefreshOrder.TabIndex = 6;
+            this.btnRefreshOrder.Text = "刷  新";
+            this.btnRefreshOrder.UseVisualStyleBackColor = false;
+            this.btnRefreshOrder.Click += new System.EventHandler(this.btnRefreshOrder_Click);
+            // 
             // panel_order
             // 
             this.panel_order.AutoScroll = true;
@@ -330,7 +356,7 @@
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Location = new System.Drawing.Point(532, 45);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(42, 22);
@@ -342,7 +368,7 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(459, 45);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(42, 22);
@@ -354,7 +380,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(325, 45);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(106, 22);
@@ -366,7 +392,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(260, 45);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 22);
@@ -378,7 +404,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(152, 45);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 22);
@@ -390,33 +416,18 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(62, 45);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 22);
             this.label1.TabIndex = 0;
             this.label1.Text = "零件号";
             // 
-            // btnRefreshOrder
-            // 
-            this.btnRefreshOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
-            this.btnRefreshOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRefreshOrder.FlatAppearance.BorderSize = 0;
-            this.btnRefreshOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshOrder.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRefreshOrder.ForeColor = System.Drawing.Color.Transparent;
-            this.btnRefreshOrder.Location = new System.Drawing.Point(213, 675);
-            this.btnRefreshOrder.Name = "btnRefreshOrder";
-            this.btnRefreshOrder.Size = new System.Drawing.Size(200, 39);
-            this.btnRefreshOrder.TabIndex = 6;
-            this.btnRefreshOrder.Text = "刷  新";
-            this.btnRefreshOrder.UseVisualStyleBackColor = true;
-            this.btnRefreshOrder.Click += new System.EventHandler(this.btnRefreshOrder_Click);
-            // 
             // Pick
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::SmartShelfUI.Properties.Resources.content_bg;
             this.ClientSize = new System.Drawing.Size(1920, 780);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.btnMenu);

@@ -33,12 +33,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.spCom = new System.IO.Ports.SerialPort(this.components);
             this.dgvUserList = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.user_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.real_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.spCom = new System.IO.Ports.SerialPort(this.components);
             this.panel1.SuspendLayout();
             this.panel_order.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserList)).BeginInit();
@@ -64,23 +64,6 @@
             this.panel_order.Size = new System.Drawing.Size(556, 581);
             this.panel_order.TabIndex = 1;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label1.Location = new System.Drawing.Point(62, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 22);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "用户列表";
-            // 
-            // spCom
-            // 
-            this.spCom.BaudRate = 115200;
-            this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
-            // 
             // dgvUserList
             // 
             this.dgvUserList.AllowUserToAddRows = false;
@@ -94,7 +77,7 @@
             this.dgvUserList.Location = new System.Drawing.Point(0, 0);
             this.dgvUserList.Name = "dgvUserList";
             this.dgvUserList.ReadOnly = true;
-            this.dgvUserList.RowTemplate.Height = 23;
+            this.dgvUserList.RowTemplate.Height = 35;
             this.dgvUserList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvUserList.Size = new System.Drawing.Size(556, 581);
             this.dgvUserList.TabIndex = 0;
@@ -126,6 +109,23 @@
             this.real_name.Name = "real_name";
             this.real_name.ReadOnly = true;
             this.real_name.Width = 250;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label1.Location = new System.Drawing.Point(62, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 22);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "用户列表";
+            // 
+            // spCom
+            // 
+            this.spCom.BaudRate = 115200;
+            this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
             // Userscard
             // 

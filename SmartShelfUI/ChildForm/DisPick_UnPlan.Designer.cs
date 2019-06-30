@@ -40,6 +40,8 @@
             this.CreateByName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApplyToolName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApproveState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FK_CabinetNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnQueryTool = new System.Windows.Forms.Button();
@@ -87,11 +89,12 @@
             this.panel2.Controls.Add(this.panel_ApproveList);
             this.panel2.Location = new System.Drawing.Point(103, 13);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(724, 755);
+            this.panel2.Size = new System.Drawing.Size(902, 755);
             this.panel2.TabIndex = 5;
             // 
             // btnRefresh
             // 
+            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
             this.btnRefresh.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
             this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnRefresh.FlatAppearance.BorderSize = 0;
@@ -103,11 +106,12 @@
             this.btnRefresh.Size = new System.Drawing.Size(187, 48);
             this.btnRefresh.TabIndex = 3;
             this.btnRefresh.Text = "刷  新";
-            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnOpen
             // 
+            this.btnOpen.BackColor = System.Drawing.Color.Transparent;
             this.btnOpen.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnOpen.FlatAppearance.BorderSize = 0;
@@ -119,7 +123,7 @@
             this.btnOpen.Size = new System.Drawing.Size(187, 48);
             this.btnOpen.TabIndex = 3;
             this.btnOpen.Text = "开  锁";
-            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.UseVisualStyleBackColor = false;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // panel_ApproveList
@@ -129,7 +133,7 @@
             this.panel_ApproveList.Controls.Add(this.dgv_ApproveList);
             this.panel_ApproveList.Location = new System.Drawing.Point(41, 45);
             this.panel_ApproveList.Name = "panel_ApproveList";
-            this.panel_ApproveList.Size = new System.Drawing.Size(645, 609);
+            this.panel_ApproveList.Size = new System.Drawing.Size(775, 609);
             this.panel_ApproveList.TabIndex = 2;
             // 
             // label1
@@ -152,14 +156,16 @@
             this.CreateDate,
             this.CreateByName,
             this.ApplyToolName,
-            this.ApproveState});
+            this.ApproveState,
+            this.FK_CabinetNo,
+            this.BoxNo});
             this.dgv_ApproveList.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgv_ApproveList.Location = new System.Drawing.Point(0, 33);
             this.dgv_ApproveList.Name = "dgv_ApproveList";
             this.dgv_ApproveList.ReadOnly = true;
             this.dgv_ApproveList.RowTemplate.Height = 30;
             this.dgv_ApproveList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_ApproveList.Size = new System.Drawing.Size(645, 576);
+            this.dgv_ApproveList.Size = new System.Drawing.Size(775, 576);
             this.dgv_ApproveList.TabIndex = 0;
             // 
             // ApproveNum
@@ -197,6 +203,20 @@
             this.ApproveState.Name = "ApproveState";
             this.ApproveState.ReadOnly = true;
             // 
+            // FK_CabinetNo
+            // 
+            this.FK_CabinetNo.DataPropertyName = "FK_CabinetNo";
+            this.FK_CabinetNo.HeaderText = "柜号";
+            this.FK_CabinetNo.Name = "FK_CabinetNo";
+            this.FK_CabinetNo.ReadOnly = true;
+            // 
+            // BoxNo
+            // 
+            this.BoxNo.DataPropertyName = "BoxNo";
+            this.BoxNo.HeaderText = "抽屉号";
+            this.BoxNo.Name = "BoxNo";
+            this.BoxNo.ReadOnly = true;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -231,6 +251,7 @@
             // 
             // btnQueryTool
             // 
+            this.btnQueryTool.BackColor = System.Drawing.Color.Transparent;
             this.btnQueryTool.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
             this.btnQueryTool.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnQueryTool.FlatAppearance.BorderSize = 0;
@@ -242,7 +263,7 @@
             this.btnQueryTool.Size = new System.Drawing.Size(92, 29);
             this.btnQueryTool.TabIndex = 3;
             this.btnQueryTool.Text = "筛 选";
-            this.btnQueryTool.UseVisualStyleBackColor = true;
+            this.btnQueryTool.UseVisualStyleBackColor = false;
             this.btnQueryTool.Click += new System.EventHandler(this.btnQueryTool_Click);
             // 
             // panel3
@@ -331,6 +352,7 @@
             // 
             // btnApply
             // 
+            this.btnApply.BackColor = System.Drawing.Color.Transparent;
             this.btnApply.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnApply.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnApply.FlatAppearance.BorderSize = 0;
@@ -342,7 +364,7 @@
             this.btnApply.Size = new System.Drawing.Size(187, 48);
             this.btnApply.TabIndex = 3;
             this.btnApply.Text = "申请零星领料";
-            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.UseVisualStyleBackColor = false;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // txtWorkTime
@@ -480,5 +502,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CreateByName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApplyToolName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ApproveState;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FK_CabinetNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BoxNo;
     }
 }

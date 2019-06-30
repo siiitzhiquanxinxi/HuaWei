@@ -84,15 +84,15 @@
             // 
             // lblUserName
             // 
-            this.lblUserName.AutoSize = true;
             this.lblUserName.BackColor = System.Drawing.Color.Transparent;
             this.lblUserName.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblUserName.ForeColor = System.Drawing.Color.White;
             this.lblUserName.Location = new System.Drawing.Point(1782, 48);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(96, 56);
+            this.lblUserName.Size = new System.Drawing.Size(126, 56);
             this.lblUserName.TabIndex = 43;
-            this.lblUserName.Text = "欢迎您，\r\n刘萌萌";
+            this.lblUserName.Text = "欢迎您\r\n刘萌萌";
+            this.lblUserName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblUserName.Visible = false;
             // 
             // btnBack

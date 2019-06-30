@@ -18,6 +18,11 @@ namespace SmartShelfUI.ChildForm
         {
             InitializeComponent();
         }
+        public DisPick_Plan(string partNum)
+        {
+            InitializeComponent();
+            txtPartNum.Text = partNum;
+        }
 
         private void DisPick_Plan_Load(object sender, EventArgs e)
         {
@@ -26,7 +31,7 @@ namespace SmartShelfUI.ChildForm
 
         private void GetApproveList()
         {
-            string sql = "select ApproveNum,CreateDate,CreateByName,ApplyToolName,ApplyPartNum,(CASE ApproveState WHEN 0 THEN '待审核' ELSE '已审核' END) as state from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 1 order by ApproveState desc,CreateDate desc";
+            string sql = "select ApproveNum,CreateDate,CreateByName,ApplyToolName,ApplyPartNum,(CASE ApproveState WHEN 0 THEN '待审核' ELSE '已审核' END) as state,FK_CabinetNo,BoxNo from w_approvelist LEFT JOIN w_barcode on w_barcode.BarCode = w_approvelist.ApproveNewToolBarCode LEFT JOIN sy_shelf on sy_shelf.ID = w_barcode.FK_ShelfID where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 1 order by ApproveState desc,CreateDate desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             dgv_ApproveList.DataSource = dt;
         }
@@ -335,6 +340,21 @@ namespace SmartShelfUI.ChildForm
             else
             {
                 MessageBox.Show("没有符合条件的零件号！");
+            }
+        }
+
+        private void dgvCamList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            for (int i = 0; i < dgvCamList.Rows.Count; i++)
+            {
+                if (dgvCamList.Rows[i].Cells[5].Value.ToString() == "已领刀")
+                {
+                    this.dgvCamList.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                }
+                else if (dgvCamList.Rows[i].Cells[5].Value.ToString() == "异常")
+                {
+                    this.dgvCamList.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                }
             }
         }
     }

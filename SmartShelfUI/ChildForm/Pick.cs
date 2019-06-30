@@ -14,16 +14,27 @@ namespace SmartShelfUI.ChildForm
 {
     public partial class Pick : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams paras = base.CreateParams;
+                paras.ExStyle |= 0x02000000;
+                return paras;
+            }
+        }
         public Pick()
         {
             InitializeComponent();
         }
 
         public delegate void FormHandle();
+        public delegate void FormHandle2(string partnum);
         public event FormHandle nextForm_menu;
         public event FormHandle nextForm_exit;
 
         public event FormHandle nextForm_dispick_plan;
+        public event FormHandle2 nextForm_dispick_plan_partnum;
         public event FormHandle nextForm_dispick_unplan;
 
         private void btnMenu_Click(object sender, EventArgs e)
@@ -317,7 +328,15 @@ namespace SmartShelfUI.ChildForm
         /// <param name="e"></param>
         private void btnDisPick1_Click(object sender, EventArgs e)
         {
-            nextForm_dispick_plan();
+            if (!string.IsNullOrEmpty(nowPartNum))
+            {
+                nextForm_dispick_plan_partnum(nowPartNum);
+            }
+            else
+            {
+                nextForm_dispick_plan();
+            }
+            
         }
         /// <summary>
         /// 非计划另行领用
@@ -407,16 +426,23 @@ namespace SmartShelfUI.ChildForm
         {
             if (!string.IsNullOrEmpty(nowPartNum))
             {
-                string sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "'";
+                string sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "' and ToolReadyState <> -1";
                 sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
-                DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                DataSet ds1 = DbHelperMySql.Query(sql);
+                sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "' and ToolReadyState = -1";
+                sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
+                DataSet ds2 = DbHelperMySql.Query(sql);
+
+                ds1.Merge(ds2);
+                //DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                DataTable dt = ds1.Tables[0];
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     dgvCamList.DataSource = dt;
 
                     sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "' and (c.ToolReadyState = 1 or ToolReadyState = 2) order by s.FK_CabinetNo,BoxNo";
                     DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
-                    if (dtShelf != null && dtShelf.Rows.Count > 0)
+                    if (dtShelf != null && dtShelf.Rows.Count > 0 && dtShelf.Rows[0][0].ToString() != "" && dtShelf.Rows[0][2].ToString() != "")
                     {
                         for (int i = 0; i < dtShelf.Rows.Count; i++)
                         {
@@ -454,6 +480,29 @@ namespace SmartShelfUI.ChildForm
             DataTable dtnull = DbHelperMySql.Query(sql).Tables[0];
             dgvCamList.DataSource = dtnull;
             panel_shelf.Controls.Clear();
+        }
+
+        private void dgvCamList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            try
+            {
+                for (int i = 0; i < dgvCamList.Rows.Count; i++)
+                {
+                    if (dgvCamList.Rows[i].Cells[7].Value.ToString() == "已取料")
+                    {
+                        this.dgvCamList.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                    }
+                    else if (dgvCamList.Rows[i].Cells[7].Value.ToString() == "异常")
+                    {
+                        this.dgvCamList.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.Writelog(ex.ToString(), "改变cam颜色");
+            }
+            
         }
     }
 }

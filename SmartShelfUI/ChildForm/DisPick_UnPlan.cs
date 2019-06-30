@@ -31,7 +31,7 @@ namespace SmartShelfUI.ChildForm
 
         private void GetApproveList()
         {
-            string sql = "select ApproveNum,CreateDate,CreateByName,ApplyToolName,(CASE ApproveState WHEN 0 THEN '待审核' ELSE '已审核' END) as State from w_approvelist where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 0 order by ApproveState desc,CreateDate desc";
+            string sql = "select ApproveNum,CreateDate,CreateByName,ApplyToolName,(CASE ApproveState WHEN 0 THEN '待审核' ELSE '已审核' END) as State,FK_CabinetNo,BoxNo from w_approvelist LEFT JOIN w_barcode on w_barcode.BarCode = w_approvelist.ApproveNewToolBarCode LEFT JOIN sy_shelf on sy_shelf.ID = w_barcode.FK_ShelfID where (ApproveState = 0 or ApproveState = 1) and IsPlanApprove = 0 order by ApproveState desc,CreateDate desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             dgv_ApproveList.DataSource = dt;
         }

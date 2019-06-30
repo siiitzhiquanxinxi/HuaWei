@@ -32,6 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnReScan = new System.Windows.Forms.Button();
             this.txtWorkTime = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -52,7 +53,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel_Cells = new System.Windows.Forms.Panel();
             this.spCom = new System.IO.Ports.SerialPort(this.components);
-            this.btnReScan = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel_order.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -106,6 +106,23 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "刀具信息";
+            // 
+            // btnReScan
+            // 
+            this.btnReScan.BackColor = System.Drawing.Color.Transparent;
+            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReScan.FlatAppearance.BorderSize = 0;
+            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReScan.Location = new System.Drawing.Point(156, 499);
+            this.btnReScan.Name = "btnReScan";
+            this.btnReScan.Size = new System.Drawing.Size(200, 60);
+            this.btnReScan.TabIndex = 5;
+            this.btnReScan.Text = "重新扫描";
+            this.btnReScan.UseVisualStyleBackColor = false;
+            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
             // txtWorkTime
             // 
@@ -302,22 +319,6 @@
             this.spCom.BaudRate = 115200;
             this.spCom.Parity = System.IO.Ports.Parity.Even;
             this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
-            // 
-            // btnReScan
-            // 
-            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
-            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnReScan.FlatAppearance.BorderSize = 0;
-            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
-            this.btnReScan.Location = new System.Drawing.Point(156, 499);
-            this.btnReScan.Name = "btnReScan";
-            this.btnReScan.Size = new System.Drawing.Size(200, 60);
-            this.btnReScan.TabIndex = 5;
-            this.btnReScan.Text = "重新扫描";
-            this.btnReScan.UseVisualStyleBackColor = true;
-            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
             // Repair
             // 
