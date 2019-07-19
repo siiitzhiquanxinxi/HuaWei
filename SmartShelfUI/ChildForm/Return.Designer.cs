@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnReScan = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -60,7 +61,12 @@
             this.spCom = new System.IO.Ports.SerialPort(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
-            this.btnReScan = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtKeyInBarcode = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxToolPic)).BeginInit();
@@ -111,6 +117,23 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "刀具信息";
+            // 
+            // btnReScan
+            // 
+            this.btnReScan.BackColor = System.Drawing.Color.Transparent;
+            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnReScan.FlatAppearance.BorderSize = 0;
+            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
+            this.btnReScan.Location = new System.Drawing.Point(136, 559);
+            this.btnReScan.Name = "btnReScan";
+            this.btnReScan.Size = new System.Drawing.Size(200, 52);
+            this.btnReScan.TabIndex = 6;
+            this.btnReScan.Text = "重新扫描";
+            this.btnReScan.UseVisualStyleBackColor = false;
+            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
             // label11
             // 
@@ -335,38 +358,41 @@
             // 
             // btnBaofei
             // 
+            this.btnBaofei.BackColor = System.Drawing.Color.Transparent;
             this.btnBaofei.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
             this.btnBaofei.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBaofei.FlatAppearance.BorderSize = 0;
             this.btnBaofei.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBaofei.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnBaofei.ForeColor = System.Drawing.Color.Transparent;
-            this.btnBaofei.Location = new System.Drawing.Point(1220, 668);
+            this.btnBaofei.Location = new System.Drawing.Point(1235, 630);
             this.btnBaofei.Name = "btnBaofei";
             this.btnBaofei.Size = new System.Drawing.Size(120, 65);
             this.btnBaofei.TabIndex = 3;
             this.btnBaofei.Text = "报 废";
-            this.btnBaofei.UseVisualStyleBackColor = true;
+            this.btnBaofei.UseVisualStyleBackColor = false;
             this.btnBaofei.Click += new System.EventHandler(this.btnBaofei_Click);
             // 
             // btnXiumo
             // 
+            this.btnXiumo.BackColor = System.Drawing.Color.Transparent;
             this.btnXiumo.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
             this.btnXiumo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnXiumo.FlatAppearance.BorderSize = 0;
             this.btnXiumo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXiumo.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnXiumo.ForeColor = System.Drawing.Color.Transparent;
-            this.btnXiumo.Location = new System.Drawing.Point(1450, 668);
+            this.btnXiumo.Location = new System.Drawing.Point(1450, 630);
             this.btnXiumo.Name = "btnXiumo";
             this.btnXiumo.Size = new System.Drawing.Size(120, 60);
             this.btnXiumo.TabIndex = 3;
             this.btnXiumo.Text = "修 磨";
-            this.btnXiumo.UseVisualStyleBackColor = true;
+            this.btnXiumo.UseVisualStyleBackColor = false;
             this.btnXiumo.Click += new System.EventHandler(this.btnXiumo_Click);
             // 
             // btnReturn
             // 
+            this.btnReturn.BackColor = System.Drawing.Color.Transparent;
             this.btnReturn.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnReturn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnReturn.FlatAppearance.BorderSize = 0;
@@ -378,14 +404,14 @@
             this.btnReturn.Size = new System.Drawing.Size(281, 105);
             this.btnReturn.TabIndex = 3;
             this.btnReturn.Text = "归 还";
-            this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.UseVisualStyleBackColor = false;
             this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // pbxToolPic
             // 
-            this.pbxToolPic.Location = new System.Drawing.Point(1220, 224);
+            this.pbxToolPic.Location = new System.Drawing.Point(1220, 453);
             this.pbxToolPic.Name = "pbxToolPic";
-            this.pbxToolPic.Size = new System.Drawing.Size(350, 400);
+            this.pbxToolPic.Size = new System.Drawing.Size(350, 171);
             this.pbxToolPic.TabIndex = 1;
             this.pbxToolPic.TabStop = false;
             // 
@@ -415,30 +441,90 @@
             this.panel_order.Size = new System.Drawing.Size(485, 617);
             this.panel_order.TabIndex = 1;
             // 
-            // btnReScan
+            // label12
             // 
-            this.btnReScan.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
-            this.btnReScan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnReScan.FlatAppearance.BorderSize = 0;
-            this.btnReScan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReScan.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReScan.ForeColor = System.Drawing.Color.Transparent;
-            this.btnReScan.Location = new System.Drawing.Point(136, 559);
-            this.btnReScan.Name = "btnReScan";
-            this.btnReScan.Size = new System.Drawing.Size(200, 52);
-            this.btnReScan.TabIndex = 6;
-            this.btnReScan.Text = "重新扫描";
-            this.btnReScan.UseVisualStyleBackColor = true;
-            this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.Location = new System.Drawing.Point(1245, 218);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(164, 25);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "手工输入刀具编码";
+            // 
+            // txtKeyInBarcode
+            // 
+            this.txtKeyInBarcode.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtKeyInBarcode.Location = new System.Drawing.Point(1235, 259);
+            this.txtKeyInBarcode.Name = "txtKeyInBarcode";
+            this.txtKeyInBarcode.Size = new System.Drawing.Size(231, 33);
+            this.txtKeyInBarcode.TabIndex = 6;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.ForeColor = System.Drawing.Color.Transparent;
+            this.button1.Location = new System.Drawing.Point(1480, 249);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 46);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "确认";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox1.Location = new System.Drawing.Point(1235, 349);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(231, 33);
+            this.textBox1.TabIndex = 7;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Transparent;
+            this.button2.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button2.ForeColor = System.Drawing.Color.Transparent;
+            this.button2.Location = new System.Drawing.Point(1480, 339);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 46);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "修正寿命";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.Location = new System.Drawing.Point(1245, 312);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(145, 25);
+            this.label13.TabIndex = 9;
+            this.label13.Text = "输入修正后寿命";
             // 
             // Return
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1920, 780);
+            this.ClientSize = new System.Drawing.Size(1612, 780);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtKeyInBarcode);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pbxToolPic);
             this.Controls.Add(this.btnBaofei);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnXiumo);
             this.Controls.Add(this.btnReturn);
             this.Controls.Add(this.groupBox2);
@@ -455,6 +541,7 @@
             this.panel1.PerformLayout();
             this.panel_order.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -492,5 +579,11 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_order;
         private System.Windows.Forms.Button btnReScan;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtKeyInBarcode;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label13;
     }
 }

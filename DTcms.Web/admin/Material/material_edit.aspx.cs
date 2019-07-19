@@ -45,6 +45,7 @@ namespace DTcms.Web.admin.Material
                     else
                     {
                         int i = dt.Rows.Count;
+                        i++;
                         if (i <= 999999)
                         {
                             if (i < 10)

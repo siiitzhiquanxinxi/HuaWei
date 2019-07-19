@@ -53,10 +53,18 @@
 </div>
 
 <div class="tab-content">
+    <dl>
+    <dt>计划号</dt>
+    <dd><asp:TextBox ID="txtPlanNo" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
+  </dl>
+    <dl>
+    <dt>工装号</dt>
+    <dd><asp:TextBox ID="txtComponentNo" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
+  </dl>
   <dl>
     <dt>零件号</dt>
     <dd><asp:TextBox ID="txtPartNum" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox> <span class="Validform_checktip">*</span></dd>
-      
+      <asp:HiddenField ID="hidID" runat="server" />
   </dl> 
   <dl>
     <dt>零件名称</dt>
@@ -80,6 +88,10 @@
     <dd><asp:TextBox ID="txtMachineLathe" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
   </dl> 
     <dl>
+    <dt>加工夹位</dt>
+    <dd><asp:TextBox ID="txtWorkProcedure" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
+  </dl> 
+    <dl>
     <dt>创建日期</dt>
     <dd><asp:TextBox ID="txtCreateDate" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
   </dl> 
@@ -87,6 +99,14 @@
   <dl>
     <dt>备刀状态</dt>
     <dd><asp:Label ID="txtOrderReadyState" runat="server" Text="Label"></asp:Label></dd>
+      
+  </dl>
+    <dl>
+    <dt>上传cam表</dt>
+    <dd>
+      <asp:FileUpload ID="fulImport" runat="server" Width="612px" />
+       <asp:Button ID="btnImport" runat="server" Text="导入" OnClick="btnImport_Click" Width="59px" />
+    </dd>
       
   </dl>
 </div>
@@ -120,6 +140,9 @@
                         <th align="left"  width="2%">
                             刀具等级
                         </th>
+                        <th align="left"  width="2%">
+                            加工时间
+                        </th>
                         <th align="center"  width="15%">
                             备注
                         </th>
@@ -128,6 +151,9 @@
                         </th>
                         <th align="left"  width="5%">
                             备刀状态
+                        </th>
+                        <th align="center"  width="5%">
+                            操作
                         </th>
                     </tr>
             </HeaderTemplate>
@@ -158,6 +184,9 @@
                         <%# Eval("ToolLevel")%>
                     </td>
                     <td>
+                        <%# Eval("WorkTime")%>
+                    </td>
+                    <td>
                         <%# Eval("Remark")%>
                     </td>
                     <td>
@@ -166,16 +195,16 @@
                     <td>
                         <%# Eval("ToolReadyState").ToString()=="0"?"待备刀" : Eval("ToolReadyState").ToString()=="1"?"备刀中" : Eval("ToolReadyState").ToString()=="2"?"已完成": "异常" %>
                     </td>
-                   <%-- <td align="center">
-                        <asp:LinkButton ID="lbtnEdit" runat="server" 
-                             CommandArgument='<%#Eval("id") %>' OnClick="lbtnEdit_Click">修改</asp:LinkButton>
+                    <td align="center">
+                        <%--<asp:LinkButton ID="lbtnEdit" runat="server" 
+                             CommandArgument='<%#Eval("id") %>' OnClick="lbtnEdit_Click">修改</asp:LinkButton>--%>
                         <asp:LinkButton ID="lbtnDel" runat="server" OnClientClick="return confirm('确认删除？')"
                              CommandArgument='<%#Eval("id") %>' OnClick="lbtnDel_Click">删除</asp:LinkButton>
-                    </td>--%>
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
-                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"11\">暂无记录</td></tr>" : ""%>
+                <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"12\">暂无记录</td></tr>" : ""%>
                 </table>
             </FooterTemplate>
         </asp:Repeater>

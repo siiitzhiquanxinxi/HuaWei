@@ -18,8 +18,6 @@ namespace SmartShelfUI
         /// <param name="remark">备注</param>
         public static void Writelog(string content, string type, string remark = "")
         {
-            string machineid = ConfigurationManager.AppSettings["machineid"].Trim();
-            string area = ConfigurationManager.AppSettings["area"].Trim();
             try
             {
                 string path = @"log/" + DateTime.Now.ToString("yyyy-MM-dd");

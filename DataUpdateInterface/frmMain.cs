@@ -15,6 +15,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
 using System.Reflection;
+using Aspose.Cells;
 
 namespace DataUpdateInterface
 {
@@ -34,14 +35,35 @@ namespace DataUpdateInterface
                 this.timer1.Enabled = true;
                 MoveUpMinute = int.Parse(ConfigurationManager.AppSettings["MoveUpMinute"].Trim());
             }
+            this.Visible = false;
         }
-
+        private StreamReader getStream(string path)
+        {
+            FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(file);
+            return sr;
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             try
             {
-                
-                string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.PartNum=b.PartNum where  ToolReadyState=0 and ((PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL)) order by a.PartNum";
+                try
+                {
+                    string email = "select * from temp_planorderlist where EmailState=0 or EmailState is null";
+                    System.Data.DataTable emaildt = DbHelperMySql.Query(email).Tables[0];
+                    for (int j = 0; j < emaildt.Rows.Count; j++)
+                    {
+                        StreamReader sr = getStream(ConfigurationManager.AppSettings["MailTo"].Trim());
+                        DTcms.Common.SendMail.Send("Cam导入提醒（" + emaildt.Rows[j]["PartName"].ToString() + "）", "零件号：" + emaildt.Rows[j]["PartNum"].ToString() + ",计划号：" + emaildt.Rows[j]["PlanNo"].ToString() + ",计划开工时间：" + emaildt.Rows[j]["PlanWorkTime"].ToString(), sr.ReadToEnd(), ConfigurationManager.AppSettings["Psd"].Trim(), ConfigurationManager.AppSettings["Host"].Trim(), ConfigurationManager.AppSettings["SendName"].Trim(), ConfigurationManager.AppSettings["Sendaddr"].Trim());
+                        string update = "update temp_planorderlist set EmailState=1 where id='" + emaildt.Rows[j]["id"].ToString() + "'";
+                        DbHelperMySql.ExecuteSql(update);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Writelog(ex.ToString(), "Sendmail", "ErrLog.txt");
+                }
+                string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.FK_Id=b.Id where  ToolReadyState=0 and ((PlanWorkTime<date_add(now(), interval 30 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL)) order by a.PartNum";
                 System.Data.DataTable podt = DbHelperMySql.Query(where).Tables[0];
                 
                 DTcms.BLL.temp_planorderlist bll = new temp_planorderlist();
@@ -50,7 +72,7 @@ namespace DataUpdateInterface
                 for (int j = 0; j < podt.Rows.Count; j++)
                 {
                     string sql = "";
-                    if (podt.Rows[j]["ToolLevel"].ToString() == "")
+                    if (podt.Rows[j]["ToolLevel"].ToString().Trim() == "")
                     {
                         sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and a.MaterialName='" + podt.Rows[j]["ToolName"].ToString() + "' and b.Texture='" + podt.Rows[j]["MaterialTexture"].ToString() + "' and  a.ToolLevel='F' and a.RemainTime*b.Coefficient>=" + podt.Rows[j]["WorkTime"].ToString() + " order by a.RemainTime";
                         System.Data.DataTable dttemp = DbHelperMySql.Query(sql).Tables[0];
@@ -85,21 +107,24 @@ namespace DataUpdateInterface
                     {
                         string updatecam = "update temp_camlist set ToolReadyState=-1 where id='" + podt.Rows[j]["id"].ToString() + "'";
                         DbHelperMySql.ExecuteSql(updatecam);
-                        string updatetemppo = "update temp_planorderlist set OrderReadyState=-1 where PartNum='" + podt.Rows[j]["PartNum"].ToString() + "'";
+                        string updatetemppo = "update temp_planorderlist set OrderReadyState=-1 where ID='" + podt.Rows[j]["poid"].ToString() + "'";
                         DbHelperMySql.ExecuteSql(updatetemppo);
                     }
-                    string sqlcam = "select * from temp_camlist where ToolReadyState=0 and PartNum='" + podt.Rows[j]["PartNum"].ToString() + "'";
+                    string sqlcam = "select * from temp_camlist where ToolReadyState=0 and id='" + podt.Rows[j]["id"].ToString() + "'";
                     System.Data.DataTable dtcam = DbHelperMySql.Query(sqlcam).Tables[0];
                     if (dtcam.Rows.Count == 0)
                     {
-                        string updatetemppo = "update temp_planorderlist set OrderReadyState=1 where PartNum='" + podt.Rows[j]["PartNum"].ToString() + "' and OrderReadyState=0";
+                        string updatetemppo = "update temp_planorderlist set OrderReadyState=1 where ID='" + podt.Rows[j]["poid"].ToString() + "' and OrderReadyState=0";
                         DbHelperMySql.ExecuteSql(updatetemppo);
                     }
                 }
                 for(int k=0;k< dtpo.Rows.Count;k++)
                 {
-                    string filename = ExcelExport(dtpo.Rows[k]["PartNum"].ToString());
-                    PrintExcel(filename);
+                    if (podt.Select("poid='" + dtpo.Rows[k]["ID"].ToString() + "'").Length > 0)
+                    {
+                        string filename = ExcelExport(dtpo.Rows[k]["ID"].ToString(), dtpo.Rows[k]["MachineLathe"].ToString(), dtpo.Rows[k]["ComponentNo"].ToString());
+                        PrintExcel(filename);
+                    }
                 }
             }
             catch (Exception ex)
@@ -315,14 +340,14 @@ namespace DataUpdateInterface
             object saved = false;
             book.Close(saved);
             appxls.Quit();
+            ExcelInstances.Kill(appxls);
             book = null;
             appxls = null;
-            ExcelInstances.Kill(appxls);
             GC.Collect();
         }
-        private string ExcelExport(string PartNum)
+        private string ExcelExport(string ID,string MachineLathe, string ComponentNo)
         {
-            string excel = "select PartNum,ToolNum,ToolName,ToolDiam,ToolRadius,ToolBladeLength,ToolHandle,ToolLong,ToolLevel,Remark,ToolReadyState from temp_camlist where PartNum='" + PartNum + "'";
+            string excel = "select PartNum,ToolNum,ToolName,ToolDiam,ToolRadius,ToolBladeLength,ToolHandle,ToolLong,ToolLevel,Remark,ToolReadyState from temp_camlist where FK_Id='" + ID + "' order by  CONVERT(ToolNum,signed)";
             System.Data.DataTable dtexcel = DbHelperMySql.Query(excel).Tables[0];
             Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook();
             workbook.Open(AppDomain.CurrentDomain.BaseDirectory + "module.xlsx");
@@ -376,11 +401,15 @@ namespace DataUpdateInterface
             //}
             #endregion
             //跳过第一行，第一行写入了列名
-            rowIndex = rowIndex + 2;
+            rowIndex = rowIndex + 4;
             if(dtexcel.Rows.Count>0)
             {
-                cell = worksheet.Cells[0, 0];
+                cell = worksheet.Cells[1, 0];
                 cell.PutValue("零件号:"+dtexcel.Rows[0]["PartNum"].ToString());
+                cell = worksheet.Cells[1, 5];
+                cell.PutValue("机台号:" + MachineLathe);
+                cell = worksheet.Cells[1, 7];
+                cell.PutValue("工装号:" + ComponentNo);
             }
                 
             //写入数据
@@ -404,13 +433,25 @@ namespace DataUpdateInterface
                     {
                         cell.PutValue(dtexcel.Rows[i][k]);
                     }
-                    //cell.Style.IsTextWrapped = true;//单元格内容自动换行
+                    cell.Style.IsTextWrapped = true;//单元格内容自动换行
+                    Aspose.Cells.Style style = cell.GetStyle();
+                    //加框
+                    style.Borders[BorderType.TopBorder].LineStyle = CellBorderType.Thin;
+                    style.Borders[BorderType.TopBorder].Color = Color.Black;
+                    style.Borders[BorderType.BottomBorder].LineStyle = CellBorderType.Thin;
+                    style.Borders[BorderType.BottomBorder].Color = Color.Black;
+                    style.Borders[BorderType.LeftBorder].LineStyle = CellBorderType.Thin;
+                    style.Borders[BorderType.LeftBorder].Color = Color.Black;
+                    style.Borders[BorderType.RightBorder].LineStyle = CellBorderType.Thin;
+                    style.Borders[BorderType.RightBorder].Color = Color.Black;
+                    cell.SetStyle(style);
+                   
                 }
             }
 
             //自动列宽
             //worksheet.AutoFitColumns();
-
+            worksheet.AutoFitRows();
             //设置导出文件路径
             //string path = Application.StartupPath;
             string path = FilePath();

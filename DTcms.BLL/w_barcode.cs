@@ -54,7 +54,13 @@ namespace DTcms.BLL
         {
             return dal.DeleteList(BarCodelist);
         }
-
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        public bool DeleteWhere(string Where)
+        {
+            return dal.DeleteWhere(Where);
+        }
         /// <summary>
         /// 得到一个对象实体
         /// </summary>

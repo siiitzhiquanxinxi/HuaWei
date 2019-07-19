@@ -56,6 +56,8 @@
             this.BoxNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolReadyState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnRefreshOrder = new System.Windows.Forms.Button();
             this.panel_order = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -63,7 +65,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnRefreshOrder = new System.Windows.Forms.Button();
+            this.btnOpen = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
@@ -73,6 +75,7 @@
             // 
             // panel3
             // 
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
             this.panel3.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel3.Controls.Add(this.panel_shelf);
@@ -87,7 +90,7 @@
             this.panel_shelf.AutoScroll = true;
             this.panel_shelf.Location = new System.Drawing.Point(18, 85);
             this.panel_shelf.Name = "panel_shelf";
-            this.panel_shelf.Size = new System.Drawing.Size(213, 581);
+            this.panel_shelf.Size = new System.Drawing.Size(213, 629);
             this.panel_shelf.TabIndex = 1;
             // 
             // label13
@@ -95,7 +98,7 @@
             this.label13.AutoSize = true;
             this.label13.BackColor = System.Drawing.Color.Transparent;
             this.label13.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label13.ForeColor = System.Drawing.Color.White;
             this.label13.Location = new System.Drawing.Point(23, 45);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(74, 22);
@@ -104,6 +107,7 @@
             // 
             // btnMenu
             // 
+            this.btnMenu.BackColor = System.Drawing.Color.Transparent;
             this.btnMenu.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
             this.btnMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnMenu.FlatAppearance.BorderSize = 0;
@@ -115,11 +119,12 @@
             this.btnMenu.Size = new System.Drawing.Size(258, 103);
             this.btnMenu.TabIndex = 2;
             this.btnMenu.Text = "主菜单";
-            this.btnMenu.UseVisualStyleBackColor = true;
+            this.btnMenu.UseVisualStyleBackColor = false;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
             // 
             // btnDone
             // 
+            this.btnDone.BackColor = System.Drawing.Color.Transparent;
             this.btnDone.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDone.BackgroundImage")));
             this.btnDone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDone.FlatAppearance.BorderSize = 0;
@@ -131,43 +136,46 @@
             this.btnDone.Size = new System.Drawing.Size(258, 103);
             this.btnDone.TabIndex = 2;
             this.btnDone.Text = "领用完成，退出";
-            this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.UseVisualStyleBackColor = false;
             this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
             // btnDisPick2
             // 
+            this.btnDisPick2.BackColor = System.Drawing.Color.Transparent;
             this.btnDisPick2.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnDisPick2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDisPick2.FlatAppearance.BorderSize = 0;
             this.btnDisPick2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisPick2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDisPick2.ForeColor = System.Drawing.Color.White;
-            this.btnDisPick2.Location = new System.Drawing.Point(1659, 140);
+            this.btnDisPick2.Location = new System.Drawing.Point(1659, 405);
             this.btnDisPick2.Name = "btnDisPick2";
             this.btnDisPick2.Size = new System.Drawing.Size(258, 103);
             this.btnDisPick2.TabIndex = 2;
             this.btnDisPick2.Text = "零星领用（非任务令）刀具";
-            this.btnDisPick2.UseVisualStyleBackColor = true;
+            this.btnDisPick2.UseVisualStyleBackColor = false;
             this.btnDisPick2.Click += new System.EventHandler(this.btnDisPick2_Click);
             // 
             // btnDisPick1
             // 
+            this.btnDisPick1.BackColor = System.Drawing.Color.Transparent;
             this.btnDisPick1.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnDisPick1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDisPick1.FlatAppearance.BorderSize = 0;
             this.btnDisPick1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDisPick1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnDisPick1.ForeColor = System.Drawing.Color.White;
-            this.btnDisPick1.Location = new System.Drawing.Point(1659, 13);
+            this.btnDisPick1.Location = new System.Drawing.Point(1659, 278);
             this.btnDisPick1.Name = "btnDisPick1";
             this.btnDisPick1.Size = new System.Drawing.Size(258, 103);
             this.btnDisPick1.TabIndex = 2;
             this.btnDisPick1.Text = "零星领用（任务令）刀具";
-            this.btnDisPick1.UseVisualStyleBackColor = true;
+            this.btnDisPick1.UseVisualStyleBackColor = false;
             this.btnDisPick1.Click += new System.EventHandler(this.btnDisPick1_Click);
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel2.Controls.Add(this.btnCancelCAM);
@@ -179,6 +187,7 @@
             // 
             // btnCancelCAM
             // 
+            this.btnCancelCAM.BackColor = System.Drawing.Color.Transparent;
             this.btnCancelCAM.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
             this.btnCancelCAM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnCancelCAM.FlatAppearance.BorderSize = 0;
@@ -190,7 +199,7 @@
             this.btnCancelCAM.Size = new System.Drawing.Size(200, 48);
             this.btnCancelCAM.TabIndex = 5;
             this.btnCancelCAM.Text = "取消CAM";
-            this.btnCancelCAM.UseVisualStyleBackColor = true;
+            this.btnCancelCAM.UseVisualStyleBackColor = false;
             this.btnCancelCAM.Click += new System.EventHandler(this.btnCancelCAM_Click);
             // 
             // panel_CAM
@@ -224,6 +233,7 @@
             this.dgvCamList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCamList.Size = new System.Drawing.Size(622, 621);
             this.dgvCamList.TabIndex = 0;
+            this.dgvCamList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvCamList_DataBindingComplete);
             // 
             // ID
             // 
@@ -302,8 +312,10 @@
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::SmartShelfUI.Properties.Resources.半透明_背景;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.btnRefreshOrder);
             this.panel1.Controls.Add(this.panel_order);
             this.panel1.Controls.Add(this.label6);
@@ -316,6 +328,35 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(674, 755);
             this.panel1.TabIndex = 0;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(511, 45);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 22);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "夹位";
+            // 
+            // btnRefreshOrder
+            // 
+            this.btnRefreshOrder.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefreshOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+            this.btnRefreshOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefreshOrder.FlatAppearance.BorderSize = 0;
+            this.btnRefreshOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshOrder.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRefreshOrder.ForeColor = System.Drawing.Color.Transparent;
+            this.btnRefreshOrder.Location = new System.Drawing.Point(213, 675);
+            this.btnRefreshOrder.Name = "btnRefreshOrder";
+            this.btnRefreshOrder.Size = new System.Drawing.Size(200, 39);
+            this.btnRefreshOrder.TabIndex = 6;
+            this.btnRefreshOrder.Text = "刷  新";
+            this.btnRefreshOrder.UseVisualStyleBackColor = false;
+            this.btnRefreshOrder.Click += new System.EventHandler(this.btnRefreshOrder_Click);
             // 
             // panel_order
             // 
@@ -330,8 +371,8 @@
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label6.Location = new System.Drawing.Point(532, 45);
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(570, 45);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(42, 22);
             this.label6.TabIndex = 0;
@@ -342,8 +383,8 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label5.Location = new System.Drawing.Point(459, 45);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(451, 45);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(42, 22);
             this.label5.TabIndex = 0;
@@ -354,7 +395,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(325, 45);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(106, 22);
@@ -366,7 +407,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(260, 45);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 22);
@@ -378,7 +419,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(152, 45);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 22);
@@ -390,34 +431,37 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(62, 45);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 22);
             this.label1.TabIndex = 0;
             this.label1.Text = "零件号";
             // 
-            // btnRefreshOrder
+            // btnOpen
             // 
-            this.btnRefreshOrder.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
-            this.btnRefreshOrder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRefreshOrder.FlatAppearance.BorderSize = 0;
-            this.btnRefreshOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshOrder.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRefreshOrder.ForeColor = System.Drawing.Color.Transparent;
-            this.btnRefreshOrder.Location = new System.Drawing.Point(213, 675);
-            this.btnRefreshOrder.Name = "btnRefreshOrder";
-            this.btnRefreshOrder.Size = new System.Drawing.Size(200, 39);
-            this.btnRefreshOrder.TabIndex = 6;
-            this.btnRefreshOrder.Text = "刷  新";
-            this.btnRefreshOrder.UseVisualStyleBackColor = true;
-            this.btnRefreshOrder.Click += new System.EventHandler(this.btnRefreshOrder_Click);
+            this.btnOpen.BackColor = System.Drawing.Color.Transparent;
+            this.btnOpen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOpen.BackgroundImage")));
+            this.btnOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnOpen.FlatAppearance.BorderSize = 0;
+            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpen.Font = new System.Drawing.Font("微软雅黑", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnOpen.ForeColor = System.Drawing.Color.White;
+            this.btnOpen.Location = new System.Drawing.Point(1658, 13);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(258, 231);
+            this.btnOpen.TabIndex = 4;
+            this.btnOpen.Text = "打开\r\n抽屉\r\nOPEN";
+            this.btnOpen.UseVisualStyleBackColor = false;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // Pick
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::SmartShelfUI.Properties.Resources.content_bg;
             this.ClientSize = new System.Drawing.Size(1920, 780);
+            this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.btnMenu);
             this.Controls.Add(this.btnDone);
@@ -470,5 +514,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn BoxNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToolReadyState;
         private System.Windows.Forms.Button btnRefreshOrder;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnOpen;
     }
 }

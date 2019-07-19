@@ -35,19 +35,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.spCom = new System.IO.Ports.SerialPort(this.components);
+            this.lblShelfNo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // panel_Cells
             // 
             this.panel_Cells.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_Cells.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel_Cells.Location = new System.Drawing.Point(0, 0);
+            this.panel_Cells.Location = new System.Drawing.Point(0, 38);
             this.panel_Cells.Name = "panel_Cells";
-            this.panel_Cells.Size = new System.Drawing.Size(1000, 880);
+            this.panel_Cells.Size = new System.Drawing.Size(1000, 842);
             this.panel_Cells.TabIndex = 0;
             // 
             // btnCancel
             // 
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
             this.btnCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnCancel.FlatAppearance.BorderSize = 0;
@@ -59,11 +60,12 @@
             this.btnCancel.Size = new System.Drawing.Size(200, 60);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "取  消";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
+            this.btnOK.BackColor = System.Drawing.Color.Transparent;
             this.btnOK.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
             this.btnOK.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnOK.FlatAppearance.BorderSize = 0;
@@ -75,7 +77,7 @@
             this.btnOK.Size = new System.Drawing.Size(200, 60);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "确  认";
-            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // label1
@@ -104,11 +106,22 @@
             this.spCom.Parity = System.IO.Ports.Parity.Even;
             this.spCom.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spCom_DataReceived);
             // 
+            // lblShelfNo
+            // 
+            this.lblShelfNo.AutoSize = true;
+            this.lblShelfNo.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblShelfNo.Location = new System.Drawing.Point(405, 5);
+            this.lblShelfNo.Name = "lblShelfNo";
+            this.lblShelfNo.Size = new System.Drawing.Size(120, 28);
+            this.lblShelfNo.TabIndex = 7;
+            this.lblShelfNo.Text = "1号柜1号锁";
+            // 
             // CellsLocationForGeneral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 980);
+            this.Controls.Add(this.lblShelfNo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
@@ -133,5 +146,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.IO.Ports.SerialPort spCom;
+        private System.Windows.Forms.Label lblShelfNo;
     }
 }

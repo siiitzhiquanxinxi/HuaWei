@@ -284,6 +284,9 @@ namespace SmartShelfUI.ChildForm
             }
         }
 
+        public delegate void SendHandle(byte[] sendByte, unlockTypeEnum type, DTcms.Model.sy_shelf _shelf, DTcms.Model.sy_cabinet _cabinet);
+        public event SendHandle sendCode;
+
         private void btnOpenDoor_Click(object sender, EventArgs e)
         {
             if (this.shelf == null)
@@ -296,12 +299,6 @@ namespace SmartShelfUI.ChildForm
             if (shelf != null)
             {
                 cabinet = new DTcms.BLL.sy_cabinet().GetModelList("CabinetNo = '" + shelf.FK_CabinetNo + "'")[0];
-                IP = cabinet.IP;
-                Port = cabinet.Port;
-            }
-            if (connect(IP, Port))
-            {
-                byte[] rec_byte = null;
                 byte[] code_byte = new byte[6];
                 code_byte[0] = 0xFF;
                 code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
@@ -309,31 +306,47 @@ namespace SmartShelfUI.ChildForm
                 code_byte[3] = 0x01;
                 code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
                 code_byte[5] = 0xFE;
-                rec_byte = sendtcpip(code_byte, IP, Port);
-                if (VerifyReceive(rec_byte))
-                {
-                    if (rec_byte[3] == 0x01)//门正常打开
-                    {
+                sendCode(code_byte, unlockTypeEnum.盘点, shelf, cabinet);
 
-                    }
-                    else if (rec_byte[3] == 0x00)//门开着，不能打开
-                    {
-                        MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
-                    }
-                    else
-                    {
-                        MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("网络通讯返回错误！");
-                }
+                //IP = cabinet.IP;
+                //Port = cabinet.Port;
             }
-            else
-            {
-                MessageBox.Show("网络通信失败！");
-            }
+            
+            //if (connect(IP, Port))
+            //{
+            //    byte[] rec_byte = null;
+            //    byte[] code_byte = new byte[6];
+            //    code_byte[0] = 0xFF;
+            //    code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
+            //    code_byte[2] = (byte)Convert.ToInt32(shelf.BoxAddr, 16);
+            //    code_byte[3] = 0x01;
+            //    code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
+            //    code_byte[5] = 0xFE;
+            //    rec_byte = sendtcpip(code_byte, IP, Port);
+            //    if (VerifyReceive(rec_byte))
+            //    {
+            //        if (rec_byte[3] == 0x01)//门正常打开
+            //        {
+
+            //        }
+            //        else if (rec_byte[3] == 0x00)//门开着，不能打开
+            //        {
+            //            MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("网络通讯返回错误！");
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("网络通信失败！");
+            //}
         }
 
 
@@ -414,6 +427,61 @@ namespace SmartShelfUI.ChildForm
         private void btnReScan_Click(object sender, EventArgs e)
         {
             this.BarCode = "";
+        }
+
+        private void btnRepairOpen_Click(object sender, EventArgs e)
+        {
+            if (this.cabinet == null)
+            {
+                MessageBox.Show("请选择柜子！");
+                return;
+            }
+            else if (MessageBox.Show("确认打开号" + cabinet.CabinetNo + "柜的所有抽屉？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                string IP = "";
+                string Port = "";
+                if (cabinet != null)
+                {
+                    //cabinet = new DTcms.BLL.sy_cabinet().GetModelList("CabinetNo = '" + shelf.FK_CabinetNo + "'")[0];
+                    IP = cabinet.IP;
+                    Port = cabinet.Port;
+                }
+                if (connect(IP, Port))
+                {
+                    byte[] rec_byte = null;
+                    byte[] code_byte = new byte[6];
+                    code_byte[0] = 0xFF;
+                    code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
+                    code_byte[2] = 0x00;
+                    code_byte[3] = 0x02;
+                    code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
+                    code_byte[5] = 0xFE;
+                    rec_byte = sendtcpip(code_byte, IP, Port);
+                    if (VerifyReceive(rec_byte))
+                    {
+                        if (rec_byte[3] == 0x02)//返回成功
+                        {
+
+                        }
+                        else if (rec_byte[3] == 0xFF)//门开着，不能打开
+                        {
+                            MessageBox.Show("指令失败！");
+                        }
+                        else
+                        {
+                            MessageBox.Show("指令失败！");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("网络通讯返回错误！");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("网络通信失败！");
+                }
+            }
         }
     }
 }

@@ -126,7 +126,7 @@ namespace DTcms.Web.admin.Warehouse
         {
             LinkButton btn = sender as LinkButton;
             string BatchNumber = btn.CommandArgument.ToString();
-            bll.DeleteList("BatchNumber='" + BatchNumber + "'");
+            bll.DeleteWhere("BatchNumber='" + BatchNumber + "'");
             RptBind();
         }
     }

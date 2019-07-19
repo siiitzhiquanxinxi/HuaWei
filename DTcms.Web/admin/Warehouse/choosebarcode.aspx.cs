@@ -32,11 +32,15 @@ namespace DTcms.Web.admin.Warehouse
             //DTcms.BLL.w_barcode bll = new DTcms.BLL.w_barcode();
             //DTcms.BLL.sy_material_texture tbll = new BLL.sy_material_texture();
             string sql = "";
-            if(ApplyToolLevel=="")
+            if(ApplyToolLevel.Trim()=="")
                 sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and b.Texture='" + Texture + "' and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
             //sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1  and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
+            else if(ApplyToolLevel.Trim()=="F")
+                sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and b.Texture='" + Texture + "' and (a.ToolLevel='F' or a.ToolLevel='X') and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
             else
+            {
                 sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1 and b.Texture='" + Texture + "' and a.ToolLevel='" + ApplyToolLevel + "' and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
+            }
             //sql = "SELECT a.*,b.Texture,b.Coefficient from w_barcode a,sy_material_texture b where a.MaterialID=b.MaterialID and a.state=1  and a.ToolLevel='" + ApplyToolLevel + "' and a.RemainTime*b.Coefficient>=" + ApplyWorkTime;
             if (txtKeywords.Text.Trim() != "")
             {

@@ -22,6 +22,24 @@ namespace DTcms.Web.admin.PlanOrder {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// txtPlanNo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPlanNo;
+        
+        /// <summary>
+        /// txtComponentNo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtComponentNo;
+        
+        /// <summary>
         /// txtPartNum 控件。
         /// </summary>
         /// <remarks>
@@ -29,6 +47,15 @@ namespace DTcms.Web.admin.PlanOrder {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPartNum;
+        
+        /// <summary>
+        /// hidID 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidID;
         
         /// <summary>
         /// txtPartName 控件。

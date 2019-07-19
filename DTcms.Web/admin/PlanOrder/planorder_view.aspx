@@ -53,10 +53,18 @@
 </div>
 
 <div class="tab-content">
+    <dl>
+    <dt>计划号</dt>
+    <dd><asp:TextBox ID="txtPlanNo" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
+  </dl>
+    <dl>
+    <dt>工装号</dt>
+    <dd><asp:TextBox ID="txtComponentNo" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox></dd>
+  </dl>
   <dl>
     <dt>零件号</dt>
     <dd><asp:TextBox ID="txtPartNum" runat="server" CssClass="input normal"  sucmsg=" "></asp:TextBox> <span class="Validform_checktip">*</span></dd>
-      
+      <asp:HiddenField ID="hidID" runat="server" />
   </dl> 
   <dl>
     <dt>零件名称</dt>
@@ -97,7 +105,7 @@
     <dt>上传cam表</dt>
     <dd>
       <asp:FileUpload ID="fulImport" runat="server" Width="612px" />
-       <asp:Button ID="btnImport" runat="server" Text="导入" OnClick="btnImport_Click" />
+       <asp:Button ID="btnImport" runat="server" Text="导入" OnClick="btnImport_Click" Width="59px" />
     </dd>
       
   </dl>
@@ -131,6 +139,9 @@
                         </th>
                         <th align="left"  width="2%">
                             刀具等级
+                        </th>
+                        <th align="left"  width="2%">
+                            加工时间
                         </th>
                         <th align="center"  width="15%">
                             备注
@@ -173,13 +184,16 @@
                         <%# Eval("ToolLevel")%>
                     </td>
                     <td>
+                        <%# Eval("WorkTime")%>
+                    </td>
+                    <td>
                         <%# Eval("Remark")%>
                     </td>
                     <td>
                         <%# Eval("ToolBarCode")%>
                     </td>
                     <td>
-                        <%# Eval("ToolReadyState").ToString()=="0"?"待备刀" : Eval("ToolReadyState").ToString()=="1"?"备刀中" : Eval("ToolReadyState").ToString()=="2"?"已完成": "异常" %>
+                        <%# Eval("ToolReadyState").ToString()=="0"?"待备刀" : Eval("ToolReadyState").ToString()=="1"?"备刀中" : Eval("ToolReadyState").ToString()=="2"?"已完成":Eval("ToolReadyState").ToString()=="-1"?"异常":"已取消" %>
                     </td>
                     <td align="center">
                         <%--<asp:LinkButton ID="lbtnEdit" runat="server" 

@@ -42,6 +42,10 @@ namespace SmartShelfUI.ChildForm
         DTcms.Model.sy_shelf shelf = null;
         DTcms.Model.sy_cabinet cabinet = null;
         string BarCode = "";
+
+        public delegate void SendHandle(byte[] sendByte, unlockTypeEnum type, DTcms.Model.w_barcode _tool, DTcms.Model.sy_shelf _shelf, DTcms.Model.sy_cabinet _cabinet);
+        public event SendHandle sendCode;
+
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             Thread.Sleep(300);
@@ -136,12 +140,6 @@ namespace SmartShelfUI.ChildForm
                                 if (shelf != null)
                                 {
                                     cabinet = new DTcms.BLL.sy_cabinet().GetModelList("CabinetNo = '" + shelf.FK_CabinetNo + "'")[0];
-                                    IP = cabinet.IP;
-                                    Port = cabinet.Port;
-                                }
-                                if (connect(IP, Port))
-                                {
-                                    byte[] rec_byte = null;
                                     byte[] code_byte = new byte[6];
                                     code_byte[0] = 0xFF;
                                     code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
@@ -149,74 +147,89 @@ namespace SmartShelfUI.ChildForm
                                     code_byte[3] = 0x01;
                                     code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
                                     code_byte[5] = 0xFE;
-                                    rec_byte = sendtcpip(code_byte, IP, Port);
-                                    if (VerifyReceive(rec_byte))
-                                    {
-                                        if (rec_byte[3] == 0x01)//门正常打开
-                                        {
-                                            this.BeginInvoke((MethodInvoker)delegate
-                                            {
-                                                CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
-                                                frmCells.tool = this.tool;
-                                                frmCells.cabinet = this.cabinet;
-                                                frmCells.shelf = this.shelf;
-                                                if (frmCells.ShowDialog() == DialogResult.OK)
-                                                {
-                                                    //修改刀具状态
-                                                    tool.State = 1;
-                                                    new DTcms.BLL.w_barcode().Update(tool);
-                                                    //生成入库记录
-                                                    DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
-                                                    inout.FK_BillID = globalField.BillID;
-                                                    inout.BarCode = tool.BarCode;
-                                                    inout.BatchNumber = tool.BatchNumber;
-                                                    inout.MaterialID = tool.MaterialID;
-                                                    inout.MaterialName = tool.MaterialName;
-                                                    inout.MaterialTypeID = tool.MaterialTypeID;
-                                                    inout.MaterialType = tool.MaterialType;
-                                                    inout.SystemNo = tool.SystemNo;
-                                                    inout.Brand = tool.Brand;
-                                                    inout.Spec = tool.Spec;
-                                                    inout.Unit = tool.Unit;
-                                                    inout.Num = tool.Num;
-                                                    inout.IOFlag = 1;
-                                                    inout.FK_SendBillNum = null;
-                                                    inout.FK_ApproveNum = null;
-                                                    inout.InOutType = "入库";
-                                                    inout.FK_ShelfID = shelf.ID;
-                                                    inout.X = shelf.X;
-                                                    inout.Y = shelf.Y;
-                                                    inout.WorkTime = 0;
-                                                    inout.OperatorName = globalField.Manager.real_name;
-                                                    inout.OperatorTime = DateTime.Now;
-                                                    inout.InOutRemark = "";
-                                                    new DTcms.BLL.w_inout_detail().Add(inout);
-                                                }
-                                            });
-                                        }
-                                        else if (rec_byte[3] == 0x00)//门开着，不能打开
-                                        {
-                                            this.BeginInvoke((MethodInvoker)delegate
-                                            {
-                                                MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
-                                            });
-                                        }
-                                        else
-                                        {
-                                            this.BeginInvoke((MethodInvoker)delegate
-                                            {
-                                                MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
-                                            });
-                                        }
-                                    }
-                                    else
-                                    {
-                                        this.BeginInvoke((MethodInvoker)delegate
-                                        {
-                                            MessageBox.Show("网络通讯返回错误！");
-                                        });
-                                    }
+                                    sendCode(code_byte, unlockTypeEnum.入库, tool, shelf, cabinet);
+                                    
+                                    //IP = cabinet.IP;
+                                    //Port = cabinet.Port;
                                 }
+                                //if (connect(IP, Port))
+                                //{
+                                //    byte[] rec_byte = null;
+                                //    byte[] code_byte = new byte[6];
+                                //    code_byte[0] = 0xFF;
+                                //    code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
+                                //    code_byte[2] = (byte)Convert.ToInt32(shelf.BoxAddr, 16);
+                                //    code_byte[3] = 0x01;
+                                //    code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
+                                //    code_byte[5] = 0xFE;
+                                //    rec_byte = sendtcpip(code_byte, IP, Port);
+                                //    if (VerifyReceive(rec_byte))
+                                //    {
+                                //        if (rec_byte[3] == 0x01)//门正常打开
+                                //        {
+                                //            this.BeginInvoke((MethodInvoker)delegate
+                                //            {
+                                //                CellsLocationForGeneral frmCells = new CellsLocationForGeneral();
+                                //                frmCells.tool = this.tool;
+                                //                frmCells.cabinet = this.cabinet;
+                                //                frmCells.shelf = this.shelf;
+                                //                if (frmCells.ShowDialog() == DialogResult.OK)
+                                //                {
+                                //                    //修改刀具状态
+                                //                    tool.State = 1;
+                                //                    new DTcms.BLL.w_barcode().Update(tool);
+                                //                    //生成入库记录
+                                //                    DTcms.Model.w_inout_detail inout = new DTcms.Model.w_inout_detail();
+                                //                    inout.FK_BillID = globalField.BillID;
+                                //                    inout.BarCode = tool.BarCode;
+                                //                    inout.BatchNumber = tool.BatchNumber;
+                                //                    inout.MaterialID = tool.MaterialID;
+                                //                    inout.MaterialName = tool.MaterialName;
+                                //                    inout.MaterialTypeID = tool.MaterialTypeID;
+                                //                    inout.MaterialType = tool.MaterialType;
+                                //                    inout.SystemNo = tool.SystemNo;
+                                //                    inout.Brand = tool.Brand;
+                                //                    inout.Spec = tool.Spec;
+                                //                    inout.Unit = tool.Unit;
+                                //                    inout.Num = tool.Num;
+                                //                    inout.IOFlag = 1;
+                                //                    inout.FK_SendBillNum = null;
+                                //                    inout.FK_ApproveNum = null;
+                                //                    inout.InOutType = "入库";
+                                //                    inout.FK_ShelfID = shelf.ID;
+                                //                    inout.X = shelf.X;
+                                //                    inout.Y = shelf.Y;
+                                //                    inout.WorkTime = 0;
+                                //                    inout.OperatorName = globalField.Manager.real_name;
+                                //                    inout.OperatorTime = DateTime.Now;
+                                //                    inout.InOutRemark = "";
+                                //                    new DTcms.BLL.w_inout_detail().Add(inout);
+                                //                }
+                                //            });
+                                //        }
+                                //        else if (rec_byte[3] == 0x00)//门开着，不能打开
+                                //        {
+                                //            this.BeginInvoke((MethodInvoker)delegate
+                                //            {
+                                //                MessageBox.Show("检测到抽屉门已打开，请确认是否有他人正在操作，否则请关闭抽屉门后重新操作，谢谢！");
+                                //            });
+                                //        }
+                                //        else
+                                //        {
+                                //            this.BeginInvoke((MethodInvoker)delegate
+                                //            {
+                                //                MessageBox.Show("开门指令执行失败！请联系管理员检查硬件！");
+                                //            });
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        this.BeginInvoke((MethodInvoker)delegate
+                                //        {
+                                //            MessageBox.Show("网络通讯返回错误！");
+                                //        });
+                                //    }
+                                //}
                             }
                         }
                     }

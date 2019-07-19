@@ -39,9 +39,9 @@ namespace DTcms.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into temp_planorderlist(");
-            strSql.Append("PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,WorkProcedure,OrderReadyState,CreateDate)");
+            strSql.Append("PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,WorkProcedure,PlanNo,ComponentNo,OrderReadyState,CreateDate)");
             strSql.Append(" values (");
-            strSql.Append("?PartNum,?PartName,?MaterialTexture,?PlanWorkTime,?DelayWorkTime,?MachineLathe,?WorkProcedure,?OrderReadyState,?CreateDate)");
+            strSql.Append("?PartNum,?PartName,?MaterialTexture,?PlanWorkTime,?DelayWorkTime,?MachineLathe,?WorkProcedure,?PlanNo,?ComponentNo,?OrderReadyState,?CreateDate)");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?PartNum", MySqlDbType.VarChar,255),
                     new MySqlParameter("?PartName", MySqlDbType.VarChar,255),
@@ -50,6 +50,8 @@ namespace DTcms.DAL
                     new MySqlParameter("?DelayWorkTime", MySqlDbType.Datetime),
                     new MySqlParameter("?MachineLathe", MySqlDbType.VarChar,255),
                     new MySqlParameter("?WorkProcedure", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?PlanNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ComponentNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?OrderReadyState", MySqlDbType.Int32,11),
                     new MySqlParameter("?CreateDate", MySqlDbType.Datetime)};
             parameters[0].Value = model.PartNum;
@@ -59,8 +61,10 @@ namespace DTcms.DAL
             parameters[4].Value = model.DelayWorkTime;
             parameters[5].Value = model.MachineLathe;
             parameters[6].Value = model.WorkProcedure;
-            parameters[7].Value = model.OrderReadyState;
-            parameters[8].Value = model.CreateDate;
+            parameters[7].Value = model.PlanNo;
+            parameters[8].Value = model.ComponentNo;
+            parameters[9].Value = model.OrderReadyState;
+            parameters[10].Value = model.CreateDate;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -73,9 +77,9 @@ namespace DTcms.DAL
             }
         }
         /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(DTcms.Model.temp_planorderlist model)
+		/// 更新一条数据
+		/// </summary>
+		public bool Update(DTcms.Model.temp_planorderlist model)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update temp_planorderlist set ");
@@ -86,6 +90,8 @@ namespace DTcms.DAL
             strSql.Append("DelayWorkTime=?DelayWorkTime,");
             strSql.Append("MachineLathe=?MachineLathe,");
             strSql.Append("WorkProcedure=?WorkProcedure,");
+            strSql.Append("PlanNo=?PlanNo,");
+            strSql.Append("ComponentNo=?ComponentNo,");
             strSql.Append("OrderReadyState=?OrderReadyState,");
             strSql.Append("CreateDate=?CreateDate");
             strSql.Append(" where Id=?Id");
@@ -97,6 +103,8 @@ namespace DTcms.DAL
                     new MySqlParameter("?DelayWorkTime", MySqlDbType.Datetime),
                     new MySqlParameter("?MachineLathe", MySqlDbType.VarChar,255),
                     new MySqlParameter("?WorkProcedure", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?PlanNo", MySqlDbType.VarChar,255),
+                    new MySqlParameter("?ComponentNo", MySqlDbType.VarChar,255),
                     new MySqlParameter("?OrderReadyState", MySqlDbType.Int32,11),
                     new MySqlParameter("?CreateDate", MySqlDbType.Datetime),
                     new MySqlParameter("?Id", MySqlDbType.Int32,11)};
@@ -107,9 +115,11 @@ namespace DTcms.DAL
             parameters[4].Value = model.DelayWorkTime;
             parameters[5].Value = model.MachineLathe;
             parameters[6].Value = model.WorkProcedure;
-            parameters[7].Value = model.OrderReadyState;
-            parameters[8].Value = model.CreateDate;
-            parameters[9].Value = model.Id;
+            parameters[7].Value = model.PlanNo;
+            parameters[8].Value = model.ComponentNo;
+            parameters[9].Value = model.OrderReadyState;
+            parameters[10].Value = model.CreateDate;
+            parameters[11].Value = model.Id;
 
             int rows = DbHelperMySql.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -173,7 +183,7 @@ namespace DTcms.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select Id,PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,WorkProcedure,OrderReadyState,CreateDate from temp_planorderlist ");
+            strSql.Append("select Id,PartNum,PartName,MaterialTexture,PlanWorkTime,DelayWorkTime,MachineLathe,WorkProcedure,PlanNo,ComponentNo,OrderReadyState,CreateDate from temp_planorderlist ");
             strSql.Append(" where Id=?Id");
             MySqlParameter[] parameters = {
                     new MySqlParameter("?Id", MySqlDbType.Int32)
@@ -233,6 +243,14 @@ namespace DTcms.DAL
                 {
                     model.WorkProcedure = row["WorkProcedure"].ToString();
                 }
+                if (row["PlanNo"] != null)
+                {
+                    model.PlanNo = row["PlanNo"].ToString();
+                }
+                if (row["ComponentNo"] != null)
+                {
+                    model.ComponentNo = row["ComponentNo"].ToString();
+                }
                 if (row["OrderReadyState"] != null && row["OrderReadyState"].ToString() != "")
                 {
                     model.OrderReadyState = int.Parse(row["OrderReadyState"].ToString());
@@ -251,7 +269,7 @@ namespace DTcms.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select Id,PartNum,PartName,MaterialTexture,WorkProcedure,PlanWorkTime,DelayWorkTime,MachineLathe,OrderReadyState,CreateDate ");
+            strSql.Append("select Id,PartNum,PartName,MaterialTexture,WorkProcedure,PlanNo,ComponentNo,PlanWorkTime,DelayWorkTime,MachineLathe,OrderReadyState,CreateDate ");
             strSql.Append(" FROM temp_planorderlist ");
             if (strWhere.Trim() != "")
             {

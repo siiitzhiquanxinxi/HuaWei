@@ -46,7 +46,9 @@
             this.btnLogin.BackColor = System.Drawing.Color.Transparent;
             this.btnLogin.BackgroundImage = global::SmartShelfUI.Properties.Resources.btn_login;
             this.btnLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLogin.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnLogin.FlatAppearance.BorderSize = 0;
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogin.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnLogin.ForeColor = System.Drawing.Color.White;
             this.btnLogin.Location = new System.Drawing.Point(679, 660);
             this.btnLogin.Name = "btnLogin";
@@ -58,7 +60,8 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::SmartShelfUI.Properties.Resources.read_card;
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.BackgroundImage = global::SmartShelfUI.Properties.Resources.read_card_white;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(1421, 221);
             this.pictureBox1.Name = "pictureBox1";
@@ -68,7 +71,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackgroundImage = global::SmartShelfUI.Properties.Resources.login_banner_bg;
+            this.panel1.BackColor = System.Drawing.Color.SteelBlue;
             this.panel1.Controls.Add(this.txtPassword);
             this.panel1.Controls.Add(this.txtUserName);
             this.panel1.Controls.Add(this.label2);
@@ -128,6 +131,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(1920, 780);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.pictureBox1);

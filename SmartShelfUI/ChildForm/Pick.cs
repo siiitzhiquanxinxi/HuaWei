@@ -14,16 +14,27 @@ namespace SmartShelfUI.ChildForm
 {
     public partial class Pick : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams paras = base.CreateParams;
+                paras.ExStyle |= 0x02000000;
+                return paras;
+            }
+        }
         public Pick()
         {
             InitializeComponent();
         }
 
         public delegate void FormHandle();
+        public delegate void FormHandle2(int partid);
         public event FormHandle nextForm_menu;
         public event FormHandle nextForm_exit;
 
-        public event FormHandle nextForm_dispick_plan;
+        //public event FormHandle nextForm_dispick_plan;
+        public event FormHandle2 nextForm_dispick_plan_partnum;
         public event FormHandle nextForm_dispick_unplan;
 
         private void btnMenu_Click(object sender, EventArgs e)
@@ -39,10 +50,11 @@ namespace SmartShelfUI.ChildForm
         /// <summary>
         /// 获取中间表主表
         /// </summary>
-        private void GetOrderList()
+        public void GetOrderList()
         {
             panel_order.Controls.Clear();
-            string sql = "select * from temp_planorderlist where OrderReadyState = 1 or OrderReadyState = -1 order by PlanWorkTime asc";
+            nowPartId = "";
+            string sql = "select * from temp_planorderlist where OrderReadyState = 1 or OrderReadyState = -1 order by PlanWorkTime desc";
             DataTable dt = DbHelperMySql.Query(sql).Tables[0];
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -58,14 +70,16 @@ namespace SmartShelfUI.ChildForm
                     btnOrder.Location = new Point(3, 3 + 55 * i);
                     btnOrder.Size = new Size(540, 55);
                     string partState = dt.Rows[i]["OrderReadyState"].ToString() == "1" ? "备刀中" : dt.Rows[i]["OrderReadyState"].ToString() == "-1" ? "异常" : dt.Rows[i]["OrderReadyState"].ToString();
-                    btnOrder.Text = dt.Rows[i]["PartNum"].ToString() + "    "
-                        + dt.Rows[i]["PartName"].ToString() + "    "
-                        + dt.Rows[i]["MaterialTexture"].ToString() + "    "
-                        + Convert.ToDateTime(dt.Rows[i]["PlanWorkTime"]).ToString("MM-dd HH:mm") + "    "
-                        + dt.Rows[i]["MachineLathe"].ToString() + "    "
+                    btnOrder.Text = dt.Rows[i]["PartNum"].ToString() + "   "
+                        + dt.Rows[i]["PartName"].ToString() + "   "
+                        + dt.Rows[i]["MaterialTexture"].ToString() + "   "
+                        + Convert.ToDateTime(dt.Rows[i]["PlanWorkTime"]).ToString("MM-dd HH:mm") + "   "
+                        + dt.Rows[i]["MachineLathe"].ToString() + "   "
+                        + dt.Rows[i]["WorkProcedure"].ToString() + "   "
                         + partState;
                     //btnOrder.Text = "M123-0909      金属外壳     铝合金     2019-05-10 10:10    3号机台     备料中";
-                    btnOrder.Tag = dt.Rows[i]["PartNum"].ToString();
+                    //btnOrder.Tag = dt.Rows[i]["PartNum"].ToString();
+                    btnOrder.Tag = dt.Rows[i]["Id"].ToString() + "|" + dt.Rows[i]["PartNum"].ToString();
                     btnOrder.UseVisualStyleBackColor = true;
                     //btnOrder.Click += new System.EventHandler(btnOrder_Click);
                     btnOrder.MouseDown += new MouseEventHandler(btnOrder_MouseDown);
@@ -75,6 +89,7 @@ namespace SmartShelfUI.ChildForm
         }
 
         string nowPartNum = "";
+        string nowPartId = "";
         /// <summary>
         /// 点击零件订单列表
         /// </summary>
@@ -88,7 +103,8 @@ namespace SmartShelfUI.ChildForm
                 //左键点击事件
                 panel_shelf.Controls.Clear();
                 Button btn = sender as Button;
-                nowPartNum = btn.Tag.ToString();
+                nowPartId = btn.Tag.ToString().Split('|')[0];
+                nowPartNum = btn.Tag.ToString().Split('|')[1];
                 GetCamList();
             }
             else if (Mouse_e.Button == MouseButtons.Right)
@@ -124,6 +140,7 @@ namespace SmartShelfUI.ChildForm
             string shelfNo = btnOpenDoor.Tag.ToString().Split('|')[1];
             string shelfId = btnOpenDoor.Tag.ToString().Split('|')[2];
             string PartNo = btnOpenDoor.Tag.ToString().Split('|')[3];
+            string PartId = btnOpenDoor.Tag.ToString().Split('|')[4];
             //开门TCPIP
             string IP = "";
             string Port = "";
@@ -150,11 +167,12 @@ namespace SmartShelfUI.ChildForm
                 {
                     if (rec_byte[3] == 0x01)//门正常打开
                     {
-                        string sql = "select w.X,w.Y from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "' and s.ID = " + shelfId;
+                        string sql = "select w.X,w.Y from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = '" + PartId + "' and s.ID = " + shelfId;
                         DataTable dt = DbHelperMySql.Query(sql).Tables[0];
                         ChildForm.CellsLocation frmCellsLocation = new CellsLocation();
                         frmCellsLocation.ShelfID = int.Parse(shelfId);
                         frmCellsLocation.PartNum = PartNo;
+                        frmCellsLocation.PartId = PartId;
                         if (dt != null && dt.Rows.Count > 0)
                         {
                             for (int i = 0; i < dt.Rows.Count; i++)
@@ -163,12 +181,12 @@ namespace SmartShelfUI.ChildForm
                             }
                         }
                         frmCellsLocation.ShowDialog();
-                        sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + PartNo + "'";
+                        sql = "select c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = " + PartId + "";
                         sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
                         dt = DbHelperMySql.Query(sql).Tables[0];
                         dgvCamList.DataSource = dt;
                         //循环CAM表状态，是否更新任务令表状态
-                        List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("PartNum = '" + PartNo + "'");
+                        List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("FK_Id = " + PartId + "");
                         bool isDone = true;
                         foreach (DTcms.Model.temp_camlist item in camlist)
                         {
@@ -178,17 +196,11 @@ namespace SmartShelfUI.ChildForm
                             }
                             else if (item.ToolReadyState == -1)//有一把异常，主表状态就为异常
                             {
-                                //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
-                                //planorder.OrderReadyState = -1;
-                                //new DTcms.BLL.temp_planorderlist().Update(planorder);
                                 isDone = false;
                                 break;
                             }
                             else if (item.ToolReadyState == 1)//有一把未领，主表状态就为未领
                             {
-                                //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
-                                //planorder.OrderReadyState = 1;
-                                //new DTcms.BLL.temp_planorderlist().Update(planorder);
                                 isDone = false;
                                 break;
                             }
@@ -200,10 +212,10 @@ namespace SmartShelfUI.ChildForm
                         }
                         if (isDone)
                         {
-                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + PartNo + "'")[0];
+                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("Id = " + PartId + "")[0];
                             planorder.OrderReadyState = 2;
                             new DTcms.BLL.temp_planorderlist().Update(planorder);
-                            this.nowPartNum = "";
+                            this.nowPartNum = this.nowPartId = "";
                         }
                         GetOrderList();
                         GetCamList();
@@ -225,6 +237,62 @@ namespace SmartShelfUI.ChildForm
             else
             {
                 MessageBox.Show("网络通信失败！");
+            }
+        }
+
+        public void GetCamList()
+        {
+            lstShelf.Clear();
+            if (!string.IsNullOrEmpty(nowPartId))
+            {
+                string sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = " + nowPartId + " and ToolReadyState <> -1";
+                sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
+                DataSet ds1 = DbHelperMySql.Query(sql);
+                sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = " + nowPartId + " and ToolReadyState = -1";
+                sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
+                DataSet ds2 = DbHelperMySql.Query(sql);
+
+                ds1.Merge(ds2);
+                //DataTable dt = DbHelperMySql.Query(sql).Tables[0];
+                DataTable dt = ds1.Tables[0];
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    dgvCamList.DataSource = dt;
+
+                    sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = " + nowPartId + " and (c.ToolReadyState = 1 or ToolReadyState = 2) ORDER BY CONVERT(c.toolnum, signed)";
+                    //order by s.FK_CabinetNo,BoxNo
+                    DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
+                    if (dtShelf != null && dtShelf.Rows.Count > 0 && dtShelf.Rows[0][0].ToString() != "" && dtShelf.Rows[0][2].ToString() != "")
+                    {
+                        for (int i = 0; i < dtShelf.Rows.Count; i++)
+                        {
+                            Button btnShelf = new Button();
+                            //btnShelf.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+                            //btnShelf.BackgroundImageLayout = ImageLayout.Stretch;
+                            btnShelf.BackColor = Color.Silver;
+                            btnShelf.FlatAppearance.BorderSize = 0;
+                            btnShelf.FlatStyle = FlatStyle.Flat;
+                            btnShelf.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                            btnShelf.ForeColor = Color.White;
+                            btnShelf.Location = new Point(8, 40 * i + 10);
+                            btnShelf.Size = new Size(190, 35);
+                            btnShelf.Text = dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "号柜" + dtShelf.Rows[i]["BoxNo"].ToString() + "号抽屉";
+                            btnShelf.Tag = dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "|" + dtShelf.Rows[i]["BoxNo"].ToString() + "|" + dtShelf.Rows[i]["shelfid"].ToString() + "|" + nowPartNum + "|" + nowPartId;
+                            btnShelf.UseVisualStyleBackColor = true;
+                            //btnShelf.Click += btnOpenDoor_Click;
+                            panel_shelf.Controls.Add(btnShelf);
+
+                            lstShelf.Add(dtShelf.Rows[i]["shelfid"].ToString());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                string sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where 1=2";
+                DataTable dtnull = DbHelperMySql.Query(sql).Tables[0];
+                dgvCamList.DataSource = dtnull;
+                panel_shelf.Controls.Clear();
             }
         }
         /// <summary>
@@ -317,7 +385,15 @@ namespace SmartShelfUI.ChildForm
         /// <param name="e"></param>
         private void btnDisPick1_Click(object sender, EventArgs e)
         {
-            nextForm_dispick_plan();
+            if (!string.IsNullOrEmpty(nowPartId))
+            {
+                nextForm_dispick_plan_partnum(int.Parse(nowPartId));
+            }
+            else
+            {
+                MessageBox.Show("请选择计划令！");
+            }
+
         }
         /// <summary>
         /// 非计划另行领用
@@ -355,7 +431,7 @@ namespace SmartShelfUI.ChildForm
                     }
 
                     //循环CAM表状态，是否更新任务令表状态
-                    List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("PartNum = '" + cam.PartNum + "'");
+                    List<DTcms.Model.temp_camlist> camlist = new DTcms.BLL.temp_camlist().GetModelList("FK_Id = " + cam.FK_Id + "");
                     bool isDone = true;
                     foreach (DTcms.Model.temp_camlist item in camlist)
                     {
@@ -365,7 +441,8 @@ namespace SmartShelfUI.ChildForm
                         }
                         else if (item.ToolReadyState == -1)//有一把异常，主表状态就为异常
                         {
-                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0];
+                            //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0];
+                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModel(cam.FK_Id);
                             planorder.OrderReadyState = -1;
                             new DTcms.BLL.temp_planorderlist().Update(planorder);
                             isDone = false;
@@ -373,7 +450,8 @@ namespace SmartShelfUI.ChildForm
                         }
                         else if (item.ToolReadyState == 1)//有一把未领，主表状态就为未领
                         {
-                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0];
+                            //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0];
+                            DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModel(cam.FK_Id);
                             planorder.OrderReadyState = 1;
                             new DTcms.BLL.temp_planorderlist().Update(planorder);
                             isDone = false;
@@ -387,10 +465,11 @@ namespace SmartShelfUI.ChildForm
                     }
                     if (isDone)
                     {
-                        DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0];
+                        //DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModelList("PartNum = '" + cam.PartNum + "'")[0];
+                        DTcms.Model.temp_planorderlist planorder = new DTcms.BLL.temp_planorderlist().GetModel(cam.FK_Id);
                         planorder.OrderReadyState = 2;
                         new DTcms.BLL.temp_planorderlist().Update(planorder);
-                        this.nowPartNum = "";
+                        this.nowPartNum = this.nowPartId = "";
                     }
                     GetOrderList();
                     GetCamList();
@@ -403,50 +482,6 @@ namespace SmartShelfUI.ChildForm
 
         }
 
-        private void GetCamList()
-        {
-            if (!string.IsNullOrEmpty(nowPartNum))
-            {
-                string sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "'";
-                sql += " order by s.FK_CabinetNo,s.BoxNo,c.ToolReadyState";
-                DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    dgvCamList.DataSource = dt;
-
-                    sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.PartNum = '" + nowPartNum + "' and (c.ToolReadyState = 1 or ToolReadyState = 2) order by s.FK_CabinetNo,BoxNo";
-                    DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
-                    if (dtShelf != null && dtShelf.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dtShelf.Rows.Count; i++)
-                        {
-                            Button btnShelf = new Button();
-                            btnShelf.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
-                            btnShelf.BackgroundImageLayout = ImageLayout.Stretch;
-                            btnShelf.FlatAppearance.BorderSize = 0;
-                            btnShelf.FlatStyle = FlatStyle.Flat;
-                            btnShelf.Font = new Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-                            btnShelf.ForeColor = Color.White;
-                            btnShelf.Location = new Point(8, 70 * i + 8);
-                            btnShelf.Size = new Size(190, 70);
-                            btnShelf.Text = "打开" + dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "号柜" + dtShelf.Rows[i]["BoxNo"].ToString() + "号抽屉";
-                            btnShelf.Tag = dtShelf.Rows[i]["FK_CabinetNo"].ToString() + "|" + dtShelf.Rows[i]["BoxNo"].ToString() + "|" + dtShelf.Rows[i]["shelfid"].ToString() + "|" + nowPartNum;
-                            btnShelf.UseVisualStyleBackColor = true;
-                            btnShelf.Click += btnOpenDoor_Click;
-                            panel_shelf.Controls.Add(btnShelf);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                string sql = "select c.Id,c.PartNum,c.ToolName,c.WorkTime,c.ToolLevel,s.FK_CabinetNo,s.BoxNo,(CASE c.ToolReadyState  WHEN 0 THEN '待备料' WHEN 1 THEN '待取料' WHEN 2 THEN '已取料' WHEN -2 THEN '已取消' ELSE '异常' END) as ToolReadyState from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where 1=2";
-                DataTable dtnull = DbHelperMySql.Query(sql).Tables[0];
-                dgvCamList.DataSource = dtnull;
-                panel_shelf.Controls.Clear();
-            }
-        }
-
         private void btnRefreshOrder_Click(object sender, EventArgs e)
         {
             GetOrderList();
@@ -454,6 +489,51 @@ namespace SmartShelfUI.ChildForm
             DataTable dtnull = DbHelperMySql.Query(sql).Tables[0];
             dgvCamList.DataSource = dtnull;
             panel_shelf.Controls.Clear();
+        }
+
+        private void dgvCamList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            try
+            {
+                for (int i = 0; i < dgvCamList.Rows.Count; i++)
+                {
+                    if (dgvCamList.Rows[i].Cells[7].Value.ToString() == "已取料")
+                    {
+                        this.dgvCamList.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                    }
+                    else if (dgvCamList.Rows[i].Cells[7].Value.ToString() == "异常")
+                    {
+                        this.dgvCamList.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.Writelog(ex.ToString(), "改变cam颜色");
+            }
+
+        }
+
+        public delegate void SendHandle(List<string> lst_shelf_id, string Part_ID);
+        public event SendHandle sendShelfCode;
+        List<string> lstShelf = new List<string>();
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(nowPartNum) || string.IsNullOrEmpty(nowPartId))
+            {
+                MessageBox.Show("请选择零件计划单！");
+                return;
+            }
+            GetCamList();
+            if (lstShelf != null && lstShelf.Count > 0)
+            {
+                sendShelfCode(lstShelf, nowPartId);
+            }
+            else
+            {
+                MessageBox.Show("没有符合要求的抽屉！");
+                return;
+            }
         }
     }
 }

@@ -18,6 +18,8 @@ namespace DTcms.Model
         private DateTime? _delayworktime;
         private string _machinelathe;
         private string _workprocedure;
+        private string _planno;
+        private string _componentno;
         private int? _orderreadystate;
         private DateTime? _createdate;
         /// <summary>
@@ -83,6 +85,22 @@ namespace DTcms.Model
         {
             set { _workprocedure = value; }
             get { return _workprocedure; }
+        }
+        /// <summary>
+		/// 
+		/// </summary>
+		public string PlanNo
+        {
+            set { _planno = value; }
+            get { return _planno; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ComponentNo
+        {
+            set { _componentno = value; }
+            get { return _componentno; }
         }
         /// <summary>
         /// 

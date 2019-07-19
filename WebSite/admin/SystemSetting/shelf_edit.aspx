@@ -158,7 +158,7 @@
                         <%# Eval("Y")%>
                     </td>
                     <td>
-                        <%# Eval("Type").ToString()=="0"?"九宫格":"普通柜" %>
+                        <%# Eval("Type").ToString()=="0"?"圆形":"正方形" %>
                     </td>
                     <td align="center">
                         <%--<a href='meetingedit.aspx?id=<%#Eval("id") %>'>修改</a>--%>

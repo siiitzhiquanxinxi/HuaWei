@@ -200,7 +200,24 @@ namespace DTcms.DAL
                 return false;
             }
         }
-
+        /// <summary>
+        /// 批量删除数据
+        /// </summary>
+        public bool DeleteWhere(string Where)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from w_barcode ");
+            strSql.Append(" where  " + Where );
+            int rows = DbHelperMySql.ExecuteSql(strSql.ToString());
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// 得到一个对象实体

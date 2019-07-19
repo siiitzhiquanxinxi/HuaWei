@@ -14,6 +14,15 @@ namespace SmartShelfUI.ChildForm
 {
     public partial class Login : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams paras = base.CreateParams;
+                paras.ExStyle |= 0x02000000;
+                return paras;
+            }
+        }
         string comName = ConfigurationManager.AppSettings["rfidcom"].Trim();
         public Login()
         {

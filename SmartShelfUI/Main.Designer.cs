@@ -46,7 +46,7 @@
             this.lblSoftwareTitle.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblSoftwareTitle.Location = new System.Drawing.Point(0, 0);
             this.lblSoftwareTitle.Name = "lblSoftwareTitle";
-            this.lblSoftwareTitle.Size = new System.Drawing.Size(1920, 117);
+            this.lblSoftwareTitle.Size = new System.Drawing.Size(1620, 117);
             this.lblSoftwareTitle.TabIndex = 0;
             this.lblSoftwareTitle.Text = "智能柜刀具领用系统";
             this.lblSoftwareTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -66,9 +66,10 @@
             // panel_content
             // 
             this.panel_content.BackColor = System.Drawing.Color.Transparent;
-            this.panel_content.Location = new System.Drawing.Point(0, 157);
+            this.panel_content.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_content.Location = new System.Drawing.Point(0, 117);
             this.panel_content.Name = "panel_content";
-            this.panel_content.Size = new System.Drawing.Size(1920, 780);
+            this.panel_content.Size = new System.Drawing.Size(1620, 803);
             this.panel_content.TabIndex = 41;
             // 
             // pxb_loginface
@@ -84,15 +85,15 @@
             // 
             // lblUserName
             // 
-            this.lblUserName.AutoSize = true;
             this.lblUserName.BackColor = System.Drawing.Color.Transparent;
             this.lblUserName.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblUserName.ForeColor = System.Drawing.Color.White;
             this.lblUserName.Location = new System.Drawing.Point(1782, 48);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(96, 56);
+            this.lblUserName.Size = new System.Drawing.Size(126, 56);
             this.lblUserName.TabIndex = 43;
-            this.lblUserName.Text = "欢迎您，\r\n刘萌萌";
+            this.lblUserName.Text = "欢迎您\r\n刘萌萌";
+            this.lblUserName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblUserName.Visible = false;
             // 
             // btnBack
@@ -112,8 +113,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SmartShelfUI.Properties.Resources.背景1920_1080;
-            this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.BackColor = System.Drawing.SystemColors.Highlight;
+            this.ClientSize = new System.Drawing.Size(1620, 920);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.pxb_loginface);
@@ -123,6 +124,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main";
             this.Text = "智能柜刀具柜领用系统";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pxb_loginface)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnBack)).EndInit();

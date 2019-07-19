@@ -48,6 +48,8 @@ namespace SmartShelfUI.ChildForm
             }
             if (shelf != null)
             {
+                DTcms.Model.sy_cabinet cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
+                lblShelfNo.Text = cabinet.CabinetNo + "号柜 " + shelf.BoxNo + "号抽屉";
                 int x = Convert.ToInt16(shelf.X);
                 int y = Convert.ToInt16(shelf.Y);
                 for (int i = 0; i < x; i++)

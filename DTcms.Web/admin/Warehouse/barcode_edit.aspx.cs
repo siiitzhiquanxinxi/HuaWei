@@ -83,7 +83,9 @@ namespace DTcms.Web.admin.Warehouse
                 }
                 string sqlcode = "select * from w_barcode where BarCode like '"+txtCode.Text.Trim()+ "%' order by BarCode desc";
                 DataTable dtcode= DbHelperMySql.Query(sqlcode).Tables[0];
-                int codenum = dtcode.Rows.Count;
+                int codenum = 0;
+                if (dtcode.Rows.Count!=0)
+                   codenum = Convert.ToInt32( dtcode.Rows[0]["BarCode"].ToString().Substring(5,4));
                 for (int i=0;i<dtshelf.Rows.Count;i++)
                 {
                     int x = Convert.ToInt32(dtshelf.Rows[i]["X"]);
@@ -283,7 +285,7 @@ namespace DTcms.Web.admin.Warehouse
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(this, ex.Message);
             }
         }
         public void OutputClient(byte[] bytes)
