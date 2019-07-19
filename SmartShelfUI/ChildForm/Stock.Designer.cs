@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.btnRepairOpen = new System.Windows.Forms.Button();
@@ -64,6 +64,8 @@
             this.lblToolLevel = new System.Windows.Forms.Label();
             this.lblToolName = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnRepairOpen = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel_CAM.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinet)).BeginInit();
@@ -148,8 +150,8 @@
             // CabinetNo
             // 
             this.CabinetNo.DataPropertyName = "CabinetNo";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CabinetNo.DefaultCellStyle = dataGridViewCellStyle9;
             this.CabinetNo.HeaderText = "柜号";
             this.CabinetNo.Name = "CabinetNo";
             this.CabinetNo.ReadOnly = true;
@@ -232,8 +234,8 @@
             // BoxNo
             // 
             this.BoxNo.DataPropertyName = "BoxNo";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BoxNo.DefaultCellStyle = dataGridViewCellStyle10;
             this.BoxNo.HeaderText = "抽屉号";
             this.BoxNo.Name = "BoxNo";
             this.BoxNo.ReadOnly = true;
@@ -456,6 +458,35 @@
             this.label2.Size = new System.Drawing.Size(90, 21);
             this.label2.TabIndex = 0;
             this.label2.Text = "刀具名称：";
+            // 
+            // btnRepairOpen
+            // 
+            this.btnRepairOpen.BackColor = System.Drawing.Color.Transparent;
+            this.btnRepairOpen.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_3;
+            this.btnRepairOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRepairOpen.FlatAppearance.BorderSize = 0;
+            this.btnRepairOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRepairOpen.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRepairOpen.ForeColor = System.Drawing.Color.Transparent;
+            this.btnRepairOpen.Location = new System.Drawing.Point(41, 674);
+            this.btnRepairOpen.Name = "btnRepairOpen";
+            this.btnRepairOpen.Size = new System.Drawing.Size(111, 44);
+            this.btnRepairOpen.TabIndex = 6;
+            this.btnRepairOpen.Text = "维修开锁";
+            this.btnRepairOpen.UseVisualStyleBackColor = false;
+            this.btnRepairOpen.Click += new System.EventHandler(this.btnRepairOpen_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(158, 689);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(116, 17);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "打开该柜的所有抽屉";
             // 
             // Stock
             // 
