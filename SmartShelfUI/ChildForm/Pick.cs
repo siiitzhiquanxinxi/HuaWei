@@ -259,7 +259,7 @@ namespace SmartShelfUI.ChildForm
                 {
                     dgvCamList.DataSource = dt;
 
-                    sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = " + nowPartId + " and (c.ToolReadyState = 1 or ToolReadyState = 2) ORDER BY CONVERT(c.toolnum, signed)";
+                    sql = "select DISTINCT s.FK_CabinetNo,s.BoxNo,s.ID as shelfid from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = " + nowPartId + " and c.ToolReadyState = 1 ORDER BY CONVERT(c.toolnum, signed)";
                     //order by s.FK_CabinetNo,BoxNo
                     DataTable dtShelf = DbHelperMySql.Query(sql).Tables[0];
                     if (dtShelf != null && dtShelf.Rows.Count > 0 && dtShelf.Rows[0][0].ToString() != "" && dtShelf.Rows[0][2].ToString() != "")
@@ -470,9 +470,14 @@ namespace SmartShelfUI.ChildForm
                         planorder.OrderReadyState = 2;
                         new DTcms.BLL.temp_planorderlist().Update(planorder);
                         this.nowPartNum = this.nowPartId = "";
+                        GetOrderList();
+                        GetCamList();
                     }
-                    GetOrderList();
-                    GetCamList();
+                    else
+                    {
+                        GetCamList();
+                    }
+
                 }
             }
             else

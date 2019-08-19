@@ -37,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.btnRefreshLock = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -127,12 +128,30 @@
             this.serialPort1.BaudRate = 115200;
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
+            // btnRefreshLock
+            // 
+            this.btnRefreshLock.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefreshLock.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_5;
+            this.btnRefreshLock.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefreshLock.FlatAppearance.BorderSize = 0;
+            this.btnRefreshLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshLock.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRefreshLock.ForeColor = System.Drawing.Color.White;
+            this.btnRefreshLock.Location = new System.Drawing.Point(1612, 660);
+            this.btnRefreshLock.Name = "btnRefreshLock";
+            this.btnRefreshLock.Size = new System.Drawing.Size(296, 84);
+            this.btnRefreshLock.TabIndex = 2;
+            this.btnRefreshLock.Text = "重置锁控板";
+            this.btnRefreshLock.UseVisualStyleBackColor = false;
+            this.btnRefreshLock.Click += new System.EventHandler(this.btnRefreshLock_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(1920, 780);
+            this.Controls.Add(this.btnRefreshLock);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
@@ -158,5 +177,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnLogin;
         private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.Button btnRefreshLock;
     }
 }

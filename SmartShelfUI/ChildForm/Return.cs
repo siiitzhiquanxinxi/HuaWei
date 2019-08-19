@@ -180,8 +180,11 @@ namespace SmartShelfUI.ChildForm
             //}
         }
 
+        public string baofeiReason;
         private void btnBaofei_Click(object sender, EventArgs e)
         {
+            ChildForm.BoafeiReason frmReason = new BoafeiReason();
+            frmReason.Owner = this;
             if (this.tool == null)
             {
                 MessageBox.Show("请先扫描刀具编码！");
@@ -191,7 +194,8 @@ namespace SmartShelfUI.ChildForm
             {
                 MessageBox.Show("该刀具状态错误！(非出库状态中)");
             }
-            else if (MessageBox.Show("确认报废？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            else if (frmReason.ShowDialog() == DialogResult.OK)
+            //else if (MessageBox.Show("确认报废？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 //修改刀具状态
                 tool.State = -1;
@@ -211,6 +215,7 @@ namespace SmartShelfUI.ChildForm
                 inout.Unit = tool.Unit;
                 inout.Num = tool.Num;
                 inout.IOFlag = 0;
+                inout.InOutRemark = this.baofeiReason;
                 List<DTcms.Model.w_inout_detail> lstdetail = new DTcms.BLL.w_inout_detail().GetModelList("BarCode = '" + tool.BarCode + "' and IOFlag = -1 order by OperatorTime desc");
                 if (lstdetail != null && lstdetail.Count > 0)
                 {
@@ -513,9 +518,9 @@ namespace SmartShelfUI.ChildForm
                     DataTable dt = DbHelperMySql.Query(sql).Tables[0];
                     if (dt != null && dt.Rows.Count > 0)
                     {
-                        decimal TotalTime = Convert.ToDecimal(dt.Rows[0]["TotalTime"]) ;
+                        decimal TotalTime = Convert.ToDecimal(dt.Rows[0]["TotalTime"]);
                         decimal worningtime = TotalTime * (decimal)0.15;
-                        if (lstmodel[0].RemainTime< worningtime)
+                        if (lstmodel[0].RemainTime < worningtime)
                         {
                             MessageBox.Show("剩余寿命低于标准寿命85%，请确认是否报废！");
                         }
@@ -579,7 +584,7 @@ namespace SmartShelfUI.ChildForm
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("确认修正该刀具剩余寿命为:"+this.textBox1.Text.Trim()+"min?", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (MessageBox.Show("确认修正该刀具剩余寿命为:" + this.textBox1.Text.Trim() + "min?", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 //修改刀具状态
                 decimal sum = Convert.ToDecimal(this.textBox1.Text.Trim()) - (decimal)tool.RemainTime;

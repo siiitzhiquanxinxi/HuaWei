@@ -46,7 +46,7 @@
             this.lblSoftwareTitle.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblSoftwareTitle.Location = new System.Drawing.Point(0, 0);
             this.lblSoftwareTitle.Name = "lblSoftwareTitle";
-            this.lblSoftwareTitle.Size = new System.Drawing.Size(1620, 117);
+            this.lblSoftwareTitle.Size = new System.Drawing.Size(1920, 117);
             this.lblSoftwareTitle.TabIndex = 0;
             this.lblSoftwareTitle.Text = "智能柜刀具领用系统";
             this.lblSoftwareTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -69,7 +69,7 @@
             this.panel_content.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_content.Location = new System.Drawing.Point(0, 117);
             this.panel_content.Name = "panel_content";
-            this.panel_content.Size = new System.Drawing.Size(1620, 803);
+            this.panel_content.Size = new System.Drawing.Size(1920, 963);
             this.panel_content.TabIndex = 41;
             // 
             // pxb_loginface
@@ -114,7 +114,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Highlight;
-            this.ClientSize = new System.Drawing.Size(1620, 920);
+            this.ClientSize = new System.Drawing.Size(1920, 1080);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.pxb_loginface);

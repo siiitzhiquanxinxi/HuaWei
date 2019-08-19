@@ -342,6 +342,7 @@
             this.cbxToolLevel.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbxToolLevel.FormattingEnabled = true;
             this.cbxToolLevel.Items.AddRange(new object[] {
+            "--无--",
             "旧刀（F）",
             "新刀（X）",
             "返磨（R）"});

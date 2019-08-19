@@ -78,6 +78,10 @@ namespace SmartShelfUI.ChildForm
                 {
                     toolLevel = "R";
                 }
+                else if (cbxToolLevel.Text == "--无--")
+                {
+                    toolLevel = "";
+                }
             }
             DTcms.Model.w_approvelist approve = new DTcms.Model.w_approvelist();
             approve.ApproveNum = DateTime.Now.ToString("yyyyMMddHHmmss" + globalField.Manager.id.ToString());
@@ -113,7 +117,7 @@ namespace SmartShelfUI.ChildForm
             }
             GetApproveList();
         }
-        
+
         public delegate void SendHandle(byte[] sendByte, unlockTypeEnum type, DTcms.Model.w_barcode _tool, DTcms.Model.sy_shelf _shelf, DTcms.Model.sy_cabinet _cabinet, DTcms.Model.w_approvelist _approve);
         public event SendHandle sendCode;
 
@@ -152,7 +156,7 @@ namespace SmartShelfUI.ChildForm
                             //frmCells.tool = tool;
                             //frmCells.cabinet = cabinet;
                             //frmCells.shelf = shelf;
-                            
+
                             //string IP = cabinet.IP;
                             //string Port = cabinet.Port;
                             //if (connect(IP, Port))

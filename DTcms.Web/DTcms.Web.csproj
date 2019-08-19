@@ -130,14 +130,14 @@
     <Content Include="admin\order\payment_list.aspx" />
     <Content Include="admin\PlanOrder\planorder_list.aspx" />
     <Content Include="admin\PlanOrder\planorder_view.aspx" />
-    <Content Include="admin\printlog\errorlogdetail.aspx" />
-    <Content Include="admin\printlog\errorloglist.aspx" />
-    <Content Include="admin\printlog\printlog_yinyezhizhao.aspx" />
-    <Content Include="admin\printlog\printlog_yinyezhizhao_detail.aspx" />
-    <Content Include="admin\printlog\printoplog_yinyezhizhao.aspx" />
-    <Content Include="admin\printlog\printweekrpt_yinyezhizhao.aspx" />
-    <Content Include="admin\printlog\worklogdetail.aspx" />
-    <Content Include="admin\printlog\workloglist.aspx" />
+    <Content Include="admin\PlanOrder\printlog\errorlogdetail.aspx" />
+    <Content Include="admin\PlanOrder\printlog\errorloglist.aspx" />
+    <Content Include="admin\PlanOrder\printlog\printlog_yinyezhizhao.aspx" />
+    <Content Include="admin\PlanOrder\printlog\printlog_yinyezhizhao_detail.aspx" />
+    <Content Include="admin\PlanOrder\printlog\printoplog_yinyezhizhao.aspx" />
+    <Content Include="admin\PlanOrder\printlog\printweekrpt_yinyezhizhao.aspx" />
+    <Content Include="admin\PlanOrder\printlog\worklogdetail.aspx" />
+    <Content Include="admin\PlanOrder\printlog\workloglist.aspx" />
     <Content Include="admin\settings\builder_html.aspx" />
     <Content Include="admin\settings\nav_edit.aspx" />
     <Content Include="admin\settings\nav_list.aspx" />
@@ -167,6 +167,8 @@
     <Content Include="admin\skin\layout.css" />
     <Content Include="admin\SystemSetting\cabinet_edit.aspx" />
     <Content Include="admin\SystemSetting\cabinet_list.aspx" />
+    <Content Include="admin\SystemSetting\scrapreason_edit.aspx" />
+    <Content Include="admin\SystemSetting\scrapreason_list.aspx" />
     <Content Include="admin\SystemSetting\shelf_edit.aspx" />
     <Content Include="admin\users\amount_log.aspx" />
     <Content Include="admin\users\group_edit.aspx" />
@@ -729,7 +731,9 @@
     <Content Include="templates\main\_ucenter_nav.html" />
     <Content Include="test.aspx" />
     <Content Include="upload\sheet001.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1041,63 +1045,63 @@
     <Compile Include="admin\PlanOrder\planorder_view.aspx.designer.cs">
       <DependentUpon>planorder_view.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\errorlogdetail.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\errorlogdetail.aspx.cs">
       <DependentUpon>errorlogdetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\errorlogdetail.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\errorlogdetail.aspx.designer.cs">
       <DependentUpon>errorlogdetail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\errorloglist.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\errorloglist.aspx.cs">
       <DependentUpon>errorloglist.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\errorloglist.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\errorloglist.aspx.designer.cs">
       <DependentUpon>errorloglist.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\GetImg.ashx.cs">
+    <Compile Include="admin\PlanOrder\printlog\GetImg.ashx.cs">
       <DependentUpon>GetImg.ashx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\printlog_yinyezhizhao.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao.aspx.cs">
       <DependentUpon>printlog_yinyezhizhao.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\printlog_yinyezhizhao.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao.aspx.designer.cs">
       <DependentUpon>printlog_yinyezhizhao.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\printlog_yinyezhizhao_detail.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao_detail.aspx.cs">
       <DependentUpon>printlog_yinyezhizhao_detail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\printlog_yinyezhizhao_detail.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao_detail.aspx.designer.cs">
       <DependentUpon>printlog_yinyezhizhao_detail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\printoplog_yinyezhizhao.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\printoplog_yinyezhizhao.aspx.cs">
       <DependentUpon>printoplog_yinyezhizhao.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\printoplog_yinyezhizhao.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\printoplog_yinyezhizhao.aspx.designer.cs">
       <DependentUpon>printoplog_yinyezhizhao.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\printweekrpt_yinyezhizhao.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\printweekrpt_yinyezhizhao.aspx.cs">
       <DependentUpon>printweekrpt_yinyezhizhao.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\printweekrpt_yinyezhizhao.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\printweekrpt_yinyezhizhao.aspx.designer.cs">
       <DependentUpon>printweekrpt_yinyezhizhao.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\worklogdetail.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\worklogdetail.aspx.cs">
       <DependentUpon>worklogdetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\worklogdetail.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\worklogdetail.aspx.designer.cs">
       <DependentUpon>worklogdetail.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\printlog\workloglist.aspx.cs">
+    <Compile Include="admin\PlanOrder\printlog\workloglist.aspx.cs">
       <DependentUpon>workloglist.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\printlog\workloglist.aspx.designer.cs">
+    <Compile Include="admin\PlanOrder\printlog\workloglist.aspx.designer.cs">
       <DependentUpon>workloglist.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\settings\builder_html.aspx.cs">
@@ -1183,6 +1187,20 @@
     </Compile>
     <Compile Include="admin\SystemSetting\cabinet_list.aspx.designer.cs">
       <DependentUpon>cabinet_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\SystemSetting\scrapreason_edit.aspx.cs">
+      <DependentUpon>scrapreason_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SystemSetting\scrapreason_edit.aspx.designer.cs">
+      <DependentUpon>scrapreason_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\SystemSetting\scrapreason_list.aspx.cs">
+      <DependentUpon>scrapreason_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SystemSetting\scrapreason_list.aspx.designer.cs">
+      <DependentUpon>scrapreason_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\SystemSetting\shelf_edit.aspx.cs">
       <DependentUpon>shelf_edit.aspx</DependentUpon>
@@ -1603,8 +1621,8 @@
     <Content Include="xmlconfig\alipaypc.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\printlog\GetImg.ashx" />
-    <Content Include="admin\printlog\营业执照打印明细.xls" />
+    <Content Include="admin\PlanOrder\printlog\GetImg.ashx" />
+    <Content Include="admin\PlanOrder\printlog\营业执照打印明细.xls" />
     <Content Include="admin\Material\photo.ashx" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\配置文件1.pubxml" />

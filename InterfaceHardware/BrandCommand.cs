@@ -219,7 +219,7 @@ namespace InterfaceHardware
             {
                 if (CardAddr == 0x01)
                     CardAddr += 0x30;
-                return HCRule(0x47, Box, CardAddr);
+                return HCRule(0x4C, Box, CardAddr);//华为47改4C
             }
             else
             {

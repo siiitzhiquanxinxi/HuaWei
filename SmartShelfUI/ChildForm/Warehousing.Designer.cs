@@ -50,6 +50,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_order = new System.Windows.Forms.Panel();
+            this.txtKeyInBarcode = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnWarehousingByKey = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbxToolPic)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -284,11 +287,49 @@
             this.panel_order.Size = new System.Drawing.Size(556, 581);
             this.panel_order.TabIndex = 1;
             // 
+            // txtKeyInBarcode
+            // 
+            this.txtKeyInBarcode.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtKeyInBarcode.Location = new System.Drawing.Point(1386, 49);
+            this.txtKeyInBarcode.Name = "txtKeyInBarcode";
+            this.txtKeyInBarcode.Size = new System.Drawing.Size(321, 33);
+            this.txtKeyInBarcode.TabIndex = 10;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(1385, 24);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(186, 21);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "手工输入刀具编码领料：";
+            // 
+            // btnWarehousingByKey
+            // 
+            this.btnWarehousingByKey.BackColor = System.Drawing.Color.Transparent;
+            this.btnWarehousingByKey.BackgroundImage = global::SmartShelfUI.Properties.Resources.圆角矩形_732_拷贝_4;
+            this.btnWarehousingByKey.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnWarehousingByKey.FlatAppearance.BorderSize = 0;
+            this.btnWarehousingByKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWarehousingByKey.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold);
+            this.btnWarehousingByKey.ForeColor = System.Drawing.Color.White;
+            this.btnWarehousingByKey.Location = new System.Drawing.Point(1450, 106);
+            this.btnWarehousingByKey.Name = "btnWarehousingByKey";
+            this.btnWarehousingByKey.Size = new System.Drawing.Size(200, 75);
+            this.btnWarehousingByKey.TabIndex = 8;
+            this.btnWarehousingByKey.Text = "手动入库";
+            this.btnWarehousingByKey.UseVisualStyleBackColor = false;
+            this.btnWarehousingByKey.Click += new System.EventHandler(this.btnWarehousingByKey_Click);
+            // 
             // Warehousing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1920, 780);
+            this.Controls.Add(this.txtKeyInBarcode);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.btnWarehousingByKey);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pbxToolPic);
             this.Controls.Add(this.groupBox2);
@@ -305,6 +346,7 @@
             this.panel1.PerformLayout();
             this.panel_order.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -331,5 +373,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_order;
         private System.Windows.Forms.Button btnReScan;
+        private System.Windows.Forms.TextBox txtKeyInBarcode;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnWarehousingByKey;
     }
 }

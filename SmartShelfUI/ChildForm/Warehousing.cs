@@ -148,7 +148,7 @@ namespace SmartShelfUI.ChildForm
                                     code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
                                     code_byte[5] = 0xFE;
                                     sendCode(code_byte, unlockTypeEnum.入库, tool, shelf, cabinet);
-                                    
+
                                     //IP = cabinet.IP;
                                     //Port = cabinet.Port;
                                 }
@@ -335,6 +335,88 @@ namespace SmartShelfUI.ChildForm
         private void btnReScan_Click(object sender, EventArgs e)
         {
             this.BarCode = "";
+        }
+
+        private void btnWarehousingByKey_Click(object sender, EventArgs e)
+        {
+            if (txtKeyInBarcode.Text.Trim() == "")
+            {
+                MessageBox.Show("请输入刀具编码!");
+                return;
+            }
+            string barcode = txtKeyInBarcode.Text;
+            BarCode = barcode;
+
+            List<DTcms.Model.w_barcode> lstmodel = new DTcms.BLL.w_barcode().GetModelList("BarCode = '" + barcode.ToUpper() + "'");
+            if (lstmodel != null && lstmodel.Count > 0)
+            {
+                tool = lstmodel[0];
+                shelf = new DTcms.BLL.sy_shelf().GetModel(Convert.ToInt32(lstmodel[0].FK_ShelfID));
+                cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
+
+                lblToolName.Text = lstmodel[0].MaterialName;
+                lblToolLevel.Text = lstmodel[0].ToolLevel;
+                lblRestWorkTime.Text = lstmodel[0].RemainTime.ToString() + " min";
+                lblCabinetNo.Text = cabinet.CabinetNo + "号";
+                lblShelfNo.Text = shelf.BoxNo + "号";
+                lblToolState.Text = lstmodel[0].State == 0 ? "待入库" : lstmodel[0].State == 1 ? "在库" : lstmodel[0].State == 2 ? "出库中" : lstmodel[0].State == 3 ? "修磨中" : lstmodel[0].State == -1 ? "报废" : lstmodel[0].State == 4 ? "工单锁定" : "其他异常";
+
+                if (shelf != null)
+                {
+                    panel_Cells.Controls.Clear();
+
+                    int x = Convert.ToInt16(shelf.X);
+                    int y = Convert.ToInt16(shelf.Y);
+                    for (int i = 0; i < x; i++)
+                    {
+                        for (int j = 0; j < y; j++)
+                        {
+                            Button b = new Button();
+                            b.FlatAppearance.BorderSize = 0;
+                            b.FlatStyle = FlatStyle.Flat;
+                            b.Location = new Point(20 + 65 * i, 20 + 55 * j);
+                            b.Size = new Size(55, 45);
+                            b.Tag = (i + 1).ToString() + "-" + (j + 1).ToString();
+                            //b.Text = (i + 1).ToString() + "-" + (j + 1).ToString();
+                            b.Text = (j * x + i + 1).ToString();
+                            b.Font = new Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+                            b.BackColor = SystemColors.ControlDark;
+                            if (lstmodel[0].X == i + 1 && lstmodel[0].Y == j + 1)
+                            {
+                                b.BackColor = Color.Orange;
+                            }
+                            b.UseVisualStyleBackColor = true;
+
+                            panel_Cells.Controls.Add(b);
+
+                        }
+                    }
+                    if (tool.State != 0)
+                    {
+                        MessageBox.Show("道具状态错误！（非待入库状态）");
+                        return;
+                    }
+                    else
+                    {
+                        if (shelf != null)
+                        {
+                            cabinet = new DTcms.BLL.sy_cabinet().GetModelList("CabinetNo = '" + shelf.FK_CabinetNo + "'")[0];
+                            byte[] code_byte = new byte[6];
+                            code_byte[0] = 0xFF;
+                            code_byte[1] = (byte)Convert.ToInt32(cabinet.CardAddr, 16);
+                            code_byte[2] = (byte)Convert.ToInt32(shelf.BoxAddr, 16);
+                            code_byte[3] = 0x01;
+                            code_byte[4] = Convert.ToByte(code_byte[1] ^ code_byte[2] ^ code_byte[3]);
+                            code_byte[5] = 0xFE;
+                            sendCode(code_byte, unlockTypeEnum.入库, tool, shelf, cabinet);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("没有查询到该物料！");
+            }
         }
     }
 }

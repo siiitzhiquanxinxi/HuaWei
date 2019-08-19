@@ -65,6 +65,9 @@ namespace DTcms.Web.admin.PlanOrder
                 case -1:
                     txtOrderReadyState.Text = "异常";
                     break;
+                case -2:
+                    txtOrderReadyState.Text = "已取消";
+                    break;
             }
             DataTable dt = cambll.GetList("FK_Id='" + model.Id + "'").Tables[0];
             this.rptList.DataSource = dt;

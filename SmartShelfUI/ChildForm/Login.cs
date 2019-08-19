@@ -31,6 +31,8 @@ namespace SmartShelfUI.ChildForm
 
         public delegate void FormHandle();
         public event FormHandle nextForm;
+        public event FormHandle sendRefresh;
+
         private void Login_Load(object sender, EventArgs e)
         {
             try
@@ -81,10 +83,9 @@ namespace SmartShelfUI.ChildForm
             operate.Remark = "";
             new DTcms.BLL.w_inout_operate().Add(operate);
 
-            this.BeginInvoke((MethodInvoker)delegate
-            {
-                nextForm();
-            });
+
+            nextForm();
+
         }
 
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -128,6 +129,14 @@ namespace SmartShelfUI.ChildForm
             if (serialPort1.IsOpen)
             {
                 serialPort1.Close();
+            }
+        }
+
+        private void btnRefreshLock_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("确认重置锁控板？", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                sendRefresh();
             }
         }
     }

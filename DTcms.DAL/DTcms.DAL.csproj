@@ -71,6 +71,7 @@
     <Compile Include="sy_material.cs" />
     <Compile Include="sy_materialtype.cs" />
     <Compile Include="sy_material_texture.cs" />
+    <Compile Include="sy_scrapreason.cs" />
     <Compile Include="sy_shelf.cs" />
     <Compile Include="sy_texture.cs" />
     <Compile Include="temp_camlist.cs" />

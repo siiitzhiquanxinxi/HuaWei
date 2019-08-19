@@ -44,6 +44,7 @@ namespace InterfaceHardware
                 }
                 bOpen();//打开控制板
                 TCPOpen();//启动TCP
+                timLED.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -54,7 +55,7 @@ namespace InterfaceHardware
         private XmlDocument xDoc = null;
         private Socket sockHeartbeat;
         private bool issuspend = false;
-        private bool isopenbox = false;
+        //private bool isopenbox = false;
         Thread thListener = null;
         private void TCPOpen()
         {
@@ -207,7 +208,9 @@ namespace InterfaceHardware
                         if (NewByte[0]==0xFF&& NewByte[NewByte.Length - 1] == 0xFE)
                         {
                             BrandCommand.RevBoxData revdata = new BrandCommand.RevBoxData();
-                            revdata.Box = NewByte[2];
+                            XmlNode node = frm.xDoc.SelectSingleNode("//configuration/personalSettings/add[@key=\"" + NewByte[2] + "\"]");
+                            byte box = (byte)Convert.ToInt32(node.Attributes["value"].Value);
+                            revdata.Box = box;
                             revdata.CardAddr= NewByte[1];
                             //if (ListCode.ContainsKey(revdata))//已开门
                             //{
@@ -227,30 +230,40 @@ namespace InterfaceHardware
                                 a.StartReadComMachine(frm);
                             }
                                 frm.issuspend = true;
-                                Thread.Sleep(600);
+                                //Thread.Sleep(600);
                             if (NewByte[3] == 0x01)
-                            {//先执行门状态查询
-                                XmlNode node = frm.xDoc.SelectSingleNode("//configuration/personalSettings/add[@key=\"" + NewByte[2] + "\"]");
-                                byte box = (byte)Convert.ToInt32(node.Attributes["value"].Value);
-                                byte[] writearr = BrandCommand.GetState(box, NewByte[1]);
+                            {
+                                //
                                 if (ListCode.ContainsKey(revdata))
                                 {
                                     byte[] w = new byte[6];
                                     w[0] = 0xFE;
                                     w[1] = revdata.CardAddr;
-                                    w[2] = revdata.Box;
+                                    w[2] = NewByte[2];
                                     w[3] = 0x00;
                                     w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
                                     w[5] = 0xFF;
-                                    ListCode[revdata].Send(w);
+                                    socketServer.Send(w);
                                     frm.issuspend = false;
                                 }
                                 else
                                 {
                                     ListCode.Add(revdata, socketServer);
+                                    byte[] writearr = BrandCommand.OpenBox(box, NewByte[1]);
                                     frm.serialPort1.Write(writearr, 0, writearr.Length);
                                     frm.Writelog("发送串口命令:" + frm.ByteToString(writearr), "RecvMsg", "SystemLog.txt");
-                                    frm.isopenbox = true;
+                                    Thread.Sleep(500);
+                                    byte[] w = new byte[6];
+                                    w[0] = 0xFE;
+                                    w[1] = revdata.CardAddr;
+                                    w[2] = NewByte[2];
+                                    w[3] = 0x01;
+                                    w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                    w[5] = 0xFF;
+                                    socketServer.Send(w);
+                                    frm.Writelog("TCP回复命令:" + frm.ByteToString(w) + "," + revdata.CardAddr.ToString()+","+ revdata.Box.ToString(), "ReadCommPort1", "SystemLog.txt");
+                                    listledtime.Add(revdata, DateTime.Now);
+                                    frm.issuspend = false;
                                 }
                             }
                             else if (NewByte[3] == 0x02)//维修开锁
@@ -262,7 +275,7 @@ namespace InterfaceHardware
                                     byte[] writearr = BrandCommand.OpenALL(NewByte[1]);
                                     frm.serialPort1.Write(writearr, 0, writearr.Length);
                                     frm.Writelog("发送串口命令:" + frm.ByteToString(writearr), "RecvMsg", "SystemLog.txt");
-                                    a.settimLED(frm, false);
+                                    //a.settimLED(frm, false);
                                     byte[] w = new byte[6];
                                     w[0] = 0xFE;
                                     w[1] = NewByte[1];
@@ -286,7 +299,7 @@ namespace InterfaceHardware
                                         Thread.Sleep(500);
                                     }
                                     frm.issuspend = false;
-                                    a.settimLED(frm, true);
+                                    //a.settimLED(frm, true);
                                 }
                                 catch
                                 {
@@ -301,60 +314,32 @@ namespace InterfaceHardware
                                 }
                                 //frm.TextBoxLog("发送串口命令:" + frm.ByteToString(writearr), "RecvMsg", false);
                             }
+                            else if (NewByte[3] == 0x03)//重置外挂
+                            {
+                                byte[] w = new byte[6];
+                                w[0] = 0xFE;
+                                w[1] = 0x00;
+                                w[2] = 0x00;
+                                w[3] = 0x03;
+                                w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                w[5] = 0xFF;
+                                socketServer.Send(w);
+                                frm.Writelog("TCP回复命令:" + frm.ByteToString(w), "ReadCommPort1", "SystemLog.txt");
+                                Thread.Sleep(200);
+                                foreach (BrandCommand.RevBoxData item in ListCode.Keys.ToArray())
+                                {
+                                    ListCode[item].Send(w);
+                                    frm.Writelog("TCP回复命令:" + frm.ByteToString(w) , "ReadCommPort1", "SystemLog.txt");
+                                    ListCode.Remove(item);
+                                    Thread.Sleep(500);
+                                }
+                                listledtime.Clear();
+                                frm.ReadComMachine.Abort();
+                                Thread.Sleep(500);
+                                a.StartReadComMachine(frm);
+                            }
                             //}
                         }
-                        //if (slist[0] == "$" && slist[slist.Length - 1] == "￥")//校验命令完整性
-                        //{
-                        //if (slist[1] == "RUOK")
-                        //{
-                        //    if (iserr != "")
-                        //    {
-                        //        socketServer.Send(Encoding.Unicode.GetBytes("$|NOOK|￥"));
-                        //        a.setlog("Receive," + s, frm);
-                        //        a.setlog("Send,$|NOOK|￥", frm);
-                        //        a.setmessage("心跳失败", frm);
-                        //    }
-                        //    else
-                        //    {
-                        //        socketServer.Send(Encoding.Unicode.GetBytes("$|OK|￥"));
-                        //        a.setlog("Send,$|OK|￥", frm);
-                        //    }
-                        //}
-                        //else if (slist[1] == "RURD")
-                        //{
-                        //    //a.starttimer10(frm);
-                        //    if (printok == "OK" && webok == "OK")
-                        //    {
-                        //        socketServer.Send(Encoding.Unicode.GetBytes("$|RD|￥"));
-                        //        a.setlog("Receive," + s, frm);
-                        //        a.setlog("Send,$|RD|￥", frm);
-                        //        //a.setmessage("后台服务启动完成", frm);
-                        //    }
-                        //    else
-                        //    {
-
-                            //        socketServer.Send(Encoding.Unicode.GetBytes("$|NORD|￥"));
-                            //        a.setlog("Receive," + s, frm);
-                            //        a.setlog("Send,$|NORD|￥", frm);
-                            //        a.setmessage("后台服务启动失败", frm);
-                            //        a.starttimer10(frm);
-                            //    }
-                            //}
-                            //else if (slist[1] == "RESTART")
-                            //{
-                            //    a.setmessage("Receive," + s, frm);
-                            //    a.setlog("Receive," + s, frm);
-                            //    Restart(slist[2]);
-                            //}
-                            //else
-                            //{
-
-                            //    a.setlog("Receive," + s, frm);
-                            //    a.setmessage("Receive," + s, frm);
-                            //    a.setstatustrip(s, frm);
-                            //    ListCode.Add(s, socketServer);
-                            //}
-                            //}
                     }
                     else
                     {
@@ -447,6 +432,7 @@ namespace InterfaceHardware
             catch(Exception ex)
             {
                 //TextBoxLog("控制板串口打开失败", "bOpen", false);
+                MessageBox.Show("控制板串口打开失败,请检查系统后重新启动辅助程序");
                 Writelog(ex.ToString(), "bOpen", "ErrLog.txt");
                 return;
             }
@@ -460,6 +446,7 @@ namespace InterfaceHardware
             catch (Exception ex)
             {
                 //TextBoxLog("控制板端口侦听错误", "bOpen", false);
+                MessageBox.Show("服务启动失败,请检查网络IP后重新启动辅助程序");
                 Writelog(ex.ToString(), "bOpen", "ErrLog.txt");
             }
         }
@@ -496,6 +483,7 @@ namespace InterfaceHardware
                             if (result[0] != 0x02 || result[19] != 0x03)
                             {
                                 serialPort1.DiscardInBuffer();
+                                continue;
                             }
                         }
                         BrandCommand.ResultData resultdata = new BrandCommand.ResultData();
@@ -508,264 +496,340 @@ namespace InterfaceHardware
                             BrandCommand.RevBoxData key = new BrandCommand.RevBoxData();
                             key.Box = resultdata.Box;
                             key.CardAddr = resultdata.CardAddr;
-                            if (isopenbox)
+                            if (resultdata.Command == 0x4C)//开锁状态
                             {
-                                if (resultdata.Command == 0x30)//查询状态
+                                if (resultdata.State == 0x30)//关闭状态
                                 {
-                                    if (resultdata.State == 0x30)//关闭状态
+                                    byte[] w = new byte[6];
+                                    w[0] = 0xFE;
+                                    w[1] = resultdata.CardAddr;
+                                    w[2] = resultdata.Box;
+                                    w[3] = 0x02;
+                                    w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                    w[5] = 0xFF;
+                                    if (ListCode.ContainsKey(key))
                                     {
-                                        byte[] writearr = BrandCommand.OpenBox(resultdata.Box, resultdata.CardAddr);//执行开门
-                                        serialPort1.Write(writearr, 0, writearr.Length);
-                                        Writelog("发送串口命令:" + ByteToString(writearr)+","+key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                        Thread.Sleep(500);
-                                        //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
-                                        continue;
+                                        ListCode[key].Send(w);
+                                        ListCode.Remove(key);
+                                        Writelog("TCP回复命令:" + ByteToString(w) + "," + key.CardAddr.ToString()+","+key.Box.ToString(), "ReadCommPort1", "SystemLog.txt");
                                     }
-                                    else if (resultdata.State == 0x31)//打开状态
-                                    {
-                                        byte[] w = new byte[6];
-                                        w[0] = 0xFE;
-                                        w[1] = resultdata.CardAddr;
-                                        w[2] = resultdata.Box;
-                                        w[3] = 0x00;
-                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                        w[5] = 0xFF;
-                                        if (ListCode.ContainsKey(key))
-                                        {
-                                            ListCode[key].Send(w);
-                                            //ListCode.Remove(key);
-                                            Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                        }
-                                        a.settimLED(frm, false);
-                                        if (!listledtime.ContainsKey(key))
-                                        {
-                                            if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
-                                            {
-                                                
-                                                int ledtime = Convert.ToInt32(ConfigurationManager.AppSettings["LedTime"].Trim());
-                                                //timLED.Enabled = true;
-                                                listledtime.Add(key, ledtime);
-                                               
-                                            }
-                                        }
-                                        //byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询状态
-                                        //serialPort1.Write(writearr, 0, writearr.Length);
-                                        //Writelog("发送串口命令:" + ByteToString(writearr) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                        //Thread.Sleep(500);
-                                        issuspend = false;
-                                        isopenbox = false;
-                                        Thread.Sleep(500);
-                                        a.settimLED(frm, true);
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        byte[] w = new byte[6];
-                                        w[0] = 0xFE;
-                                        w[1] = resultdata.CardAddr;
-                                        w[2] = resultdata.Box;
-                                        w[3] = 0xFF;
-                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                        w[5] = 0xFF;
-                                        if (ListCode.ContainsKey(key))
-                                        {
-                                            ListCode[key].Send(w);
-                                            ListCode.Remove(key);
-                                            Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                        }
-                                        
-                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
-                                    }
-                                }
-                                else if (resultdata.Command == 0x47)//开门
-                                {
-                                    if (resultdata.State == 0x31)//执行成功
-                                    {
-                                        byte[] w = new byte[6];
-                                        w[0] = 0xFE;
-                                        w[1] = resultdata.CardAddr;
-                                        w[2] = resultdata.Box;
-                                        w[3] = 0x01;
-                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                        w[5] = 0xFF;
-                                        if (ListCode.ContainsKey(key))
-                                        {
-                                            ListCode[key].Send(w);
-                                            //ListCode.Remove(key);
-                                            Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                        }
-
-                                        if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
-                                        {
-                                            a.settimLED(frm, false);
-                                            byte[] writearrled = BrandCommand.LEDControl(resultdata.Box, 0x32, resultdata.CardAddr);//打开绿灯
-                                            serialPort1.Write(writearrled, 0, writearrled.Length);
-                                            Writelog("发送串口命令:" + ByteToString(writearrled) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                            Thread.Sleep(500);
-                                            int ledtime = Convert.ToInt32(ConfigurationManager.AppSettings["LedTime"].Trim());
-                                            //timLED.Enabled = true;
-                                            listledtime.Add(key, ledtime);
-                                            a.settimLED(frm, true);
-                                        }
-                                        //byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询状态
-                                        //serialPort1.Write(writearr, 0, writearr.Length);
-                                        //Writelog("发送串口命令:" + ByteToString(writearr) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
- 
-                                        Thread.Sleep(500);
-                                        issuspend = false;
-                                        isopenbox = false;
-
-                                    }
-                                    else//执行失败
-                                    {
-                                        byte[] w = new byte[6];
-                                        w[0] = 0xFE;
-                                        w[1] = resultdata.CardAddr;
-                                        w[2] = resultdata.Box;
-                                        w[3] = 0xFF;
-                                        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                        w[5] = 0xFF;
-                                        if (ListCode.ContainsKey(key))
-                                        {
-                                            ListCode[key].Send(w);
-                                            ListCode.Remove(key);
-                                            Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                        }
-                                        issuspend = false;
-                                        //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
-                                        isopenbox = false;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (resultdata.Command == 0x30)//查询状态
-                                {
                                     if (listledtime.ContainsKey(key))
                                     {
-                                        if (resultdata.State == 0x31 && listledtime[key] < 0)//打开状态且超时
-                                        {
-                                            if (listledtime[key] > -10)
-                                            {
-                                                frm.issuspend = true;
-                                                Thread.Sleep(600);
-                                                a.settimLED(frm, false);
-                                                byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭所有灯
-                                                serialPort1.Write(writearr, 0, writearr.Length);
-                                                Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                                Thread.Sleep(500);
-                                                writearr = BrandCommand.LEDControl(resultdata.Box, 0x31, resultdata.CardAddr);//打开红灯
-                                                serialPort1.Write(writearr, 0, writearr.Length);
-                                                Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                                Thread.Sleep(500);
-                                                frm.issuspend = false;
-                                                a.settimLED(frm, true);
-                                            }
-                                            //writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询
-                                            //serialPort1.Write(writearr, 0, writearr.Length);
-                                            //Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                            //Thread.Sleep(500);
-                                        }
-                                        else if (resultdata.State == 0x31 && listledtime[key] >= 0)//打开状态未超时
-                                        {
-                                            //byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询
-                                            //serialPort1.Write(writearr, 0, writearr.Length);
-                                            //Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                            //Thread.Sleep(500);
-                                            if (!timLED.Enabled)
-                                            {
-                                                a.settimLED(frm, true);
-                                            }
-                                        }
-                                        else if (resultdata.State == 0x30)//关闭状态
-                                        {
-                                            //ledtime = 0;
-                                            frm.issuspend = true;
-                                            Thread.Sleep(600);
-                                            a.settimLED(frm, false);
-                                            listledtime.Remove(key);
-                                            byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭红灯
-                                            serialPort1.Write(writearr, 0, writearr.Length);
-                                            Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                            //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
-                                            Thread.Sleep(500);
-                                            byte[] w = new byte[6];
-                                            w[0] = 0xFE;
-                                            w[1] = resultdata.CardAddr;
-                                            w[2] = resultdata.Box;
-                                            w[3] = 0x02;
-                                            w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                            w[5] = 0xFF;
-                                            if (ListCode.ContainsKey(key))
-                                            {
-                                                ListCode[key].Send(w);
-                                                ListCode.Remove(key);
-                                                Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
-                                            }
-                                            frm.issuspend = false;
-                                            a.settimLED(frm, true);
-                                        }
-                                        //foreach (BrandCommand.RevBoxData item in listledtime.Keys.ToArray())
-                                        //{
-                                        //    if (!issuspend)
-                                        //    {
-                                        //        byte[] writearr = BrandCommand.GetState(item.Box, item.CardAddr);//继续查询
-                                        //        serialPort1.Write(writearr, 0, writearr.Length);
-                                        //        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                        //        Thread.Sleep(300);
-                                        //    }
-                                        //}
+                                        listledtime.Remove(key);
                                     }
                                 }
-                                #region #####
-                                //if (resultdata.Command == 0x34)//维修开锁
-                                //{
-                                //    if (resultdata.State == 0x5A )//执行成功
-                                //    {
-                                //        frm.issuspend = true;
-                                //        Thread.Sleep(600);
-                                //        a.settimLED(frm, false);
-                                //        byte[] w = new byte[6];
-                                //        w[0] = 0xFE;
-                                //        w[1] = resultdata.CardAddr;
-                                //        w[2] = 0x00;
-                                //        w[3] = 0x02;
-                                //        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                //        w[5] = 0xFF;
-                                //        ListCode[key].Send(w);
-                                //        ListCode.Remove(key);
-                                //        for (int i = 1; i <= 60; i++)
-                                //        {
-                                //            BrandCommand.RevBoxData revdata = new BrandCommand.RevBoxData();
-                                //            revdata.Box = (byte)i;
-                                //            revdata.CardAddr = resultdata.CardAddr;
-                                //            if(listledtime.ContainsKey(revdata))
-                                //            {
-                                //                listledtime.Remove(revdata);
-                                //            }
-                                //            byte[] writearr = BrandCommand.LEDControl(revdata.Box, 0x30, revdata.CardAddr);//关闭红灯
-                                //            serialPort1.Write(writearr, 0, writearr.Length);
-                                //            Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                                //            Thread.Sleep(500);
-                                //        }
-                                //        frm.issuspend = false;
-                                //        a.settimLED(frm, true);
-                                //    }
-                                //    else
-                                //    {
-                                //        byte[] w = new byte[6];
-                                //        w[0] = 0xFE;
-                                //        w[1] = resultdata.CardAddr;
-                                //        w[2] = 0x00;
-                                //        w[3] = 0xFF;
-                                //        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
-                                //        w[5] = 0xFF;
-                                //        ListCode[key].Send(w);
-                                //        ListCode.Remove(key);
-                                //    }
-                                //}
-                                #endregion
+                                else if(resultdata.State == 0x32)//超时
+                                {
+                                    byte[] w = new byte[6];
+                                    w[0] = 0xFE;
+                                    w[1] = resultdata.CardAddr;
+                                    w[2] = resultdata.Box;
+                                    w[3] = 0x03;
+                                    w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                    w[5] = 0xFF;
+                                    if (ListCode.ContainsKey(key))
+                                    {
+                                        ListCode[key].Send(w);
+                                        ListCode.Remove(key);
+                                        Writelog("TCP回复命令:" + ByteToString(w) + "," + key.CardAddr.ToString() + "," + key.Box.ToString(), "ReadCommPort1", "SystemLog.txt");
+                                    }
+                                    if (listledtime.ContainsKey(key))
+                                    {
+                                        listledtime.Remove(key);
+                                    }
+                                    frm.issuspend = true;
+                                    Thread.Sleep(600);
+                                    //a.settimLED(frm, false);
+                                    byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭所有灯
+                                    serialPort1.Write(writearr, 0, writearr.Length);
+                                    Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                    Thread.Sleep(500);
+                                    writearr = BrandCommand.LEDControl(resultdata.Box, 0x31, resultdata.CardAddr);//打开红灯
+                                    serialPort1.Write(writearr, 0, writearr.Length);
+                                    Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                                    Thread.Sleep(500);
+                                    frm.issuspend = false;
+                                    //a.settimLED(frm, true);
+                                }
+                                else//37开门异常
+                                {
+                                    byte[] w = new byte[6];
+                                    w[0] = 0xFE;
+                                    w[1] = resultdata.CardAddr;
+                                    w[2] = resultdata.Box;
+                                    w[3] = 0xFF;
+                                    w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                                    w[5] = 0xFF;
+                                    if (ListCode.ContainsKey(key))
+                                    {
+                                        ListCode[key].Send(w);
+                                        ListCode.Remove(key);
+                                        Writelog("TCP回复命令:" + ByteToString(w) + "," + key.CardAddr.ToString() + "," + key.Box.ToString(), "ReadCommPort1", "SystemLog.txt");
+                                    }
+                                    if (listledtime.ContainsKey(key))
+                                    {
+                                        listledtime.Remove(key);
+                                    }
+                                }
                             }
+                            #region **********
+                            //if (isopenbox)
+                            //{
+                            //    if (resultdata.Command == 0x30)//查询状态
+                            //    {
+                            //        if (resultdata.State == 0x30)//关闭状态
+                            //        {
+                            //            byte[] writearr = BrandCommand.OpenBox(resultdata.Box, resultdata.CardAddr);//执行开门
+                            //            serialPort1.Write(writearr, 0, writearr.Length);
+                            //            Writelog("发送串口命令:" + ByteToString(writearr)+","+key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //            Thread.Sleep(500);
+                            //            continue;
+                            //        }
+                            //        else if (resultdata.State == 0x31)//打开状态
+                            //        {
+                            //            byte[] w = new byte[6];
+                            //            w[0] = 0xFE;
+                            //            w[1] = resultdata.CardAddr;
+                            //            w[2] = resultdata.Box;
+                            //            w[3] = 0x00;
+                            //            w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //            w[5] = 0xFF;
+                            //            if (ListCode.ContainsKey(key))
+                            //            {
+                            //                ListCode[key].Send(w);
+                            //                //ListCode.Remove(key);
+                            //                Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //            }
+                            //            a.settimLED(frm, false);
+                            //            if (!listledtime.ContainsKey(key))
+                            //            {
+                            //                if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
+                            //                {
+                                                
+                            //                    int ledtime = Convert.ToInt32(ConfigurationManager.AppSettings["LedTime"].Trim());
+                            //                    //timLED.Enabled = true;
+                            //                    listledtime.Add(key, ledtime);
+                                               
+                            //                }
+                            //            }
+                            //            //byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询状态
+                            //            //serialPort1.Write(writearr, 0, writearr.Length);
+                            //            //Writelog("发送串口命令:" + ByteToString(writearr) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //            //Thread.Sleep(500);
+                            //            issuspend = false;
+                            //            isopenbox = false;
+                            //            Thread.Sleep(500);
+                            //            a.settimLED(frm, true);
+                            //            continue;
+                            //        }
+                            //        else
+                            //        {
+                            //            byte[] w = new byte[6];
+                            //            w[0] = 0xFE;
+                            //            w[1] = resultdata.CardAddr;
+                            //            w[2] = resultdata.Box;
+                            //            w[3] = 0xFF;
+                            //            w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //            w[5] = 0xFF;
+                            //            if (ListCode.ContainsKey(key))
+                            //            {
+                            //                ListCode[key].Send(w);
+                            //                ListCode.Remove(key);
+                            //                Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //            }
+                                        
+                            //            //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
+                            //        }
+                            //    }
+                            //    else if (resultdata.Command == 0x47)//开门
+                            //    {
+                            //        if (resultdata.State == 0x31)//执行成功
+                            //        {
+                            //            byte[] w = new byte[6];
+                            //            w[0] = 0xFE;
+                            //            w[1] = resultdata.CardAddr;
+                            //            w[2] = resultdata.Box;
+                            //            w[3] = 0x01;
+                            //            w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //            w[5] = 0xFF;
+                            //            if (ListCode.ContainsKey(key))
+                            //            {
+                            //                ListCode[key].Send(w);
+                            //                //ListCode.Remove(key);
+                            //                Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //            }
+                            //            if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
+                            //            {
+                            //                a.settimLED(frm, false);
+                            //                byte[] writearrled = BrandCommand.LEDControl(resultdata.Box, 0x32, resultdata.CardAddr);//打开绿灯
+                            //                serialPort1.Write(writearrled, 0, writearrled.Length);
+                            //                Writelog("发送串口命令:" + ByteToString(writearrled) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //                Thread.Sleep(500);
+                            //                int ledtime = Convert.ToInt32(ConfigurationManager.AppSettings["LedTime"].Trim());
+                            //                //timLED.Enabled = true;
+                            //                listledtime.Add(key, ledtime);
+                            //                a.settimLED(frm, true);
+                            //            }
+                            //            //byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询状态
+                            //            //serialPort1.Write(writearr, 0, writearr.Length);
+                            //            //Writelog("发送串口命令:" + ByteToString(writearr) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+ 
+                            //            Thread.Sleep(500);
+                            //            issuspend = false;
+                            //            isopenbox = false;
+
+                            //        }
+                            //        else//执行失败
+                            //        {
+                            //            byte[] w = new byte[6];
+                            //            w[0] = 0xFE;
+                            //            w[1] = resultdata.CardAddr;
+                            //            w[2] = resultdata.Box;
+                            //            w[3] = 0xFF;
+                            //            w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //            w[5] = 0xFF;
+                            //            if (ListCode.ContainsKey(key))
+                            //            {
+                            //                ListCode[key].Send(w);
+                            //                ListCode.Remove(key);
+                            //                Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //            }
+                            //            issuspend = false;
+                            //            //TextBoxLog("TCP回复命令:" + ByteToString(w), "ReadCommPort1", false);
+                            //            isopenbox = false;
+                            //        }
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    if (resultdata.Command == 0x30)//查询状态
+                            //    {
+                            //        if (listledtime.ContainsKey(key))
+                            //        {
+                            //            if (resultdata.State == 0x31 && listledtime[key] < 0)//打开状态且超时
+                            //            {
+                            //                if (listledtime[key] > -10)
+                            //                {
+                            //                    frm.issuspend = true;
+                            //                    Thread.Sleep(600);
+                            //                    a.settimLED(frm, false);
+                            //                    byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭所有灯
+                            //                    serialPort1.Write(writearr, 0, writearr.Length);
+                            //                    Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //                    Thread.Sleep(500);
+                            //                    writearr = BrandCommand.LEDControl(resultdata.Box, 0x31, resultdata.CardAddr);//打开红灯
+                            //                    serialPort1.Write(writearr, 0, writearr.Length);
+                            //                    Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //                    Thread.Sleep(500);
+                            //                    frm.issuspend = false;
+                            //                    a.settimLED(frm, true);
+                            //                }
+                            //                //writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询
+                            //                //serialPort1.Write(writearr, 0, writearr.Length);
+                            //                //Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //                //Thread.Sleep(500);
+                            //            }
+                            //            else if (resultdata.State == 0x31 && listledtime[key] >= 0)//打开状态未超时
+                            //            {
+                            //                //byte[] writearr = BrandCommand.GetState(resultdata.Box, resultdata.CardAddr);//继续查询
+                            //                //serialPort1.Write(writearr, 0, writearr.Length);
+                            //                //Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //                //Thread.Sleep(500);
+                            //                if (!timLED.Enabled)
+                            //                {
+                            //                    a.settimLED(frm, true);
+                            //                }
+                            //            }
+                            //            else if (resultdata.State == 0x30)//关闭状态
+                            //            {
+                            //                //ledtime = 0;
+                            //                frm.issuspend = true;
+                            //                Thread.Sleep(600);
+                            //                a.settimLED(frm, false);
+                            //                listledtime.Remove(key);
+                            //                byte[] writearr = BrandCommand.LEDControl(resultdata.Box, 0x30, resultdata.CardAddr);//关闭红灯
+                            //                serialPort1.Write(writearr, 0, writearr.Length);
+                            //                Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //                //TextBoxLog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", false);
+                            //                Thread.Sleep(500);
+                            //                byte[] w = new byte[6];
+                            //                w[0] = 0xFE;
+                            //                w[1] = resultdata.CardAddr;
+                            //                w[2] = resultdata.Box;
+                            //                w[3] = 0x02;
+                            //                w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //                w[5] = 0xFF;
+                            //                if (ListCode.ContainsKey(key))
+                            //                {
+                            //                    ListCode[key].Send(w);
+                            //                    ListCode.Remove(key);
+                            //                    Writelog("TCP回复命令:" + ByteToString(w) + "," + key.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            //                }
+                            //                frm.issuspend = false;
+                            //                a.settimLED(frm, true);
+                            //            }
+                            //            //foreach (BrandCommand.RevBoxData item in listledtime.Keys.ToArray())
+                            //            //{
+                            //            //    if (!issuspend)
+                            //            //    {
+                            //            //        byte[] writearr = BrandCommand.GetState(item.Box, item.CardAddr);//继续查询
+                            //            //        serialPort1.Write(writearr, 0, writearr.Length);
+                            //            //        Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //            //        Thread.Sleep(300);
+                            //            //    }
+                            //            //}
+                            //        }
+                            //    }
+                                #region #####
+                            //    //if (resultdata.Command == 0x34)//维修开锁
+                            //    //{
+                            //    //    if (resultdata.State == 0x5A )//执行成功
+                            //    //    {
+                            //    //        frm.issuspend = true;
+                            //    //        Thread.Sleep(600);
+                            //    //        a.settimLED(frm, false);
+                            //    //        byte[] w = new byte[6];
+                            //    //        w[0] = 0xFE;
+                            //    //        w[1] = resultdata.CardAddr;
+                            //    //        w[2] = 0x00;
+                            //    //        w[3] = 0x02;
+                            //    //        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //    //        w[5] = 0xFF;
+                            //    //        ListCode[key].Send(w);
+                            //    //        ListCode.Remove(key);
+                            //    //        for (int i = 1; i <= 60; i++)
+                            //    //        {
+                            //    //            BrandCommand.RevBoxData revdata = new BrandCommand.RevBoxData();
+                            //    //            revdata.Box = (byte)i;
+                            //    //            revdata.CardAddr = resultdata.CardAddr;
+                            //    //            if(listledtime.ContainsKey(revdata))
+                            //    //            {
+                            //    //                listledtime.Remove(revdata);
+                            //    //            }
+                            //    //            byte[] writearr = BrandCommand.LEDControl(revdata.Box, 0x30, revdata.CardAddr);//关闭红灯
+                            //    //            serialPort1.Write(writearr, 0, writearr.Length);
+                            //    //            Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                            //    //            Thread.Sleep(500);
+                            //    //        }
+                            //    //        frm.issuspend = false;
+                            //    //        a.settimLED(frm, true);
+                            //    //    }
+                            //    //    else
+                            //    //    {
+                            //    //        byte[] w = new byte[6];
+                            //    //        w[0] = 0xFE;
+                            //    //        w[1] = resultdata.CardAddr;
+                            //    //        w[2] = 0x00;
+                            //    //        w[3] = 0xFF;
+                            //    //        w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            //    //        w[5] = 0xFF;
+                            //    //        ListCode[key].Send(w);
+                            //    //        ListCode.Remove(key);
+                            //    //    }
+                            //    //}
+                                #endregion
+                            //}
+                            #endregion
                         }
                         #region SN板
                         //else//SN板
@@ -898,23 +962,41 @@ namespace InterfaceHardware
             //}
         }
         //int ledtime = 0;
-        static Dictionary<BrandCommand.RevBoxData, int> listledtime=new Dictionary<BrandCommand.RevBoxData, int>(new BrandCommand.EqualityComparer()) { };
+        static Dictionary<BrandCommand.RevBoxData, DateTime> listledtime=new Dictionary<BrandCommand.RevBoxData, DateTime>(new BrandCommand.EqualityComparer()) { };
         private void timLED_Tick(object sender, EventArgs e)
         {
-            //ledtime--;
-
             foreach (BrandCommand.RevBoxData item in listledtime.Keys.ToArray())
             {
-                int ledtime = listledtime[item];
-                ledtime--;
-                listledtime[item] = ledtime;
-                if (!issuspend)
-                {
-                    byte[] writearr = BrandCommand.GetState(item.Box, item.CardAddr);//继续查询
-                    serialPort1.Write(writearr, 0, writearr.Length);
-                    Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
-                    Thread.Sleep(500);
-                }
+                //if (!issuspend)
+                //{
+                    //byte[] writearr = BrandCommand.GetState(item.Box, item.CardAddr);//继续查询
+                    //serialPort1.Write(writearr, 0, writearr.Length);
+                    //Writelog("发送串口命令:" + ByteToString(writearr), "ReadCommPort1", "SystemLog.txt");
+                    //Thread.Sleep(500);
+                    if (ConfigurationManager.AppSettings["LedTime"].Trim() != "")
+                    {
+                        if (listledtime[item].AddSeconds(Convert.ToDouble(ConfigurationManager.AppSettings["LedTime"].Trim()))<DateTime.Now)
+                        {
+                            byte[] w = new byte[6];
+                            w[0] = 0xFE;
+                            w[1] = item.CardAddr;
+                            w[2] = item.Box;
+                            w[3] = 0x03;
+                            w[4] = (byte)(w[1] ^ w[2] ^ w[3]);
+                            w[5] = 0xFF;
+                            if (ListCode.ContainsKey(item))
+                            {
+                                ListCode[item].Send(w);
+                                ListCode.Remove(item);
+                                Writelog("TCP回复命令:" + ByteToString(w) + "," + item.CardAddr.ToString() + "," + item.Box.ToString(), "ReadCommPort1", "SystemLog.txt");
+                            }
+                            if (listledtime.ContainsKey(item))
+                            {
+                                listledtime.Remove(item);
+                            }
+                        }
+                    }
+                //}
             }
             //ArrayList akeys = new ArrayList(listledtime.Keys);
             //for (int i = listledtime.Count-1; i >-1; i--)
