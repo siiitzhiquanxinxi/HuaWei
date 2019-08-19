@@ -193,7 +193,7 @@
                         <%# Eval("ToolBarCode")%>
                     </td>
                     <td>
-                        <%# Eval("ToolReadyState").ToString()=="0"?"待备刀" : Eval("ToolReadyState").ToString()=="1"?"备刀中" : Eval("ToolReadyState").ToString()=="2"?"已完成": "异常" %>
+                        <%# Eval("ToolReadyState").ToString()=="0"?"待备刀" : Eval("ToolReadyState").ToString()=="1"?"备刀中" : Eval("ToolReadyState").ToString()=="2"?"已完成":Eval("ToolReadyState").ToString()=="-1"?"异常":"已取消" %>
                     </td>
                     <td align="center">
                         <%--<asp:LinkButton ID="lbtnEdit" runat="server" 

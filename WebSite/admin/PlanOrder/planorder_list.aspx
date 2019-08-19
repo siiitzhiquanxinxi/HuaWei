@@ -56,6 +56,7 @@
                             <asp:ListItem Value="1">备刀中</asp:ListItem>
                             <asp:ListItem Value="2">已完成</asp:ListItem>
                             <asp:ListItem Value="-1">异常</asp:ListItem>
+                            <asp:ListItem Value="-2">已取消</asp:ListItem>
                         </asp:DropDownList>
           <asp:Label ID="Label3" runat="server" Text="是否导入CAM" style="padding-right:10px;padding-left:10px;"></asp:Label>
                         <asp:DropDownList ID="ddlCAM" runat="server"  CssClass="input">
@@ -105,7 +106,7 @@
         <td align="center"><%# Eval("DelayWorkTime") %></td>
         <td align="center"><%# Eval("MachineLathe") %></td>
         <td align="center"><%# Eval("WorkProcedure") %></td>
-      <td align="center"><%# Eval("OrderReadyState").ToString()=="0"?"待备刀" : Eval("OrderReadyState").ToString()=="1"?"备刀中" : Eval("OrderReadyState").ToString()=="2"?"已完成": "异常" %></td>
+      <td align="center"><%# Eval("OrderReadyState").ToString()=="0"?"待备刀" : Eval("OrderReadyState").ToString()=="1"?"备刀中" : Eval("OrderReadyState").ToString()=="2"?"已完成":  Eval("OrderReadyState").ToString()=="-1"?"异常":"已取消" %></td>
       <td align="center">
           <a href="planorder_view.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>">查看</a>
               <%--<asp:LinkButton ID="lbtnExport" runat="server" CommandArgument='<%#Eval("BatchNumber") %>' OnClick="lbtnExport_Click">导出</asp:LinkButton>
