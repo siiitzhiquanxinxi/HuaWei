@@ -48,22 +48,22 @@ namespace DataUpdateInterface
             try
             {
                 #region 发邮件
-                try
-                {
-                    string email = "select * from temp_planorderlist where EmailState=0 or EmailState is null";
-                    System.Data.DataTable emaildt = DbHelperMySql.Query(email).Tables[0];
-                    for (int j = 0; j < emaildt.Rows.Count; j++)
-                    {
-                        StreamReader sr = getStream(ConfigurationManager.AppSettings["MailTo"].Trim());
-                        DTcms.Common.SendMail.Send("Cam导入提醒（" + emaildt.Rows[j]["PartName"].ToString() + "）", "零件号：" + emaildt.Rows[j]["PartNum"].ToString() + ",计划号：" + emaildt.Rows[j]["PlanNo"].ToString() + ",计划开工时间：" + emaildt.Rows[j]["PlanWorkTime"].ToString(), sr.ReadToEnd(), ConfigurationManager.AppSettings["Psd"].Trim(), ConfigurationManager.AppSettings["Host"].Trim(), ConfigurationManager.AppSettings["SendName"].Trim(), ConfigurationManager.AppSettings["Sendaddr"].Trim());
-                        string update = "update temp_planorderlist set EmailState=1 where id='" + emaildt.Rows[j]["id"].ToString() + "'";
-                        DbHelperMySql.ExecuteSql(update);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Writelog(ex.ToString(), "Sendmail", "ErrLog.txt");
-                }
+                //try
+                //{
+                //    string email = "select * from temp_planorderlist where EmailState=0 or EmailState is null";
+                //    System.Data.DataTable emaildt = DbHelperMySql.Query(email).Tables[0];
+                //    for (int j = 0; j < emaildt.Rows.Count; j++)
+                //    {
+                //        StreamReader sr = getStream(ConfigurationManager.AppSettings["MailTo"].Trim());
+                //        DTcms.Common.SendMail.Send("Cam导入提醒（" + emaildt.Rows[j]["PartName"].ToString() + "）", "零件号：" + emaildt.Rows[j]["PartNum"].ToString() + ",计划号：" + emaildt.Rows[j]["PlanNo"].ToString() + ",计划开工时间：" + emaildt.Rows[j]["PlanWorkTime"].ToString(), sr.ReadToEnd(), ConfigurationManager.AppSettings["Psd"].Trim(), ConfigurationManager.AppSettings["Host"].Trim(), ConfigurationManager.AppSettings["SendName"].Trim(), ConfigurationManager.AppSettings["Sendaddr"].Trim());
+                //        string update = "update temp_planorderlist set EmailState=1 where id='" + emaildt.Rows[j]["id"].ToString() + "'";
+                //        DbHelperMySql.ExecuteSql(update);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Writelog(ex.ToString(), "Sendmail", "ErrLog.txt");
+                //}
                 #endregion
                 string where = "SELECT b.id as poid,b.MaterialTexture,a.* from temp_camlist a join temp_planorderlist b on a.FK_Id=b.Id where  ToolReadyState=0 and ((PlanWorkTime<date_add(now(), interval 60 MINUTE) and DelayWorkTime is NULL) or (DelayWorkTime<now() and DelayWorkTime is not NULL)) order by a.PartNum";
                 System.Data.DataTable podt = DbHelperMySql.Query(where).Tables[0];

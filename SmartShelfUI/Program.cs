@@ -29,16 +29,16 @@ namespace SmartShelfUI
             }
             catch (Exception ex)
             {
-                Utils.Writelog(ex.ToString() + "\r\n" + ex.StackTrace, "程序入口");
+                Utils.WriteError("程序入口1", ex.ToString() + "\r\n" + ex.StackTrace);
                 throw;
             }
         }
 
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs ex)
         {
-            Utils.Writelog(ex.ToString() + "\r\n" + ex.Exception.StackTrace, "程序入口2");
+            Utils.WriteError("程序入口2", ex.ToString() + "\r\n" + ex.Exception.StackTrace);
             string message = string.Format("{0}\r\n操作发生错误，您需要退出系统么？", ex.Exception.Message);
-            if (DialogResult.Yes == MessageBox.Show(message, "错误", MessageBoxButtons.OKCancel))
+            if (DialogResult.Yes == MessageBox.Show(message, "错误", MessageBoxButtons.OKCancel, MessageBoxIcon.Error))
             {
                 Application.Exit();
             }
@@ -47,9 +47,9 @@ namespace SmartShelfUI
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = e.ExceptionObject as Exception;
-            Utils.Writelog(ex.ToString() + "\r\n" + ex.StackTrace, "程序入口3");
+            Utils.WriteError("程序入口3", ex.ToString() + "\r\n" + ex.StackTrace);
             string message = string.Format("{0}\r\n操作发生错误，您需要退出系统么？", ex.Message);
-            if (DialogResult.Yes == MessageBox.Show(message, "错误", MessageBoxButtons.OKCancel))
+            if (DialogResult.Yes == MessageBox.Show(message, "错误", MessageBoxButtons.OKCancel, MessageBoxIcon.Error))
             {
                 Application.Exit();
             }

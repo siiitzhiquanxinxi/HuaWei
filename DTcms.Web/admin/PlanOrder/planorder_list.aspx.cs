@@ -19,36 +19,41 @@ namespace DTcms.Web.admin.PlanOrder
                 RptBind();
             }
         }
+        private bool isLoad = true;
         private void RptBind()
         {
             string where = "1=1";
-            //if (this.txtKeywords.Text.Trim() != "")
-            //{
-            //    where += " and (PartNum like  '%" + this.txtKeywords.Text.Trim() + "%' or PartName like '%" + this.txtKeywords.Text.Trim() + "%' or MaterialTexture like '%" + this.txtKeywords.Text.Trim() + "%' or MachineLathe like '%" + this.txtKeywords.Text.Trim() + "%')";
-            //}
-            if (this.txtPartNum.Text.Trim() != "")
+
+            if (isLoad)
             {
-                where += " and PartNum like '"+ this.txtPartNum.Text.Trim() + "%'";
-            }
-            if (txtSDate.Text.Trim() != "" && txtEDate.Text.Trim() != "")
-            {
-                where += " and PlanWorkTime BETWEEN '" + txtSDate.Text.Trim() + "' and '" + txtEDate.Text.Trim() + "'";
-            }
-            if (ddlState.SelectedValue != "")
-            {
-                where += " and OrderReadyState = '" + ddlState.SelectedValue + "'";
-            }
-            if (ddlCAM.SelectedValue == "0")
-            {
-                where += " and id not in (SELECT fk_id from temp_camlist)";
-            }
-            else if (ddlCAM.SelectedValue == "1")
-            {
-                where += " and id in (SELECT fk_id from temp_camlist)";
+                where += " and PlanWorkTime>NOW()";
             }
             else
             {
+                if (this.txtPartNum.Text.Trim() != "")
+                {
+                    where += " and PartNum like '" + this.txtPartNum.Text.Trim() + "%'";
+                }
+                if (txtSDate.Text.Trim() != "" && txtEDate.Text.Trim() != "")
+                {
+                    where += " and PlanWorkTime BETWEEN '" + txtSDate.Text.Trim() + "' and '" + txtEDate.Text.Trim() + "'";
+                }
+                if (ddlState.SelectedValue != "")
+                {
+                    where += " and OrderReadyState = '" + ddlState.SelectedValue + "'";
+                }
+                if (ddlCAM.SelectedValue == "0")
+                {
+                    where += " and id not in (SELECT fk_id from temp_camlist)";
+                }
+                else if (ddlCAM.SelectedValue == "1")
+                {
+                    where += " and id in (SELECT fk_id from temp_camlist)";
+                }
+                else
+                {
 
+                }
             }
             where += " order by PlanWorkTime desc";
             DataTable dt = bll.GetList(where).Tables[0];
@@ -66,6 +71,7 @@ namespace DTcms.Web.admin.PlanOrder
         }
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            isLoad = false;
             RptBind();
         }
         protected void AspNetPager1_PageChanged(object sender, EventArgs e)

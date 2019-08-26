@@ -44,6 +44,7 @@ namespace SmartShelfUI
                 else
                 {
                     thStartSocket = new Thread(StartSocket);
+                    thStartSocket.IsBackground = true;
                     thStartSocket.Start();
                     MessageBox.Show("连接失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -74,7 +75,7 @@ namespace SmartShelfUI
             }
         }
 
-        //ChildForm.CellsLocation frmCellsLocation;
+        ChildForm.CellsLocation frmCellsLocation;
         void closeCells(string cabinetAdr, string shelfAdr)
         {
             //if (frmCellsLocation != null || !frmCellsLocation.IsDisposed)
@@ -109,29 +110,48 @@ namespace SmartShelfUI
 
                                     string sql = "select w.X,w.Y,w.BarCode from temp_camlist c left join w_barcode w on w.BarCode = c.ToolBarCode left join sy_shelf s on s.ID = w.FK_ShelfID where c.FK_Id = '" + PartID + "' and s.ID = " + shelf.ID;
                                     DataTable dt = DbHelperMySql.Query(sql).Tables[0];
-                                    //frmCellsLocation = new ChildForm.CellsLocation();
+                                    frmCellsLocation = new ChildForm.CellsLocation();
+                                    frmCellsLocation.ShelfID = shelf.ID;
+                                    frmCellsLocation.PartNum = new DTcms.BLL.temp_planorderlist().GetModel(int.Parse(PartID)).PartNum;
+                                    frmCellsLocation.PartId = PartID;
                                     //frmCellsLocation.closeForm += new ChildForm.CellsLocation.FormHandle(closeCells);
-                                    //frmCellsLocation.ShelfID = shelf.ID;
-                                    //frmCellsLocation.PartNum = new DTcms.BLL.temp_planorderlist().GetModel(int.Parse(PartID)).PartNum;
-                                    //frmCellsLocation.PartId = PartID;
 
-                                    ChildForm.CellsLocation.Instance.ShelfID = shelf.ID;
-                                    ChildForm.CellsLocation.Instance.PartNum = new DTcms.BLL.temp_planorderlist().GetModel(int.Parse(PartID)).PartNum;
-                                    ChildForm.CellsLocation.Instance.PartId = PartID;
-                                    ChildForm.CellsLocation.Instance.closeForm += new ChildForm.CellsLocation.FormHandle(closeCells);
+                                    //ChildForm.CellsLocation.Instance.ShelfID = shelf.ID;
+                                    //ChildForm.CellsLocation.Instance.PartNum = new DTcms.BLL.temp_planorderlist().GetModel(int.Parse(PartID)).PartNum;
+                                    //ChildForm.CellsLocation.Instance.PartId = PartID;
+                                    //ChildForm.CellsLocation.Instance.closeForm += new ChildForm.CellsLocation.FormHandle(closeCells);
                                     if (dt != null && dt.Rows.Count > 0)
                                     {
-                                        ChildForm.CellsLocation.Instance.lstSelected = new List<string>();
+                                        //ChildForm.CellsLocation.Instance.lstSelected = new List<string>();
+                                        frmCellsLocation.lstSelected = new List<string>();
                                         for (int i = 0; i < dt.Rows.Count; i++)
                                         {
-                                            ChildForm.CellsLocation.Instance.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString() + "-" + dt.Rows[i]["BarCode"].ToString());
-                                            //frmCellsLocation.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString() + "-" + dt.Rows[i]["BarCode"].ToString());
+                                            //ChildForm.CellsLocation.Instance.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString() + "-" + dt.Rows[i]["BarCode"].ToString());
+                                            frmCellsLocation.lstSelected.Add(dt.Rows[i]["X"].ToString() + "-" + dt.Rows[i]["Y"].ToString() + "-" + dt.Rows[i]["BarCode"].ToString());
                                         }
                                     }
+                                    Thread.Sleep(800);
                                     this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        //frmCellsLocation.ShowDialog();
-                                        ChildForm.CellsLocation.Instance.ShowDialog();
+                                        try
+                                        {
+                                            frmCellsLocation.ShowDialog();
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Utils.WriteError("打开9宫格界面失败", ex.ToString() + "\r\n" + ex.StackTrace);
+                                        }
+
+                                        //if (ChildForm.CellsLocation.InstanceCount == 1)
+                                        //{
+                                        //    ChildForm.CellsLocation.Instance.ShowDialog();
+                                        //}
+                                        //else
+                                        //{
+                                        //    Utils.WriteError("计划领料打开九宫格失败", "ChildForm.CellsLocation.Instance不为null");
+                                        //    MessageBox.Show("打开九宫格失败：" + ChildForm.CellsLocation.InstanceCount.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        //}
                                     });
                                 }
                             }
@@ -447,7 +467,12 @@ namespace SmartShelfUI
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    ChildForm.CellsLocation.Instance.Close();
+                                    if (frmCellsLocation != null)
+                                    {
+                                        frmCellsLocation.Close();
+                                        frmCellsLocation = null;
+                                    }
+                                    //ChildForm.CellsLocation.Instance.Close();
                                 });
                                 Thread.Sleep(1000);
                                 //if (frmCellsLocation != null)
@@ -548,7 +573,12 @@ namespace SmartShelfUI
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    ChildForm.CellsLocation.Instance.Close();
+                                    if (frmCellsLocation!=null)
+                                    {
+                                        frmCellsLocation.Close();
+                                        frmCellsLocation = null;
+                                    }
+                                    //ChildForm.CellsLocation.Instance.Close();
                                 });
                                 Thread.Sleep(1000);
                                 if (dic_wait_for_open_shelf != null && dic_wait_for_open_shelf.Count > 0)
@@ -647,7 +677,12 @@ namespace SmartShelfUI
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    ChildForm.CellsLocation.Instance.Close();
+                                    if (frmCellsLocation!=null)
+                                    {
+                                        frmCellsLocation.Close();
+                                        frmCellsLocation = null;
+                                    }
+                                    //ChildForm.CellsLocation.Instance.Close();
                                 });
                                 Thread.Sleep(1000);
                                 DTcms.Model.sy_cabinet cabinet;
@@ -745,7 +780,7 @@ namespace SmartShelfUI
             }
             catch (Exception ex)
             {
-                Utils.WriteError("接收TCPIP", ex.ToString() + "\n" + ex.StackTrace);
+                Utils.WriteError("接收TCPIP", ex.ToString() + "\r\n" + ex.StackTrace);
             }
         }
 

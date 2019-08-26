@@ -130,14 +130,6 @@
     <Content Include="admin\order\payment_list.aspx" />
     <Content Include="admin\PlanOrder\planorder_list.aspx" />
     <Content Include="admin\PlanOrder\planorder_view.aspx" />
-    <Content Include="admin\PlanOrder\printlog\errorlogdetail.aspx" />
-    <Content Include="admin\PlanOrder\printlog\errorloglist.aspx" />
-    <Content Include="admin\PlanOrder\printlog\printlog_yinyezhizhao.aspx" />
-    <Content Include="admin\PlanOrder\printlog\printlog_yinyezhizhao_detail.aspx" />
-    <Content Include="admin\PlanOrder\printlog\printoplog_yinyezhizhao.aspx" />
-    <Content Include="admin\PlanOrder\printlog\printweekrpt_yinyezhizhao.aspx" />
-    <Content Include="admin\PlanOrder\printlog\worklogdetail.aspx" />
-    <Content Include="admin\PlanOrder\printlog\workloglist.aspx" />
     <Content Include="admin\settings\builder_html.aspx" />
     <Content Include="admin\settings\nav_edit.aspx" />
     <Content Include="admin\settings\nav_list.aspx" />
@@ -1045,65 +1037,6 @@
     <Compile Include="admin\PlanOrder\planorder_view.aspx.designer.cs">
       <DependentUpon>planorder_view.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\PlanOrder\printlog\errorlogdetail.aspx.cs">
-      <DependentUpon>errorlogdetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\errorlogdetail.aspx.designer.cs">
-      <DependentUpon>errorlogdetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\errorloglist.aspx.cs">
-      <DependentUpon>errorloglist.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\errorloglist.aspx.designer.cs">
-      <DependentUpon>errorloglist.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\GetImg.ashx.cs">
-      <DependentUpon>GetImg.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao.aspx.cs">
-      <DependentUpon>printlog_yinyezhizhao.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao.aspx.designer.cs">
-      <DependentUpon>printlog_yinyezhizhao.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao_detail.aspx.cs">
-      <DependentUpon>printlog_yinyezhizhao_detail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printlog_yinyezhizhao_detail.aspx.designer.cs">
-      <DependentUpon>printlog_yinyezhizhao_detail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printoplog_yinyezhizhao.aspx.cs">
-      <DependentUpon>printoplog_yinyezhizhao.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printoplog_yinyezhizhao.aspx.designer.cs">
-      <DependentUpon>printoplog_yinyezhizhao.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printweekrpt_yinyezhizhao.aspx.cs">
-      <DependentUpon>printweekrpt_yinyezhizhao.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\printweekrpt_yinyezhizhao.aspx.designer.cs">
-      <DependentUpon>printweekrpt_yinyezhizhao.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\worklogdetail.aspx.cs">
-      <DependentUpon>worklogdetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\worklogdetail.aspx.designer.cs">
-      <DependentUpon>worklogdetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\workloglist.aspx.cs">
-      <DependentUpon>workloglist.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\PlanOrder\printlog\workloglist.aspx.designer.cs">
-      <DependentUpon>workloglist.aspx</DependentUpon>
-    </Compile>
     <Compile Include="admin\settings\builder_html.aspx.cs">
       <DependentUpon>builder_html.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1621,8 +1554,6 @@
     <Content Include="xmlconfig\alipaypc.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\PlanOrder\printlog\GetImg.ashx" />
-    <Content Include="admin\PlanOrder\printlog\营业执照打印明细.xls" />
     <Content Include="admin\Material\photo.ashx" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\配置文件1.pubxml" />

@@ -92,9 +92,9 @@ namespace SmartShelfUI.ChildForm
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-            DTcms.Model.sy_shelf shelf = new DTcms.BLL.sy_shelf().GetModel(ShelfID);
-            DTcms.Model.sy_cabinet cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
-            closeForm(cabinet.CardAddr, shelf.BoxAddr);
+            //DTcms.Model.sy_shelf shelf = new DTcms.BLL.sy_shelf().GetModel(ShelfID);
+            //DTcms.Model.sy_cabinet cabinet = new DTcms.BLL.sy_cabinet().GetModel(shelf.FK_CabinetNo);
+            //closeForm(cabinet.CardAddr, shelf.BoxAddr);
         }
 
         private void spCom_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -500,7 +500,7 @@ namespace SmartShelfUI.ChildForm
         }
 
         private static CellsLocation _Instance = null;
-        private static int InstanceCount = 0;
+        public static int InstanceCount = 0;
         public static CellsLocation Instance
         {
             get
